@@ -7,7 +7,7 @@ bool IsDigit(char c)
 	return (c >= '0') && (c <= '9') || (c >= 'A') && (c <= 'Z');
 }
 
-int DigitToInt(char c, bool &wasError)
+int CharDigitToInt(char c, bool &wasError)
 {
 	if ((c >= '0') && (c <= '9')) 
 	{
@@ -33,6 +33,11 @@ int Sign(char c, bool &wasError)
 	}
 	wasError = true;
 	return 0;
+}
+
+bool Overflowed(int value, int sign) 
+{
+	return (sign > 0) ? (value < 0) : (value > 0);
 }
 
 int StringToInt(const std::string str, int radix, bool &wasError)
@@ -69,21 +74,35 @@ int StringToInt(const std::string str, int radix, bool &wasError)
 			return 0;
 		}
 		value *= radix;
-		int digit = DigitToInt(str[pos], wasError);
-		if ((digit >= radix) || (value + digit < value)) // ѕроверка на переполнение при добавлении digit
+		int digit = CharDigitToInt(str[pos], wasError);
+		if (wasError || (digit >= radix))
 		{
 			wasError = true;
 			return 0;
 		}
-		value += digit;
+		value += digit * sign;
+		if (Overflowed(value, sign))
+		{
+			wasError = true;
+			return 0;
+		}
 	}
 
-	return value * sign;
+	return value;
 }
 
-char IntToDigit(int n)
+int GetLastDigit(int n, int radix, bool isNegative)
 {
-	assert(n >= 0 && n <= 36);
+	int digit = (n % radix + radix) % radix;
+	if (isNegative)
+	{
+		digit = (radix - digit) % radix;
+	}
+	return digit;
+}
+
+char IntDigitToChar(int n)
+{
 	if (n < 10)
 	{
 		return '0' + n;
@@ -95,17 +114,16 @@ std::string IntToString(int n, int radix, bool &wasError)
 {
 	std::string result = "";
 	bool isNegative = (n < 0);
-	n = abs(n);
 
 	if (n == 0)
 	{
 		result = "0";
 	}
 
-	while (n > 0)
+	while (n != 0)
 	{
-		int remainder = n % radix;
-		result.push_back(IntToDigit(remainder));
+		int digit = GetLastDigit(n, radix, isNegative);
+		result.push_back(IntDigitToChar(digit));
 		n /= radix;
 	}
 

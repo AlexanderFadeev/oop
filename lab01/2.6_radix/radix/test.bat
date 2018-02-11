@@ -45,6 +45,7 @@ fc %TEMP%\output%ID%.txt tests/expected%ID%.txt
 IF ERRORLEVEL 1 EXIT /B 1
 EXIT /B 0
 
+REM Check if program exits non-zero return value
 :run_test_fail
 %PROGRAM% "%~1" "%~2" "%~3" >%TEMP%\output.txt
 IF ERRORLEVEL 1 EXIT /B 0

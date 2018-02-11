@@ -3,17 +3,32 @@
 #include <string>
 
 
-void ReplaceInLine(std::string &line, const std::string searchString, const std::string replaceString) {
-	size_t pos = 0;
-	while (pos != std::string::npos)
+std::string ReplaceInLine(std::string &srcLine, const std::string searchString, const std::string replaceString) {
+	std::string result;
+	size_t startPos = 0;
+	size_t searchPos = 0;
+
+	while (searchPos != std::string::npos)
 	{
-		pos = line.find(searchString, pos);
-		if (pos != std::string::npos)
+		searchPos = srcLine.find(searchString, searchPos);
+		if (searchPos != std::string::npos)
 		{
-			line.replace(pos, searchString.length(), replaceString);
-			pos += replaceString.length();
+			const size_t endPos = searchPos;
+			const size_t len = endPos - startPos;
+			result.append(srcLine, startPos, len);
+			result.append(replaceString);
+			searchPos += searchString.length();
+			startPos = searchPos;
 		}
 	}
+	
+	if (startPos < srcLine.length())
+	{
+		const size_t len = srcLine.length() - startPos;
+		result.append(srcLine, startPos, len);
+	}
+
+	return result;
 }
 
 void Replace(std::istream &input, std::ostream &output,
@@ -21,9 +36,10 @@ void Replace(std::istream &input, std::ostream &output,
 {
 	std::string line;
 
-	while (std::getline(input, line)) {
-		ReplaceInLine(line, searchString, replaceString);
-		output << line << '\n';
+	while (std::getline(input, line))
+	{
+		const std::string result = ReplaceInLine(line, searchString, replaceString);
+		output << result << '\n';
 	}
 }
 

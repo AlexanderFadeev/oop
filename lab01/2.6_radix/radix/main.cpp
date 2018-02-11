@@ -91,10 +91,10 @@ int StringToInt(const std::string str, int radix, bool &wasError)
 	return value;
 }
 
-int GetLastDigit(int n, int radix, bool isNegative)
+int GetLastDigit(int n, int radix)
 {
 	int digit = (n % radix + radix) % radix;
-	if (isNegative)
+	if (n < 0)
 	{
 		digit = (radix - digit) % radix;
 	}
@@ -122,7 +122,7 @@ std::string IntToString(int n, int radix, bool &wasError)
 
 	while (n != 0)
 	{
-		int digit = GetLastDigit(n, radix, isNegative);
+		int digit = GetLastDigit(n, radix);
 		result.push_back(IntDigitToChar(digit));
 		n /= radix;
 	}

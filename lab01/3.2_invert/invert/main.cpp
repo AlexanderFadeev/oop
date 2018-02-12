@@ -96,7 +96,7 @@ void TransposeMatrix(Matrix3x3 &matrix)
 	}
 }
 
-void CalcInverseMatrix(Matrix3x3 &inverseMatrix, const Matrix3x3 &srcMatrix, const double determinant)
+void CalcInverseMatrix(const Matrix3x3 &srcMatrix, Matrix3x3 &inverseMatrix, const double determinant)
 {
 	for (size_t row = 0; row < SIZE; row++)
 	{
@@ -132,6 +132,19 @@ void PrintMatrix(const Matrix3x3 &matrix)
 	}
 }
 
+bool Invert(const Matrix3x3 &srcMatrix, Matrix3x3 &dstMatrix)
+{
+	const double det = Determinant(srcMatrix);
+
+	if (IsZero(det))
+	{
+		return false;
+	}
+
+	CalcInverseMatrix(srcMatrix, dstMatrix, det);
+	return true;
+}
+
 bool Invert(std::istream &input)
 {
 	Matrix3x3 matrix;
@@ -142,19 +155,15 @@ bool Invert(std::istream &input)
 		return false;
 	}
 
-	const double det = Determinant(matrix);
-
-	if (IsZero(det))
+	Matrix3x3 invertedMatrix;
+	ok = Invert(matrix, invertedMatrix);
+	if (!ok)
 	{
 		std::cout << "Unable to invert matrix\n";
 		return true;
 	}
-
-	Matrix3x3 invertedMatrix;
-	CalcInverseMatrix(invertedMatrix, matrix, det);
-
+	
 	PrintMatrix(invertedMatrix);
-
 	return true;
 }
 

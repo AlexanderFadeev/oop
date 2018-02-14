@@ -7,13 +7,10 @@
 const size_t SIZE = 100;
 const size_t TOTAL_SIZE = SIZE + 2; // size with borders
 
-enum
-{
-	EMPTY = ' ',
-	FILLED = '.',
-	SOURCE = 'O',
-	BORDER = '#',
-};
+const char EMPTY = ' ';
+const char FILLED = '.';
+const char SOURCE = 'O';
+const char BORDER = '#';
 
 struct Field
 {

@@ -105,12 +105,12 @@ char IntDigitToChar(int n)
 {
 	if (n < 10)
 	{
-		return '0' + n;
+		return '0' + static_cast<char>(n);
 	}
-	return 'A' + n - 10;
+	return 'A' + static_cast<char>(n) - 10;
 }
 
-std::string IntToString(int n, int radix, bool &wasError)
+std::string IntToString(int n, int radix)
 {
 	std::string result = "";
 	bool isNegative = (n < 0);
@@ -185,13 +185,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	wasError = false;
-	std::string result = IntToString(value, destinationNotation, wasError);
-	if (wasError)
-	{
-		std::cout << "Failed to convert value to destination radix: " << value << '\n';
-		return 1;
-	}
+	std::string result = IntToString(value, destinationNotation);
 
 	std::cout << result << '\n';
 

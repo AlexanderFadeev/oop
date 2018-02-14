@@ -57,7 +57,8 @@ void InitQueue(std::queue<Position> &q, std::map<Position, bool> &inQ, Field &fi
 {
 	for (size_t row = 0; row < TOTAL_SIZE; row++)
 	{
-		for (size_t col = 0; col < TOTAL_SIZE; col++) {
+		for (size_t col = 0; col < TOTAL_SIZE; col++)
+		{
 			Position pos{row, col};
 			if (field.cells[row][col] == SOURCE)
 			{
@@ -78,7 +79,8 @@ std::pair<size_t, size_t> GetFieldSize(Field &field)
 	size_t maxCol = 0;
 	for (size_t row = 1; row < TOTAL_SIZE - 1; row++)
 	{
-		for (size_t col = 1; col < TOTAL_SIZE - 1; col++) {
+		for (size_t col = 1; col < TOTAL_SIZE - 1; col++)
+		{
 			if (field.cells[row][col] != EMPTY)
 			{
 				maxRow = std::max(maxRow, row);
@@ -96,7 +98,8 @@ void PrintField(std::ostream &output, Field &field)
 
 	for (size_t row = 1; row <= size.first; row++)
 	{
-		for (size_t col = 1; col <= size.second; col++) {
+		for (size_t col = 1; col <= size.second; col++)
+		{
 			output << field.cells[row][col];
 		}
 		output << '\n';

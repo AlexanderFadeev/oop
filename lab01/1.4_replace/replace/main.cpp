@@ -3,7 +3,8 @@
 #include <string>
 
 
-std::string ReplaceInLine(const std::string &srcLine, const std::string searchString, const std::string replaceString)
+std::string ReplaceInLine(const std::string &srcLine,
+	const std::string &searchString, const std::string &replaceString)
 {
 	std::string result;
 	size_t startPos = 0;
@@ -33,7 +34,7 @@ std::string ReplaceInLine(const std::string &srcLine, const std::string searchSt
 }
 
 void Replace(std::istream &input, std::ostream &output,
-	const std::string searchString, const std::string replaceString)
+	const std::string &searchString, const std::string &replaceString)
 {
 	std::string line;
 

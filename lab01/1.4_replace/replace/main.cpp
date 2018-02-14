@@ -34,7 +34,7 @@ std::string ReplaceInLine(const std::string &srcLine,
 }
 
 void Replace(std::istream &input, std::ostream &output,
-	const std::string &searchString, const std::string &replaceString)
+	const std::string &searchString, const std::string &replaceString, bool &wasError)
 {
 	std::string line;
 
@@ -43,6 +43,9 @@ void Replace(std::istream &input, std::ostream &output,
 		const std::string result = ReplaceInLine(line, searchString, replaceString);
 		output << result << '\n';
 	}
+
+	output.flush();
+	wasError = !output;
 }
 
 const int ARGS_COUNT = 4;
@@ -73,7 +76,13 @@ int main(int argc, char* argv[])
 	std::string searchString = argv[3];
 	std::string replaceString = argv[4];
 
-	Replace(inputFile, outputFile, searchString, replaceString);
+	bool wasError = false;
+	Replace(inputFile, outputFile, searchString, replaceString, wasError);
+	if (wasError)
+	{
+		std::cout << "Failed to replace\n";
+		return 1;
+	}
 
 	return 0;
 }

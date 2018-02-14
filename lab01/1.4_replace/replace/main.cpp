@@ -48,6 +48,34 @@ void Replace(std::istream &input, std::ostream &output,
 	wasError = !output;
 }
 
+bool Replace(const std::string &inputFile, const std::string &outputFile,
+	const std::string &searchString, const std::string &replaceString)
+{
+	std::ifstream input(inputFile);
+	if (!input.is_open())
+	{
+		std::cout << "Failed to open input file: " << inputFile << '\n';
+		return 1;
+	}
+
+	std::ofstream output(outputFile);
+	if (!output.is_open())
+	{
+		std::cout << "Failed to open output file: " << outputFile << '\n';
+		return 1;
+	}
+
+	bool wasError = false;
+	Replace(input, output, searchString, replaceString, wasError);
+
+	if (wasError)
+	{
+		std::cout << "Failed to replace\n";
+	}
+
+	return !wasError;
+}
+
 const int ARGS_COUNT = 4;
 
 int main(int argc, char* argv[]) 
@@ -59,28 +87,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	std::ifstream inputFile(argv[1]);
-	if (!inputFile.is_open()) 
+	bool ok = Replace(argv[1], argv[2], argv[3], argv[4]);
+	if (!ok)
 	{
-		std::cout << "Failed to open input file: " << argv[1] << '\n';
-		return 1;
-	}
-
-	std::ofstream outputFile(argv[2]);
-	if (!outputFile.is_open())
-	{
-		std::cout << "Failed to open output file: " << argv[2] << '\n';
-		return 1;
-	}
-
-	std::string searchString = argv[3];
-	std::string replaceString = argv[4];
-
-	bool wasError = false;
-	Replace(inputFile, outputFile, searchString, replaceString, wasError);
-	if (wasError)
-	{
-		std::cout << "Failed to replace\n";
 		return 1;
 	}
 

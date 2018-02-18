@@ -2,32 +2,25 @@
 #include <fstream>
 #include <string>
 
-
 std::string ReplaceInLine(const std::string &srcLine,
 	const std::string &searchString, const std::string &replaceString)
 {
 	std::string result;
-	size_t startPos = 0;
-	size_t searchPos = 0;
+	size_t prevPos = 0;
+	size_t pos = 0;
 
-	while (searchPos != std::string::npos)
+	while (pos != std::string::npos)
 	{
-		searchPos = srcLine.find(searchString, searchPos);
-		if (searchPos != std::string::npos)
+		pos = srcLine.find(searchString, pos);
+		result.append(srcLine, prevPos, pos - prevPos);
+
+		if (pos != std::string::npos)
 		{
-			const size_t endPos = searchPos;
-			const size_t len = endPos - startPos;
-			result.append(srcLine, startPos, len);
 			result.append(replaceString);
-			searchPos += searchString.length();
-			startPos = searchPos;
+			pos += searchString.length();
 		}
-	}
-	
-	if (startPos < srcLine.length())
-	{
-		const size_t len = srcLine.length() - startPos;
-		result.append(srcLine, startPos, len);
+
+		prevPos = pos;
 	}
 
 	return result;

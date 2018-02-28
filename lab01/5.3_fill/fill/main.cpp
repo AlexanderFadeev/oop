@@ -7,14 +7,17 @@
 const size_t SIZE = 100;
 const size_t TOTAL_SIZE = SIZE + 2; // size with borders
 
-const char EMPTY = ' ';
-const char FILLED = '.';
-const char SOURCE = 'O';
-const char BORDER = '#';
+
+enum class CellType : char {
+	EMPTY = ' ',
+	FILLED = '.',
+	SOURCE = 'O',
+	BORDER = '#',
+};
 
 struct Field
 {
-	char cells[TOTAL_SIZE][TOTAL_SIZE];
+	CellType cells[TOTAL_SIZE][TOTAL_SIZE];
 };
 
 bool IsBorderCell(const size_t row, const size_t col)
@@ -28,7 +31,7 @@ void InitField(Field &field)
 	{
 		for (size_t col = 0; col < TOTAL_SIZE; col++)
 		{
-			field.cells[row][col] = IsBorderCell(row, col) ? BORDER : EMPTY;
+			field.cells[row][col] = IsBorderCell(row, col) ? CellType::BORDER : CellType::EMPTY;
 		}
 	}
 }
@@ -42,7 +45,7 @@ void ReadField(std::istream &input, Field &field)
 		std::getline(input, line);
 		for (size_t col = 0; col < line.length() && col < SIZE; col++)
 		{
-			field.cells[row + 1][col + 1] = line[col];
+			field.cells[row + 1][col + 1] = static_cast<CellType>(line[col]);
 		}
 		row++;
 	}
@@ -57,7 +60,7 @@ void InitQueue(std::queue<Position> &q, std::map<Position, bool> &inQ, const Fie
 		for (size_t col = 0; col < TOTAL_SIZE; col++)
 		{
 			Position pos{row, col};
-			if (field.cells[row][col] == SOURCE)
+			if (field.cells[row][col] == CellType::SOURCE)
 			{
 				q.push(pos);
 				inQ[pos] = true;
@@ -78,7 +81,7 @@ std::pair<size_t, size_t> GetFieldSize(const Field &field)
 	{
 		for (size_t col = 1; col < TOTAL_SIZE - 1; col++)
 		{
-			if (field.cells[row][col] != EMPTY)
+			if (field.cells[row][col] != CellType::EMPTY)
 			{
 				maxRow = std::max(maxRow, row);
 				maxCol = std::max(maxCol, col);
@@ -97,7 +100,7 @@ void PrintField(std::ostream &output, const Field &field)
 	{
 		for (size_t col = 1; col <= size.second; col++)
 		{
-			output << field.cells[row][col];
+			output << static_cast<char>(field.cells[row][col]);
 		}
 		output << '\n';
 	}
@@ -114,9 +117,9 @@ void Fill(Field &field) {
 		q.pop();
 		inQ[pos] = false;
 
-		if (field.cells[pos.first][pos.second] == EMPTY)
+		if (field.cells[pos.first][pos.second] == CellType::EMPTY)
 		{
-			field.cells[pos.first][pos.second] = FILLED;
+			field.cells[pos.first][pos.second] = CellType::FILLED;
 		}
 
 		const size_t dirCount = 4;
@@ -128,7 +131,7 @@ void Fill(Field &field) {
 			Position newPos = pos;
 			newPos.first += dRow[dir];
 			newPos.second += dCol[dir];
-			if (field.cells[newPos.first][newPos.second] == EMPTY && !inQ[newPos])
+			if (field.cells[newPos.first][newPos.second] == CellType::EMPTY && !inQ[newPos])
 			{
 				q.push(newPos);
 				inQ[newPos] = true;

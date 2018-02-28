@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <fstream>
 #include <string>
 #include <queue>
@@ -50,7 +50,7 @@ void ReadField(std::istream &input, Field &field)
 
 typedef std::pair<size_t, size_t> Position;
 
-void InitQueue(std::queue<Position> &q, std::map<Position, bool> &inQ, Field &field)
+void InitQueue(std::queue<Position> &q, std::map<Position, bool> &inQ, const Field &field)
 {
 	for (size_t row = 0; row < TOTAL_SIZE; row++)
 	{
@@ -70,7 +70,7 @@ void InitQueue(std::queue<Position> &q, std::map<Position, bool> &inQ, Field &fi
 	}
 }
 
-std::pair<size_t, size_t> GetFieldSize(Field &field)
+std::pair<size_t, size_t> GetFieldSize(const Field &field)
 {
 	size_t maxRow = 0;
 	size_t maxCol = 0;
@@ -89,7 +89,7 @@ std::pair<size_t, size_t> GetFieldSize(Field &field)
 	return std::make_pair(maxRow, maxCol);
 }
 
-void PrintField(std::ostream &output, Field &field)
+void PrintField(std::ostream &output, const Field &field)
 {
 	auto size = GetFieldSize(field);
 
@@ -103,15 +103,9 @@ void PrintField(std::ostream &output, Field &field)
 	}
 }
 
-void Fill(std::istream &input, std::ostream &output) 
-{
-	Field field;
-	InitField(field);
-
-	ReadField(input, field);
-
+void Fill(Field &field) {
 	std::queue<Position> q;
-	std::map<Position, bool> inQ; // Указывает на наличие позиции в очереди
+	std::map<Position, bool> inQ; // РЈРєР°Р·С‹РІР°РµС‚ РЅР° РЅР°Р»РёС‡РёРµ РїРѕР·РёС†РёРё РІ РѕС‡РµСЂРµРґРё
 	InitQueue(q, inQ, field);
 
 	while (!q.empty())
@@ -126,8 +120,8 @@ void Fill(std::istream &input, std::ostream &output)
 		}
 
 		const size_t dirCount = 4;
-		const int dRow[dirCount] = {1, 0, -1, 0};
-		const int dCol[dirCount] = {0, 1, 0, -1};
+		const int dRow[dirCount] = { 1, 0, -1, 0 };
+		const int dCol[dirCount] = { 0, 1, 0, -1 };
 
 		for (size_t dir = 0; dir < dirCount; dir++)
 		{
@@ -141,6 +135,15 @@ void Fill(std::istream &input, std::ostream &output)
 			}
 		}
 	}
+}
+
+void Fill(std::istream &input, std::ostream &output) 
+{
+	Field field;
+	InitField(field);
+	ReadField(input, field);
+
+	Fill(field);
 
 	PrintField(output, field);
 }

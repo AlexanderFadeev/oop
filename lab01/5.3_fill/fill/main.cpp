@@ -6,7 +6,8 @@
 const size_t SIZE = 100;
 const size_t TOTAL_SIZE = SIZE + 2; // size with borders
 
-enum class CellType : char {
+enum class CellType : char
+{
 	EMPTY    = ' ',
 	FILLED   = '.',
 	SOURCE   = 'O',
@@ -50,7 +51,8 @@ void ReadField(std::istream &input, Field &field)
 	}
 }
 
-struct Position {
+struct Position
+{
 	size_t row;
 	size_t col;
 };
@@ -102,7 +104,8 @@ void PrintField(std::ostream &output, const Field &field)
 	}
 }
 
-void Fill(Field &field) {
+void Fill(Field &field)
+{
 	std::queue<Position> q;
 	InitQueue(q, field);
 

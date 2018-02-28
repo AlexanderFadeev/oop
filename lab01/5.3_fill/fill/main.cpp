@@ -50,7 +50,10 @@ void ReadField(std::istream &input, Field &field)
 	}
 }
 
-typedef std::pair<size_t, size_t> Position;
+struct Position {
+	size_t row;
+	size_t col;
+};
 
 void InitQueue(std::queue<Position> &q, const Field &field)
 {
@@ -66,7 +69,7 @@ void InitQueue(std::queue<Position> &q, const Field &field)
 	}
 }
 
-std::pair<size_t, size_t> GetFieldSize(const Field &field)
+Position GetFieldSize(const Field &field)
 {
 	size_t maxRow = 0;
 	size_t maxCol = 0;
@@ -82,16 +85,16 @@ std::pair<size_t, size_t> GetFieldSize(const Field &field)
 		}
 	}
 
-	return std::make_pair(maxRow, maxCol);
+	return Position{maxRow, maxCol};
 }
 
 void PrintField(std::ostream &output, const Field &field)
 {
 	auto size = GetFieldSize(field);
 
-	for (size_t row = 1; row <= size.first; row++)
+	for (size_t row = 1; row <= size.row; row++)
 	{
-		for (size_t col = 1; col <= size.second; col++)
+		for (size_t col = 1; col <= size.col; col++)
 		{
 			output << static_cast<char>(field.cells[row][col]);
 		}
@@ -108,9 +111,9 @@ void Fill(Field &field) {
 		Position pos = q.front();
 		q.pop();
 
-		if (field.cells[pos.first][pos.second] == CellType::IN_QUEUE)
+		if (field.cells[pos.row][pos.col] == CellType::IN_QUEUE)
 		{
-			field.cells[pos.first][pos.second] = CellType::FILLED;
+			field.cells[pos.row][pos.col] = CellType::FILLED;
 		}
 
 		const size_t dirCount = 4;
@@ -120,12 +123,12 @@ void Fill(Field &field) {
 		for (size_t dir = 0; dir < dirCount; dir++)
 		{
 			Position newPos = pos;
-			newPos.first += dRow[dir];
-			newPos.second += dCol[dir];
-			if (field.cells[newPos.first][newPos.second] == CellType::EMPTY)
+			newPos.row += dRow[dir];
+			newPos.col += dCol[dir];
+			if (field.cells[newPos.row][newPos.col] == CellType::EMPTY)
 			{
 				q.push(newPos);
-				field.cells[newPos.first][newPos.second] = CellType::IN_QUEUE;
+				field.cells[newPos.row][newPos.col] = CellType::IN_QUEUE;
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <bitset>
 
 const size_t MOVE_SCHEMA[8] = {2, 3, 4, 6, 7, 0, 1, 5};
 

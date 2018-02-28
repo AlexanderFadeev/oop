@@ -61,20 +61,16 @@ double CalcMinor(const Matrix3x3 &matrix, const size_t row, const size_t col)
 		- minorMatrix.items[0][1] * minorMatrix.items[1][0];
 }
 
-double CalcSign(const size_t row, const size_t col)
-{
-	const bool isPositive = ((row + col) % 2 == 0);
-	return isPositive ? 1 : -1;
-}
-
 double Determinant(const Matrix3x3 &matrix)
 {
 	double result = 0;
 	const size_t row = 0;
+	int sign = 1;
 	for (size_t col = 0; col < SIZE; col++)
 	{
 		const double minor = CalcMinor(matrix, row, col);
-		result  += matrix.items[row][col] * minor * CalcSign(row, col);
+		result  += matrix.items[row][col] * minor * sign;
+		sign *= -1;
 	}
 	return result;
 }
@@ -98,14 +94,14 @@ void TransposeMatrix(Matrix3x3 &matrix)
 
 void CalcInverseMatrix(const Matrix3x3 &srcMatrix, Matrix3x3 &inverseMatrix, const double determinant)
 {
+	int sign = 1;
 	for (size_t row = 0; row < SIZE; row++)
 	{
 		for (size_t col = 0; col < SIZE; col++)
 		{
 			const double minor = CalcMinor(srcMatrix, row, col);
-			const double sign = CalcSign(row, col);
-
 			inverseMatrix.items[row][col] = sign * minor / determinant;
+			sign *= -1;
 		}
 	}
 

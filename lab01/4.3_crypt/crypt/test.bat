@@ -2,7 +2,21 @@ SET PROGRAM="%~1"
 
 IF NOT EXIST "%PROGRAM%" GOTO usage
 
-REM TODO
+REM Basic example
+CALL :run_test 1 "crypt" "0"
+IF ERRORLEVEL 1 GOTO err
+
+REM Non-zero key
+CALL :run_test 2 "crypt" "85"
+IF ERRORLEVEL 1 GOTO err
+
+REM Decoding of previous test
+CALL :run_test 3 "decrypt" "85"
+IF ERRORLEVEL 1 GOTO err
+
+REM Empty input
+CALL :run_test 4 "crypt" "42"
+IF ERRORLEVEL 1 GOTO err
 
 echo "PASS"
 exit /B 0

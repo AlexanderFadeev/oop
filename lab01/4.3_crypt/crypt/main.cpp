@@ -1,51 +1,53 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <bitset>
 
-void MoveBits(char &c, const int moveSchema[8])
+const size_t MOVE_SCHEMA[8] = {2, 3, 4, 6, 7, 0, 1, 5};
+
+void MoveBits(char &c)
 {
 	char result = 0;
-	for (int index = 0; index < 8; index++) 
+	for (size_t index = 0; index < CHAR_BIT; index++) 
 	{
-		if (c & (1 << index)) 
+		if (c & (1u << index)) 
 		{
-			result |= 1 << moveSchema[index];
+			result |= 1 << MOVE_SCHEMA[index];
 		}
 	}
 	c = result;
 }
 
-void UndoMoveBits(char &c, const int moveSchema[8])
+void UndoMoveBits(char &c)
 {
 	char result = 0;
-	for (int index = 0; index < 8; index++)
+	for (size_t index = 0; index < CHAR_BIT; index++)
 	{
-		if (c & (1 << index))
+		if (c & (1 << MOVE_SCHEMA[index]))
 		{
-			result |= 1 << moveSchema[index];
+			result |= 1 << index;
 		}
 	}
 	c = result;
 }
 
-const int moveSchema[8] = {2, 3, 4, 6, 7, 0, 1, 5};
-
-void Crypt(std::istream &input, std::ostream &output, char key) {
+void Crypt(std::istream &input, std::ostream &output, char key)
+{
 	char c;
 	while (input >> c)
 	{
 		c ^= key;
-		MoveBits(c, moveSchema);
+		MoveBits(c);
 		output << c;
 	}
 }
 
-void Decrypt(std::istream &input, std::ostream &output, char key) {
-	while (input)
+void Decrypt(std::istream &input, std::ostream &output, char key)
+{
+	char c;
+	while (input >> c)
 	{
-		char c;
-		input >> c;
-		UndoMoveBits(c, moveSchema);
+		UndoMoveBits(c);
 		c ^= key;
 		output << c;
 	}

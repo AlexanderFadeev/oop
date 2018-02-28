@@ -2,17 +2,16 @@
 #include <fstream>
 #include <string>
 #include <queue>
-#include <map>
 
 const size_t SIZE = 100;
 const size_t TOTAL_SIZE = SIZE + 2; // size with borders
 
-
 enum class CellType : char {
-	EMPTY = ' ',
-	FILLED = '.',
-	SOURCE = 'O',
-	BORDER = '#',
+	EMPTY    = ' ',
+	FILLED   = '.',
+	SOURCE   = 'O',
+	BORDER   = '#',
+	IN_QUEUE = '*',
 };
 
 struct Field
@@ -53,21 +52,15 @@ void ReadField(std::istream &input, Field &field)
 
 typedef std::pair<size_t, size_t> Position;
 
-void InitQueue(std::queue<Position> &q, std::map<Position, bool> &inQ, const Field &field)
+void InitQueue(std::queue<Position> &q, const Field &field)
 {
 	for (size_t row = 0; row < TOTAL_SIZE; row++)
 	{
 		for (size_t col = 0; col < TOTAL_SIZE; col++)
 		{
-			Position pos{row, col};
 			if (field.cells[row][col] == CellType::SOURCE)
 			{
-				q.push(pos);
-				inQ[pos] = true;
-			}
-			else
-			{
-				inQ[pos] = false;
+				q.push(Position{row, col});
 			}
 		}
 	}
@@ -108,16 +101,14 @@ void PrintField(std::ostream &output, const Field &field)
 
 void Fill(Field &field) {
 	std::queue<Position> q;
-	std::map<Position, bool> inQ; // Указывает на наличие позиции в очереди
-	InitQueue(q, inQ, field);
+	InitQueue(q, field);
 
 	while (!q.empty())
 	{
 		Position pos = q.front();
 		q.pop();
-		inQ[pos] = false;
 
-		if (field.cells[pos.first][pos.second] == CellType::EMPTY)
+		if (field.cells[pos.first][pos.second] == CellType::IN_QUEUE)
 		{
 			field.cells[pos.first][pos.second] = CellType::FILLED;
 		}
@@ -131,10 +122,10 @@ void Fill(Field &field) {
 			Position newPos = pos;
 			newPos.first += dRow[dir];
 			newPos.second += dCol[dir];
-			if (field.cells[newPos.first][newPos.second] == CellType::EMPTY && !inQ[newPos])
+			if (field.cells[newPos.first][newPos.second] == CellType::EMPTY)
 			{
 				q.push(newPos);
-				inQ[newPos] = true;
+				field.cells[newPos.first][newPos.second] = CellType::IN_QUEUE;
 			}
 		}
 	}

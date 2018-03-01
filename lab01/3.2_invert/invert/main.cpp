@@ -1,8 +1,7 @@
-#include <iostream>
 #include <fstream>
-#include <string>
 #include <iomanip>
-#include <assert.h>
+#include <iostream>
+#include <string>
 
 const size_t SIZE = 3;
 
@@ -16,7 +15,7 @@ struct Matrix2x2
 	double items[SIZE - 1][SIZE - 1];
 };
 
-bool ReadMatrix(std::istream &input, Matrix3x3 &matrix)
+bool ReadMatrix(std::istream& input, Matrix3x3& matrix)
 {
 	for (size_t row = 0; row < SIZE; row++)
 	{
@@ -32,7 +31,7 @@ bool ReadMatrix(std::istream &input, Matrix3x3 &matrix)
 	return true;
 }
 
-double CalcMinor(const Matrix3x3 &matrix, const size_t row, const size_t col)
+double CalcMinor(const Matrix3x3& matrix, const size_t row, const size_t col)
 {
 	Matrix2x2 minorMatrix;
 	for (size_t rowIndex = 0; rowIndex < SIZE; rowIndex++)
@@ -42,6 +41,8 @@ double CalcMinor(const Matrix3x3 &matrix, const size_t row, const size_t col)
 			continue;
 		}
 
+		const size_t rowMinor = (rowIndex > row) ? (rowIndex - 1) : rowIndex;
+
 		for (size_t colIndex = 0; colIndex < SIZE; colIndex++)
 		{
 			if (colIndex == col)
@@ -49,7 +50,6 @@ double CalcMinor(const Matrix3x3 &matrix, const size_t row, const size_t col)
 				continue;
 			}
 
-			const size_t rowMinor = (rowIndex > row) ? (rowIndex - 1) : rowIndex;
 			const size_t colMinor = (colIndex > col) ? (colIndex - 1) : colIndex;
 
 			const double value = matrix.items[rowIndex][colIndex];
@@ -57,11 +57,11 @@ double CalcMinor(const Matrix3x3 &matrix, const size_t row, const size_t col)
 		}
 	}
 
-	return minorMatrix.items[0][0] * minorMatrix.items[1][1] 
+	return minorMatrix.items[0][0] * minorMatrix.items[1][1]
 		- minorMatrix.items[0][1] * minorMatrix.items[1][0];
 }
 
-double Determinant(const Matrix3x3 &matrix)
+double Determinant(const Matrix3x3& matrix)
 {
 	double result = 0;
 	const size_t row = 0;
@@ -69,7 +69,7 @@ double Determinant(const Matrix3x3 &matrix)
 	for (size_t col = 0; col < SIZE; col++)
 	{
 		const double minor = CalcMinor(matrix, row, col);
-		result  += matrix.items[row][col] * minor * sign;
+		result += matrix.items[row][col] * minor * sign;
 		sign *= -1;
 	}
 	return result;
@@ -81,7 +81,7 @@ bool IsZero(const double value)
 	return (abs(value) < eps);
 }
 
-void TransposeMatrix(Matrix3x3 &matrix)
+void TransposeMatrix(Matrix3x3& matrix)
 {
 	for (size_t row = 1; row < SIZE; row++)
 	{
@@ -92,7 +92,7 @@ void TransposeMatrix(Matrix3x3 &matrix)
 	}
 }
 
-void CalcInverseMatrix(const Matrix3x3 &srcMatrix, Matrix3x3 &inverseMatrix, const double determinant)
+void CalcInverseMatrix(const Matrix3x3& srcMatrix, Matrix3x3& inverseMatrix, const double determinant)
 {
 	int sign = 1;
 	for (size_t row = 0; row < SIZE; row++)
@@ -108,7 +108,7 @@ void CalcInverseMatrix(const Matrix3x3 &srcMatrix, Matrix3x3 &inverseMatrix, con
 	TransposeMatrix(inverseMatrix);
 }
 
-void PrintMatrix(const Matrix3x3 &matrix)
+void PrintMatrix(const Matrix3x3& matrix)
 {
 	std::cout << std::fixed << std::setprecision(3);
 	for (size_t row = 0; row < SIZE; row++)
@@ -119,7 +119,7 @@ void PrintMatrix(const Matrix3x3 &matrix)
 			{
 				std::cout << 0.0 << '\t';
 			}
-			else 
+			else
 			{
 				std::cout << matrix.items[row][col] << '\t';
 			}
@@ -128,7 +128,7 @@ void PrintMatrix(const Matrix3x3 &matrix)
 	}
 }
 
-bool Invert(const Matrix3x3 &srcMatrix, Matrix3x3 &dstMatrix)
+bool Invert(const Matrix3x3& srcMatrix, Matrix3x3& dstMatrix)
 {
 	const double det = Determinant(srcMatrix);
 
@@ -141,7 +141,7 @@ bool Invert(const Matrix3x3 &srcMatrix, Matrix3x3 &dstMatrix)
 	return true;
 }
 
-bool Invert(std::istream &input)
+bool Invert(std::istream& input)
 {
 	Matrix3x3 matrix;
 	bool ok = ReadMatrix(input, matrix);
@@ -158,7 +158,7 @@ bool Invert(std::istream &input)
 		std::cout << "Unable to invert matrix\n";
 		return true;
 	}
-	
+
 	PrintMatrix(invertedMatrix);
 	return true;
 }

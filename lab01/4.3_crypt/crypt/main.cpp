@@ -1,15 +1,15 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <string>
 
-const size_t MOVE_SCHEMA[8] = {2, 3, 4, 6, 7, 0, 1, 5};
+const size_t MOVE_SCHEMA[8] = { 2, 3, 4, 6, 7, 0, 1, 5 };
 
-void MoveBits(char &c)
+void MoveBits(char& c)
 {
 	char result = 0;
-	for (size_t index = 0; index < CHAR_BIT; index++) 
+	for (size_t index = 0; index < CHAR_BIT; index++)
 	{
-		if (c & (1u << index)) 
+		if (c & (1u << index))
 		{
 			result |= 1 << MOVE_SCHEMA[index];
 		}
@@ -17,12 +17,12 @@ void MoveBits(char &c)
 	c = result;
 }
 
-void UndoMoveBits(char &c)
+void UndoMoveBits(char& c)
 {
 	char result = 0;
 	for (size_t index = 0; index < CHAR_BIT; index++)
 	{
-		if (c & (1 << MOVE_SCHEMA[index]))
+		if (c & (1u << MOVE_SCHEMA[index]))
 		{
 			result |= 1 << index;
 		}
@@ -30,7 +30,7 @@ void UndoMoveBits(char &c)
 	c = result;
 }
 
-void Crypt(std::istream &input, std::ostream &output, char key)
+void Crypt(std::istream& input, std::ostream& output, char key)
 {
 	char c;
 	while (input >> c)
@@ -41,7 +41,7 @@ void Crypt(std::istream &input, std::ostream &output, char key)
 	}
 }
 
-void Decrypt(std::istream &input, std::ostream &output, char key)
+void Decrypt(std::istream& input, std::ostream& output, char key)
 {
 	char c;
 	while (input >> c)
@@ -52,9 +52,9 @@ void Decrypt(std::istream &input, std::ostream &output, char key)
 	}
 }
 
-long StrToLong(char *str, bool &wasErr)
+long StrToLong(char* str, bool& wasErr)
 {
-	char *pEnd = NULL;
+	char* pEnd = NULL;
 	long value = strtol(str, &pEnd, 10);
 	wasErr = ((*str == '\0') || (*pEnd != '\0'));
 	return value;

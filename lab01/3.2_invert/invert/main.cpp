@@ -52,7 +52,7 @@ double CalcMinor(const Matrix3x3& matrix, const size_t row, const size_t col)
 
 			const size_t colMinor = (colIndex > col) ? (colIndex - 1) : colIndex;
 
-			const double value = matrix.items[rowIndex][colIndex];
+			const double& value = matrix.items[rowIndex][colIndex];
 			minorMatrix.items[rowMinor][colMinor] = value;
 		}
 	}

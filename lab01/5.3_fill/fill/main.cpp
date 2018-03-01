@@ -1,17 +1,17 @@
-﻿#include <iostream>
-#include <fstream>
-#include <string>
+﻿#include <fstream>
+#include <iostream>
 #include <queue>
+#include <string>
 
 const size_t SIZE = 100;
 const size_t TOTAL_SIZE = SIZE + 2; // size with borders
 
 enum class CellType : char
 {
-	EMPTY    = ' ',
-	FILLED   = '.',
-	SOURCE   = 'O',
-	BORDER   = '#',
+	EMPTY = ' ',
+	FILLED = '.',
+	SOURCE = 'O',
+	BORDER = '#',
 	IN_QUEUE = '*',
 };
 
@@ -25,7 +25,7 @@ bool IsBorderCell(const size_t row, const size_t col)
 	return row == 0 || row == TOTAL_SIZE - 1 || col == 0 || col == TOTAL_SIZE - 1;
 }
 
-void InitField(Field &field)
+void InitField(Field& field)
 {
 	for (size_t row = 0; row < TOTAL_SIZE; row++)
 	{
@@ -36,7 +36,7 @@ void InitField(Field &field)
 	}
 }
 
-void ReadField(std::istream &input, Field &field)
+void ReadField(std::istream& input, Field& field)
 {
 	size_t row = 0;
 	while (input && row < SIZE)
@@ -57,7 +57,7 @@ struct Position
 	size_t col;
 };
 
-void InitQueue(std::queue<Position> &q, const Field &field)
+void InitQueue(std::queue<Position>& q, const Field& field)
 {
 	for (size_t row = 0; row < TOTAL_SIZE; row++)
 	{
@@ -65,13 +65,13 @@ void InitQueue(std::queue<Position> &q, const Field &field)
 		{
 			if (field.cells[row][col] == CellType::SOURCE)
 			{
-				q.push(Position{row, col});
+				q.push(Position{ row, col });
 			}
 		}
 	}
 }
 
-Position GetFieldSize(const Field &field)
+Position GetFieldSize(const Field& field)
 {
 	size_t maxRow = 0;
 	size_t maxCol = 0;
@@ -87,10 +87,10 @@ Position GetFieldSize(const Field &field)
 		}
 	}
 
-	return Position{maxRow, maxCol};
+	return Position{ maxRow, maxCol };
 }
 
-void PrintField(std::ostream &output, const Field &field)
+void PrintField(std::ostream& output, const Field& field)
 {
 	auto size = GetFieldSize(field);
 
@@ -104,7 +104,36 @@ void PrintField(std::ostream &output, const Field &field)
 	}
 }
 
-void Fill(Field &field)
+struct Shifts // struct Position is using size_t
+{
+	int row;
+	int col;
+};
+
+const size_t DIR_COUNT = 4;
+const Shifts SHIFTS[DIR_COUNT] = {
+	{ 1, 0 },
+	{ 0, 1 },
+	{ -1, 0 },
+	{ 0, -1 },
+};
+
+void FillNeighbours(Field& field, std::queue<Position>& q, const Position& pos)
+{
+	for (size_t dir = 0; dir < DIR_COUNT; dir++)
+	{
+		Position newPos = pos;
+		newPos.row += SHIFTS[dir].row;
+		newPos.col += SHIFTS[dir].col;
+		if (field.cells[newPos.row][newPos.col] == CellType::EMPTY)
+		{
+			q.push(newPos);
+			field.cells[newPos.row][newPos.col] = CellType::IN_QUEUE;
+		}
+	}
+}
+
+void Fill(Field& field)
 {
 	std::queue<Position> q;
 	InitQueue(q, field);
@@ -114,30 +143,18 @@ void Fill(Field &field)
 		Position pos = q.front();
 		q.pop();
 
-		if (field.cells[pos.row][pos.col] == CellType::IN_QUEUE)
+		CellType& currentCell = field.cells[pos.row][pos.col];
+
+		if (currentCell == CellType::IN_QUEUE)
 		{
-			field.cells[pos.row][pos.col] = CellType::FILLED;
+			currentCell = CellType::FILLED;
 		}
 
-		const size_t dirCount = 4;
-		const int dRow[dirCount] = { 1, 0, -1, 0 };
-		const int dCol[dirCount] = { 0, 1, 0, -1 };
-
-		for (size_t dir = 0; dir < dirCount; dir++)
-		{
-			Position newPos = pos;
-			newPos.row += dRow[dir];
-			newPos.col += dCol[dir];
-			if (field.cells[newPos.row][newPos.col] == CellType::EMPTY)
-			{
-				q.push(newPos);
-				field.cells[newPos.row][newPos.col] = CellType::IN_QUEUE;
-			}
-		}
+		FillNeighbours(field, q, pos);
 	}
 }
 
-void Fill(std::istream &input, std::ostream &output) 
+void Fill(std::istream& input, std::ostream& output)
 {
 	Field field;
 	InitField(field);

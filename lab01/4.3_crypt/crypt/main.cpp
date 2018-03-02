@@ -109,11 +109,11 @@ int main(int argc, char* argv[])
 
 	if (command == COMMAND_CRYPT)
 	{
-		Crypt(inputFile, outputFile, (char)key);
+		Crypt(inputFile, outputFile, static_cast<char>(key));
 	}
 	else if (command == COMMAND_DECRYPT)
 	{
-		Decrypt(inputFile, outputFile, (char)key);
+		Decrypt(inputFile, outputFile, static_cast<char>(key));
 	}
 	else
 	{

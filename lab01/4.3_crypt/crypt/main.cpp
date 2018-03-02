@@ -60,9 +60,13 @@ long StrToLong(char* str, bool& wasErr)
 	return value;
 }
 
+const std::string COMMAND_CRYPT = "crypt";
+const std::string COMMAND_DECRYPT = "decrypt";
+
 void ShowUsage()
 {
-	std::cout << "Usage: crypt.exe crypt|decrypt <input file> <output file> <key=0..255>\n";
+	std::cout << "Usage: crypt.exe " << COMMAND_CRYPT << '|' << COMMAND_DECRYPT
+			  << "<input file> <output file> <key=0..255>\n";
 }
 
 const int ARGS_COUNT = 4;
@@ -100,13 +104,14 @@ int main(int argc, char* argv[])
 	{
 		std::cout << "Wrong key: " << argv[4] << '\n';
 		ShowUsage();
+		return 1;
 	}
 
-	if (command == "crypt")
+	if (command == COMMAND_CRYPT)
 	{
 		Crypt(inputFile, outputFile, (char)key);
 	}
-	else if (command == "decrypt")
+	else if (command == COMMAND_DECRYPT)
 	{
 		Decrypt(inputFile, outputFile, (char)key);
 	}

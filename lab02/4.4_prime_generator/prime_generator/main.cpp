@@ -40,7 +40,7 @@ std::set<int> GeneratePrimeNumbersSet(size_t upperBound)
 	{
 		if (sieve[index])
 		{
-			primes.insert(primes.end(), index);
+			primes.insert(primes.end(), static_cast<int>(index));
 		}
 	}
 

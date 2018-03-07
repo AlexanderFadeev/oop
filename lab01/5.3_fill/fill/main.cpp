@@ -165,9 +165,30 @@ void Fill(std::istream& input, std::ostream& output)
 	PrintField(output, field);
 }
 
+bool Fill(const std::string& inputFileName, const std::string& outputFileName)
+{
+	std::ifstream inputFile(inputFileName);
+	if (!inputFile.is_open())
+	{
+		std::cerr << "Failed to open input file: " << inputFileName << '\n';
+		return false;
+	}
+
+	std::ofstream outputFile(outputFileName);
+	if (!outputFile.is_open())
+	{
+		std::cerr << "Failed to open output file: " << outputFileName << '\n';
+		return false;
+	}
+
+	Fill(inputFile, outputFile);
+
+	return static_cast<bool>(outputFile);
+}
+
 void ShowUsage()
 {
-	std::cout << "Usage: fill.exe <input file> <output file>\n";
+	std::cerr << "Usage: fill.exe <input file> <output file>\n";
 }
 
 const int ARGS_COUNT = 2;
@@ -181,23 +202,15 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	std::ifstream inputFile(argv[1]);
-	if (!inputFile.is_open())
+	std::string inputFileName(argv[1]);
+	std::string outputFileName(argv[2]);
+
+	bool ok = Fill(inputFileName, outputFileName);
+	if (!ok)
 	{
-		std::cout << "Failed to open input file: " << argv[1] << '\n';
 		ShowUsage();
 		return 1;
 	}
-
-	std::ofstream outputFile(argv[2]);
-	if (!outputFile.is_open())
-	{
-		std::cout << "Failed to open output file: " << argv[2] << '\n';
-		ShowUsage();
-		return 1;
-	}
-
-	Fill(inputFile, outputFile);
 
 	return 0;
 }

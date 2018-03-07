@@ -33,7 +33,7 @@ void UndoMoveBits(char& c)
 void Crypt(std::istream& input, std::ostream& output, char key)
 {
 	char c;
-	while (input >> c)
+	while (input.get(c))
 	{
 		c ^= key;
 		MoveBits(c);
@@ -44,7 +44,7 @@ void Crypt(std::istream& input, std::ostream& output, char key)
 void Decrypt(std::istream& input, std::ostream& output, char key)
 {
 	char c;
-	while (input >> c)
+	while (input.get(c))
 	{
 		UndoMoveBits(c);
 		c ^= key;
@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	std::ifstream inputFile(argv[2]);
+	std::ifstream inputFile(argv[2], std::ios::binary);
 	if (!inputFile.is_open())
 	{
 		std::cout << "Failed to open input file: " << argv[2] << '\n';
@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	std::ofstream outputFile(argv[3]);
+	std::ofstream outputFile(argv[3], std::ios::binary);
 	if (!outputFile.is_open())
 	{
 		std::cout << "Failed to open output file: " << argv[3] << '\n';

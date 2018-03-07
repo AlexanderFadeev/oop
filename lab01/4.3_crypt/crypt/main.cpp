@@ -52,6 +52,42 @@ void Decrypt(std::istream& input, std::ostream& output, char key)
 	}
 }
 
+const std::string COMMAND_CRYPT = "crypt";
+const std::string COMMAND_DECRYPT = "decrypt";
+
+bool Run(const std::string& command, const std::string& inputFileName, const std::string& outputFileName, char key)
+{
+	std::ifstream inputFile(inputFileName, std::ios::binary);
+	if (!inputFile.is_open())
+	{
+		std::cerr << "Failed to open input file: " << inputFileName << '\n';
+		return false;
+	}
+
+	std::ofstream outputFile(outputFileName, std::ios::binary);
+	if (!outputFile.is_open())
+	{
+		std::cerr << "Failed to open output file: " << outputFileName << '\n';
+		return false;
+	}
+
+	if (command == COMMAND_CRYPT)
+	{
+		Crypt(inputFile, outputFile, key);
+	}
+	else if (command == COMMAND_DECRYPT)
+	{
+		Decrypt(inputFile, outputFile, key);
+	}
+	else
+	{
+		std::cerr << "Wrong command\n";
+		return false;
+	}
+
+	return static_cast<bool>(outputFile);
+}
+
 long StrToLong(char* str, bool& wasErr)
 {
 	char* pEnd = NULL;
@@ -59,9 +95,6 @@ long StrToLong(char* str, bool& wasErr)
 	wasErr = ((*str == '\0') || (*pEnd != '\0'));
 	return value;
 }
-
-const std::string COMMAND_CRYPT = "crypt";
-const std::string COMMAND_DECRYPT = "decrypt";
 
 void ShowUsage()
 {
@@ -80,23 +113,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	std::ifstream inputFile(argv[2], std::ios::binary);
-	if (!inputFile.is_open())
-	{
-		std::cout << "Failed to open input file: " << argv[2] << '\n';
-		ShowUsage();
-		return 1;
-	}
-
-	std::ofstream outputFile(argv[3], std::ios::binary);
-	if (!outputFile.is_open())
-	{
-		std::cout << "Failed to open output file: " << argv[3] << '\n';
-		ShowUsage();
-		return 1;
-	}
-
 	std::string command = argv[1];
+	std::string inputFileName = argv[2];
+	std::string outputFileName = argv[3];
 
 	bool wasErr = false;
 	long key = StrToLong(argv[4], wasErr);
@@ -107,17 +126,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	if (command == COMMAND_CRYPT)
+	bool ok = Run(command, inputFileName, outputFileName, static_cast<char>(key));
+	if (!ok)
 	{
-		Crypt(inputFile, outputFile, static_cast<char>(key));
-	}
-	else if (command == COMMAND_DECRYPT)
-	{
-		Decrypt(inputFile, outputFile, static_cast<char>(key));
-	}
-	else
-	{
-		std::cout << "Wrong command\n";
 		ShowUsage();
 		return 1;
 	}

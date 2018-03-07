@@ -59,9 +59,7 @@ void GeneratePrimeNumbers(std::ostream& output, int upperBound)
 {
 	auto primes = GeneratePrimeNumbersSet(upperBound);
 
-	output << primes.size();
-
-	//std::for_each(primes.begin(), primes.end(), Printer<int>(output, " "));
+	std::for_each(primes.begin(), primes.end(), Printer<int>(output, " "));
 	output << '\n';
 }
 

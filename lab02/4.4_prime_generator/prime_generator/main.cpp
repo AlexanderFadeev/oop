@@ -6,6 +6,11 @@
 
 std::vector<bool> GenerateErotosthenesSieve(size_t upperBound)
 {
+	if (upperBound < 2)
+	{
+		return std::vector<bool>(upperBound + 1, false);
+	}
+
 	std::vector<bool> sieve(upperBound + 1, true);
 	sieve[0] = false;
 	sieve[1] = false;
@@ -28,11 +33,6 @@ std::vector<bool> GenerateErotosthenesSieve(size_t upperBound)
 
 std::set<int> GeneratePrimeNumbersSet(size_t upperBound)
 {
-	if (upperBound < 2)
-	{
-		return std::set<int>();
-	}
-
 	std::vector<bool> sieve = GenerateErotosthenesSieve(upperBound);
 
 	std::set<int> primes;
@@ -55,12 +55,16 @@ auto Printer(std::ostream& output, const std::string& separator)
 	};
 }
 
-void GeneratePrimeNumbers(std::ostream& output, int upperBound)
+bool GeneratePrimeNumbers(std::ostream& output, int upperBound)
 {
-	auto primes = GeneratePrimeNumbersSet(upperBound);
+	if (upperBound >= 0)
+	{
+		auto primes = GeneratePrimeNumbersSet(upperBound);
+		std::for_each(primes.begin(), primes.end(), Printer<int>(output, " "));
+	}
 
-	std::for_each(primes.begin(), primes.end(), Printer<int>(output, " "));
-	output << '\n';
+	output << std::endl;
+	return static_cast<bool>(output);
 }
 
 long StrToLong(char* str, bool& wasErr)
@@ -98,7 +102,6 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	GeneratePrimeNumbers(std::cout, upperBound);
-
-	return 0;
+	bool ok = GeneratePrimeNumbers(std::cout, upperBound);
+	return ok ? 0 : 1;
 }

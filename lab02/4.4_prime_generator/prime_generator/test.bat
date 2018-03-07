@@ -18,7 +18,7 @@ REM Upper bound is a prime number
 CALL :run_test 4 17
 IF ERRORLEVEL 1 GOTO err
 
-REM Upper bound larger than 1E+8
+REM Upper bound is larger than 1E+8
 CALL :run_test_fail 100000001
 IF ERRORLEVEL 1 GOTO err
 

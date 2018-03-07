@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <fstream>
+#include <functional>
 #include <iostream>
 #include <iterator>
 #include <string>
@@ -32,7 +33,7 @@ void UndoMoveBits(char& c)
 	c = result;
 }
 
-auto CryptFn(char key)
+std::function<char(char)> CryptFn(char key)
 {
 	return [&](char c) {
 		c ^= key;
@@ -41,7 +42,7 @@ auto CryptFn(char key)
 	};
 }
 
-auto DecryptFn(char key)
+std::function<char(char)> DecryptFn(char key)
 {
 	return [&](char c) {
 		UndoMoveBits(c);
@@ -50,24 +51,14 @@ auto DecryptFn(char key)
 	};
 }
 
-void Crypt(std::istream& input, std::ostream& output, char key)
+void Crypt(std::istream& input, std::ostream& output, std::function<char(char)> fn)
 {
 	std::istreambuf_iterator<char> begin(input);
 	std::ostreambuf_iterator<char> destinataion(output);
-	std::transform(begin, {}, destinataion, CryptFn(key));
+	std::transform(begin, {}, destinataion, fn);
 }
 
-void Decrypt(std::istream& input, std::ostream& output, char key)
-{
-	std::istreambuf_iterator<char> begin(input);
-	std::ostreambuf_iterator<char> destinataion(output);
-	std::transform(begin, {}, destinataion, DecryptFn(key));
-}
-
-const std::string COMMAND_CRYPT = "crypt";
-const std::string COMMAND_DECRYPT = "decrypt";
-
-bool Run(const std::string& command, const std::string& inputFileName, const std::string& outputFileName, char key)
+bool Crypt(const std::string& inputFileName, const std::string& outputFileName, std::function<char(char)> fn)
 {
 	std::ifstream inputFile(inputFileName, std::ios::binary);
 	if (!inputFile.is_open())
@@ -83,20 +74,9 @@ bool Run(const std::string& command, const std::string& inputFileName, const std
 		return false;
 	}
 
-	if (command == COMMAND_CRYPT)
-	{
-		Crypt(inputFile, outputFile, key);
-	}
-	else if (command == COMMAND_DECRYPT)
-	{
-		Decrypt(inputFile, outputFile, key);
-	}
-	else
-	{
-		std::cerr << "Wrong command\n";
-		return false;
-	}
+	Crypt(inputFile, outputFile, fn);
 
+	outputFile.flush();
 	return static_cast<bool>(outputFile);
 }
 
@@ -106,6 +86,19 @@ long StrToLong(char* str, bool& wasErr)
 	long value = strtol(str, &pEnd, 10);
 	wasErr = ((*str == '\0') || (*pEnd != '\0'));
 	return value;
+}
+
+const std::string COMMAND_CRYPT = "crypt";
+const std::string COMMAND_DECRYPT = "decrypt";
+
+bool commandIsWrong(const std::string& command)
+{
+	return command != COMMAND_CRYPT && command != COMMAND_DECRYPT;
+}
+
+std::function<char(char)> TransformationFn(const std::string& command, char key)
+{
+	return (command == COMMAND_CRYPT) ? CryptFn(key) : DecryptFn(key);
 }
 
 void ShowUsage()
@@ -138,12 +131,15 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	bool ok = Run(command, inputFileName, outputFileName, static_cast<char>(key));
-	if (!ok)
+	if (commandIsWrong(command))
 	{
+		std::cerr << "Wrong command " << command << '\n';
 		ShowUsage();
 		return 1;
 	}
 
-	return 0;
+	auto fn = TransformationFn(command, static_cast<char>(key));
+	bool ok = Crypt(inputFileName, outputFileName, fn);
+
+	return ok ? 0 : 1;
 }

@@ -1,5 +1,7 @@
+#include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <string>
 
 const size_t MOVE_SCHEMA[8] = { 2, 3, 4, 6, 7, 0, 1, 5 };
@@ -30,26 +32,36 @@ void UndoMoveBits(char& c)
 	c = result;
 }
 
-void Crypt(std::istream& input, std::ostream& output, char key)
+auto CryptFn(char key)
 {
-	char c;
-	while (input.get(c))
-	{
+	return [&](char c) {
 		c ^= key;
 		MoveBits(c);
-		output << c;
-	}
+		return c;
+	};
+}
+
+auto DecryptFn(char key)
+{
+	return [&](char c) {
+		UndoMoveBits(c);
+		c ^= key;
+		return c;
+	};
+}
+
+void Crypt(std::istream& input, std::ostream& output, char key)
+{
+	std::istreambuf_iterator<char> begin(input);
+	std::ostreambuf_iterator<char> destinataion(output);
+	std::transform(begin, {}, destinataion, CryptFn(key));
 }
 
 void Decrypt(std::istream& input, std::ostream& output, char key)
 {
-	char c;
-	while (input.get(c))
-	{
-		UndoMoveBits(c);
-		c ^= key;
-		output << c;
-	}
+	std::istreambuf_iterator<char> begin(input);
+	std::ostreambuf_iterator<char> destinataion(output);
+	std::transform(begin, {}, destinataion, DecryptFn(key));
 }
 
 const std::string COMMAND_CRYPT = "crypt";

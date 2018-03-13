@@ -35,7 +35,7 @@ void UndoMoveBits(char& c)
 
 std::function<char(char)> CryptFn(char key)
 {
-	return [&](char c) {
+	return [key](char c) {
 		c ^= key;
 		MoveBits(c);
 		return c;
@@ -44,7 +44,7 @@ std::function<char(char)> CryptFn(char key)
 
 std::function<char(char)> DecryptFn(char key)
 {
-	return [&](char c) {
+	return [key](char c) {
 		UndoMoveBits(c);
 		c ^= key;
 		return c;
@@ -91,7 +91,7 @@ long StrToLong(char* str, bool& wasErr)
 const std::string COMMAND_CRYPT = "crypt";
 const std::string COMMAND_DECRYPT = "decrypt";
 
-bool commandIsWrong(const std::string& command)
+bool CommandIsWrong(const std::string& command)
 {
 	return command != COMMAND_CRYPT && command != COMMAND_DECRYPT;
 }
@@ -101,10 +101,19 @@ std::function<char(char)> TransformationFn(const std::string& command, char key)
 	return (command == COMMAND_CRYPT) ? CryptFn(key) : DecryptFn(key);
 }
 
+const int KEY_UPPER_BOUND = 255;
+const int KEY_LOWER_BOUND = 0;
+
+bool KeyIsInBounds(int key)
+{
+	return (KEY_LOWER_BOUND <= key) && (key <= KEY_UPPER_BOUND);
+}
+
 void ShowUsage()
 {
 	std::cout << "Usage: crypt.exe " << COMMAND_CRYPT << '|' << COMMAND_DECRYPT
-			  << "<input file> <output file> <key=0..255>\n";
+			  << "<input file> <output file> <key="
+			  << KEY_LOWER_BOUND << ".." << KEY_UPPER_BOUND << ">\n";
 }
 
 const int ARGS_COUNT = 4;
@@ -124,14 +133,14 @@ int main(int argc, char* argv[])
 
 	bool wasErr = false;
 	long key = StrToLong(argv[4], wasErr);
-	if ((key < 0) || (key > 255) || wasErr)
+	if (wasErr || !KeyIsInBounds(key))
 	{
 		std::cout << "Wrong key: " << argv[4] << '\n';
 		ShowUsage();
 		return 1;
 	}
 
-	if (commandIsWrong(command))
+	if (CommandIsWrong(command))
 	{
 		std::cerr << "Wrong command " << command << '\n';
 		ShowUsage();
@@ -139,7 +148,11 @@ int main(int argc, char* argv[])
 	}
 
 	auto fn = TransformationFn(command, static_cast<char>(key));
-	bool ok = Crypt(inputFileName, outputFileName, fn);
+	if (!Crypt(inputFileName, outputFileName, fn))
+	{
+		ShowUsage();
+		return 1;
+	}
 
-	return ok ? 0 : 1;
+	return 0;
 }

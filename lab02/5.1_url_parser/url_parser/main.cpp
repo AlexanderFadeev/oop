@@ -102,6 +102,17 @@ bool ParseURL(const std::string& url, Protocol& protocol, int& port, std::string
 	}
 }
 
+template <typename T>
+T Read(std::istream& input)
+{
+	T value;
+	if (!(input >> value))
+	{
+		throw std::runtime_error("Read failed");
+	}
+	return value;
+}
+
 void PrintURLInfo(std::ostream& output,
 	const std::string& url, int port, const std::string& host, const std::string& document)
 {
@@ -118,11 +129,7 @@ void PrintURLInfo(std::ostream& output,
 
 void ParseURL(std::istream& input, std::ostream& output)
 {
-	std::string url;
-	if (!(input >> url))
-	{
-		throw std::runtime_error("Read failed");
-	}
+	auto url = Read<std::string>(input);
 
 	Protocol protocol;
 	std::string host;

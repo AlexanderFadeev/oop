@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-std::vector<bool> GenerateErotosthenesSieve(size_t upperBound)
+std::vector<bool> GenerateEratosthenesSieve(size_t upperBound)
 {
 	if (upperBound < 2)
 	{
@@ -33,7 +33,7 @@ std::vector<bool> GenerateErotosthenesSieve(size_t upperBound)
 
 std::set<int> GeneratePrimeNumbersSet(size_t upperBound)
 {
-	std::vector<bool> sieve = GenerateErotosthenesSieve(upperBound);
+	std::vector<bool> sieve = GenerateEratosthenesSieve(upperBound);
 
 	std::set<int> primes;
 	for (size_t index = 0; index <= upperBound; index++)

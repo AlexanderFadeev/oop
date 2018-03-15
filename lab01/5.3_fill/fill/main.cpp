@@ -104,14 +104,14 @@ void PrintField(std::ostream& output, const Field& field)
 	}
 }
 
-struct Shifts // struct Position is using size_t
+struct Offsets // struct Position is using size_t
 {
 	int row;
 	int col;
 };
 
 const size_t DIR_COUNT = 4;
-const Shifts SHIFTS[DIR_COUNT] = {
+const Offsets OFFSETS[DIR_COUNT] = {
 	{ 1, 0 },
 	{ 0, 1 },
 	{ -1, 0 },
@@ -123,8 +123,8 @@ void FillNeighbours(Field& field, std::queue<Position>& q, const Position& pos)
 	for (size_t dir = 0; dir < DIR_COUNT; dir++)
 	{
 		Position newPos = pos;
-		newPos.row += SHIFTS[dir].row;
-		newPos.col += SHIFTS[dir].col;
+		newPos.row += OFFSETS[dir].row;
+		newPos.col += OFFSETS[dir].col;
 		if (field.cells[newPos.row][newPos.col] == CellType::EMPTY)
 		{
 			q.push(newPos);

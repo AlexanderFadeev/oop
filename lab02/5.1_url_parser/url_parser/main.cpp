@@ -22,19 +22,19 @@ bool StringsAreEqualCaseInsensitive(const std::string& a, const std::string& b)
 	return std::equal(a.begin(), a.end(), b.begin(), b.end(), CharsAreEqualCaseInsensitive);
 }
 
-void ParseProtocol(const std::string& str, Protocol& protocol)
+Protocol ParseProtocol(const std::string& str)
 {
 	if (StringsAreEqualCaseInsensitive(str, "http"))
 	{
-		protocol = Protocol::HTTP;
+		return Protocol::HTTP;
 	}
 	else if (StringsAreEqualCaseInsensitive(str, "https"))
 	{
-		protocol = Protocol::HTTPS;
+		return Protocol::HTTPS;
 	}
 	else if (StringsAreEqualCaseInsensitive(str, "ftp"))
 	{
-		protocol = Protocol::FTP;
+		return Protocol::FTP;
 	}
 	else
 	{
@@ -51,21 +51,21 @@ const std::map<Protocol, int> PROTOCOL_TO_PORT = {
 	{ Protocol::FTP, 21 },
 };
 
-void ParsePort(const std::string& str, int& port, Protocol protocol)
+int ParsePort(const std::string& str, Protocol protocol)
 {
 	if (str.empty())
 	{
-		port = PROTOCOL_TO_PORT.at(protocol);
-		return;
+		return PROTOCOL_TO_PORT.at(protocol);
 	}
 
-	port = std::stoi(str);
+	int port = std::stoi(str);
 	if (port < PORT_LOWER_BOUND || port > PORT_UPPER_BOUND)
 	{
 		std::stringstream buf;
 		buf << "Port out of range [" << PORT_LOWER_BOUND << ", " << PORT_UPPER_BOUND << "]";
 		throw std::runtime_error(buf.str());
 	}
+	return port;
 }
 
 void MustParseURL(const std::string& url, Protocol& protocol, int& port, std::string& host, std::string& document)
@@ -77,9 +77,9 @@ void MustParseURL(const std::string& url, Protocol& protocol, int& port, std::st
 		throw std::runtime_error("Match failed");
 	}
 
-	ParseProtocol(urlMatch[1], protocol);
-	ParsePort(urlMatch[3], port, protocol);
+	protocol = ParseProtocol(urlMatch[1]);
 	host = urlMatch[2];
+	port = ParsePort(urlMatch[3], protocol);
 	document = urlMatch[4];
 }
 

@@ -129,7 +129,7 @@
   <ItemGroup>
     <ClCompile Include="..\prime_generator\Prime.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="tests.cpp" />
+    <ClCompile Include="PrimeTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="catch.hpp" />

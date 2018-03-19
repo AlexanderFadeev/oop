@@ -13,11 +13,8 @@ auto Printer(std::ostream& output, const std::string& separator)
 
 bool GeneratePrimeNumbers(std::ostream& output, int upperBound)
 {
-	if (upperBound >= 0)
-	{
-		auto primes = GeneratePrimeNumbersSet(upperBound);
-		std::for_each(primes.begin(), primes.end(), Printer<int>(output, " "));
-	}
+	auto primes = GeneratePrimeNumbersSet(upperBound);
+	std::for_each(primes.begin(), primes.end(), Printer<int>(output, " "));
 
 	output << std::endl;
 	return static_cast<bool>(output);
@@ -32,7 +29,6 @@ long StrToLong(char* str, bool& wasErr)
 }
 
 const int ARGS_COUNT = 1;
-const int MAX_UPPER_BOUND = static_cast<int>(1E+8);
 
 void ShowUsage()
 {

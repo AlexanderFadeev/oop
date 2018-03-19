@@ -3,5 +3,6 @@
 #include <set>
 #include <vector>
 
-std::vector<bool> GenerateEratosthenesSieve(size_t upperBound);
-std::set<int> GeneratePrimeNumbersSet(size_t upperBound);
+const int MAX_UPPER_BOUND = static_cast<int>(1E+8);
+std::vector<bool> GenerateEratosthenesSieve(int upperBound);
+std::set<int> GeneratePrimeNumbersSet(int upperBound);

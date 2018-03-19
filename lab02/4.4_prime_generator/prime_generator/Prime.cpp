@@ -1,7 +1,25 @@
-#include "prime.hpp"
+#include "Prime.hpp"
+#include <sstream>
 
-std::vector<bool> GenerateEratosthenesSieve(size_t upperBound)
+void ThrowIfLargerThanMaxUpperBound(int upperBound)
 {
+	if (upperBound > MAX_UPPER_BOUND)
+	{
+		std::stringstream buf;
+		buf << "Value in bigger than " << MAX_UPPER_BOUND;
+		throw std::invalid_argument(buf.str());
+	}
+}
+
+std::vector<bool> GenerateEratosthenesSieve(int upperBound)
+{
+	ThrowIfLargerThanMaxUpperBound(upperBound);
+
+	if (upperBound < 0)
+	{
+		return std::vector<bool>{};
+	}
+
 	if (upperBound < 2)
 	{
 		return std::vector<bool>(upperBound + 1, false);
@@ -27,12 +45,14 @@ std::vector<bool> GenerateEratosthenesSieve(size_t upperBound)
 	return sieve;
 }
 
-std::set<int> GeneratePrimeNumbersSet(size_t upperBound)
+std::set<int> GeneratePrimeNumbersSet(int upperBound)
 {
+	ThrowIfLargerThanMaxUpperBound(upperBound);
+
 	std::vector<bool> sieve = GenerateEratosthenesSieve(upperBound);
 
 	std::set<int> primes;
-	for (size_t index = 0; index <= upperBound; index++)
+	for (size_t index = 0; index < sieve.size(); index++)
 	{
 		if (sieve[index])
 		{

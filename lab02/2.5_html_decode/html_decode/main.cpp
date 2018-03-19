@@ -35,9 +35,8 @@ bool HtmlDecode(std::istream& input, std::ostream& output)
 {
 	std::string html(std::istreambuf_iterator<char>(input), {});
 
-	output << HtmlDecode(html);
+	output << HtmlDecode(html) << std::endl;
 
-	output.flush();
 	return static_cast<bool>(output);
 }
 

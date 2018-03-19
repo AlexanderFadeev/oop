@@ -147,9 +147,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="prime.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="test.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="prime.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -29,13 +29,8 @@ TEST_CASE("5761455 prime numbers not greater than 100000000", "[primes]")
 
 TEST_CASE("Functions work with negative upper bounds", "[sieve][primes]")
 {
-	std::vector<bool> sieve;
-	REQUIRE_NOTHROW(sieve = GenerateEratosthenesSieve(-42));
-	CHECK(sieve.empty());
-
-	std::set<int> primes;
-	REQUIRE_NOTHROW(primes = GeneratePrimeNumbersSet(-42));
-	CHECK(primes.empty());
+	CHECK_NOTHROW(GenerateEratosthenesSieve(-42).empty());
+	CHECK_NOTHROW(GeneratePrimeNumbersSet(-42).empty());
 }
 
 TEST_CASE("Upper bound can be a prime number", "[primes]")

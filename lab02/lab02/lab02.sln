@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "prime_generator", "..\4.4_prime_generator\prime_generator\prime_generator.vcxproj", "{D50BB464-63F5-44A5-A8C4-E4D02AABAF3D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{15A14BA6-30C5-4D04-BE4F-6F1836297EDF} = {15A14BA6-30C5-4D04-BE4F-6F1836297EDF}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "html_decode", "..\2.5_html_decode\html_decode\html_decode.vcxproj", "{B6D8153E-4990-4579-A55D-A9F5DB4D47E8}"
 EndProject
@@ -12,6 +15,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "url_parser", "..\5.1_url_parser\url_parser\url_parser.vcxproj", "{B34028FE-A152-4D60-AC6A-AF1299D3D0C2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "expand_template", "..\6.1_expand_template\expand_template\expand_template.vcxproj", "{7E1FA189-1F78-4FB9-B23D-6583067B9442}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "prime_generator_test", "..\4.4_prime_generator\test\prime_generator_test.vcxproj", "{15A14BA6-30C5-4D04-BE4F-6F1836297EDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +66,14 @@ Global
 		{7E1FA189-1F78-4FB9-B23D-6583067B9442}.Release|x64.Build.0 = Release|x64
 		{7E1FA189-1F78-4FB9-B23D-6583067B9442}.Release|x86.ActiveCfg = Release|Win32
 		{7E1FA189-1F78-4FB9-B23D-6583067B9442}.Release|x86.Build.0 = Release|Win32
+		{15A14BA6-30C5-4D04-BE4F-6F1836297EDF}.Debug|x64.ActiveCfg = Debug|x64
+		{15A14BA6-30C5-4D04-BE4F-6F1836297EDF}.Debug|x64.Build.0 = Debug|x64
+		{15A14BA6-30C5-4D04-BE4F-6F1836297EDF}.Debug|x86.ActiveCfg = Debug|Win32
+		{15A14BA6-30C5-4D04-BE4F-6F1836297EDF}.Debug|x86.Build.0 = Debug|Win32
+		{15A14BA6-30C5-4D04-BE4F-6F1836297EDF}.Release|x64.ActiveCfg = Release|x64
+		{15A14BA6-30C5-4D04-BE4F-6F1836297EDF}.Release|x64.Build.0 = Release|x64
+		{15A14BA6-30C5-4D04-BE4F-6F1836297EDF}.Release|x86.ActiveCfg = Release|Win32
+		{15A14BA6-30C5-4D04-BE4F-6F1836297EDF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

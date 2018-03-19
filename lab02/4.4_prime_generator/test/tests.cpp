@@ -1,4 +1,4 @@
-#include "../prime_generator/prime.hpp"
+#include "../prime_generator/Prime.hpp"
 #include "catch.hpp"
 
 TEST_CASE("0 and 1 are not prime numbers", "[sieve]")
@@ -29,8 +29,13 @@ TEST_CASE("5761455 prime numbers not greater than 100000000", "[primes]")
 
 TEST_CASE("Functions work with negative upper bounds", "[sieve][primes]")
 {
-	GenerateEratosthenesSieve(-42);
-	GeneratePrimeNumbersSet(-42);
+	std::vector<bool> sieve;
+	REQUIRE_NOTHROW(sieve = GenerateEratosthenesSieve(-42));
+	CHECK(sieve.empty());
+
+	std::set<int> primes;
+	REQUIRE_NOTHROW(primes = GeneratePrimeNumbersSet(-42));
+	CHECK(primes.empty());
 }
 
 TEST_CASE("Upper bound can be a prime number", "[primes]")

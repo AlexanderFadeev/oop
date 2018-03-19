@@ -18,15 +18,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="prime.cpp">
+    <ClCompile Include="Prime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="test.bat" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="prime.hpp">
+    <ClInclude Include="Prime.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -139,6 +139,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\html_decode\HTMLDecode.cpp" />
     <ClCompile Include="HTMLDecodeTests.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

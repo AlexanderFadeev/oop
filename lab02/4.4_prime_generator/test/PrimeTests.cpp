@@ -15,7 +15,7 @@ TEST_CASE("2, 3, 5 and 7 are primes", "[primes]")
 	CHECK(result == primes);
 }
 
-TEST_CASE("25 prime number not greater than 100", "[primes]")
+TEST_CASE("25 prime numbers not greater than 100", "[primes]")
 {
 	auto result = GeneratePrimeNumbersSet(100);
 	CHECK(result.size() == 25);
@@ -27,10 +27,10 @@ TEST_CASE("5761455 prime numbers not greater than 100000000", "[primes]")
 	CHECK(result.size() == 5761455);
 }
 
-TEST_CASE("Functions work with negative upper bounds", "[sieve][primes]")
+TEST_CASE("No prime numbers for negative upper bounds", "[sieve][primes]")
 {
-	CHECK_NOTHROW(GenerateEratosthenesSieve(-42).empty());
-	CHECK_NOTHROW(GeneratePrimeNumbersSet(-42).empty());
+	CHECK(GenerateEratosthenesSieve(-42).empty());
+	CHECK(GeneratePrimeNumbersSet(-42).empty());
 }
 
 TEST_CASE("Upper bound can be a prime number", "[primes]")
@@ -42,8 +42,8 @@ TEST_CASE("Upper bound can be a prime number", "[primes]")
 	CHECK(sieve[17]);
 }
 
-TEST_CASE("Fails on upper bound larger than 100000000", "[sieve][primes]")
+TEST_CASE("Fails on upper bound larger than MAX_UPPER_BOUND", "[sieve][primes]")
 {
-	CHECK_THROWS(GeneratePrimeNumbersSet(100000001));
-	CHECK_THROWS(GenerateEratosthenesSieve(100000001));
+	CHECK_THROWS(GeneratePrimeNumbersSet(MAX_UPPER_BOUND + 1));
+	CHECK_THROWS(GenerateEratosthenesSieve(MAX_UPPER_BOUND + 1));
 }

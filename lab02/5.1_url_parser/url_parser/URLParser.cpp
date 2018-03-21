@@ -91,3 +91,8 @@ bool ParseURL(const std::string& url, Protocol& protocol, int& port, std::string
 		return false;
 	}
 }
+
+bool ParseURL(const std::string& url, URLInfo& info)
+{
+	return ParseURL(url, info.protocol, info.port, info.host, info.document);
+}

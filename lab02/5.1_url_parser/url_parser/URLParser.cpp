@@ -52,13 +52,13 @@ int ParsePort(const std::string& str, Protocol protocol)
 	if (port < PORT_LOWER_BOUND || port > PORT_UPPER_BOUND)
 	{
 		std::stringstream buf;
-		buf << "Port out of range [" << PORT_LOWER_BOUND << ", " << PORT_UPPER_BOUND << "]";
+		buf << "Port is out of range [" << PORT_LOWER_BOUND << ", " << PORT_UPPER_BOUND << "]";
 		throw std::runtime_error(buf.str());
 	}
 	return port;
 }
 
-void MustParseURL(const std::string& url, Protocol& protocol, int& port, std::string& host, std::string& document)
+void TryParseURL(const std::string& url, Protocol& protocol, int& port, std::string& host, std::string& document)
 {
 	std::regex urlRegex(R"(^(http|https|ftp):\/\/([^\s:\/]+)(?::(\d+))?(?:\/(\S*))?$)", std::regex::icase);
 	std::smatch urlMatch;
@@ -77,7 +77,7 @@ bool ParseURL(const std::string& url, Protocol& protocol, int& port, std::string
 {
 	try
 	{
-		MustParseURL(url, protocol, port, host, document);
+		TryParseURL(url, protocol, port, host, document);
 		return true;
 	}
 	catch (const std::exception& e)

@@ -138,11 +138,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\process_vector\ProcessVector.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ProcessVectorTests.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\process_vector\ProcessVector.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

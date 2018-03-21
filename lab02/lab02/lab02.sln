@@ -31,7 +31,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "html_decode_test", "..\2.5_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "url_parser_test", "..\5.1_url_parser\test\url_parser_test.vcxproj", "{2ED9A44B-2D62-4E6A-90B6-822EC2063425}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "process_vector_test", "..\1.7_process_vector\process_vector_test\process_vector_test.vcxproj", "{C3B58F49-A419-4321-84DB-87B49F31BF6C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "process_vector_test", "..\1.7_process_vector\test\process_vector_test.vcxproj", "{C3B58F49-A419-4321-84DB-87B49F31BF6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

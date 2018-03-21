@@ -21,10 +21,8 @@
     <ClCompile Include="ProcessVectorTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\process_vector\ProcessVector.hpp">
+    <ClCompile Include="..\process_vector\ProcessVector.cpp">
       <Filter>Source Files</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
 </Project>

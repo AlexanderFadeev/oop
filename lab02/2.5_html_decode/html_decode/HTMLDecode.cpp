@@ -1,14 +1,15 @@
 #include "HTMLDecode.hpp"
-#include <map>
+#include <array>
 #include <regex>
+#include <string>
 
-const std::map<std::string, std::string> HTML_ESCAPE_CHARACTERS_MAPPING = {
+const std::array<std::pair<std::string, std::string>, 5> HTML_ESCAPE_CHARACTERS_MAPPING = { {
 	{ "\"", "&quot;" },
 	{ "'", "&apos;" },
 	{ "<", "&lt;" },
 	{ ">", "&gt;" },
 	{ "&", "&amp;" },
-};
+} };
 
 std::string ReplaceAll(const std::string& str, const std::string& from, const std::string& to)
 {

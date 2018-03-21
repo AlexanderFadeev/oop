@@ -14,7 +14,7 @@ void PrintURLInfo(std::ostream& output, const std::string& url, const URLInfo& i
 	}
 }
 
-void ParseURL(std::istream& input, std::ostream& output)
+void ParseURLs(std::istream& input, std::ostream& output)
 {
 	std::string url;
 	while (std::getline(input, url))
@@ -39,7 +39,7 @@ int main()
 {
 	try
 	{
-		ParseURL(std::cin, std::cout);
+		ParseURLs(std::cin, std::cout);
 	}
 	catch (const std::exception& e)
 	{

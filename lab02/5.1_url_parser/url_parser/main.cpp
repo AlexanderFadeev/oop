@@ -16,10 +16,9 @@ void PrintURLInfo(std::ostream& output, const std::string& url, const URLInfo& i
 
 void ParseURL(std::istream& input, std::ostream& output)
 {
-	while (true)
+	std::string url;
+	while (std::getline(input, url))
 	{
-		std::string url;
-		std::getline(input, url);
 		if (url.empty())
 		{
 			break;
@@ -28,7 +27,8 @@ void ParseURL(std::istream& input, std::ostream& output)
 		URLInfo info;
 		if (!ParseURL(url, info))
 		{
-			throw std::runtime_error("URL parsing failed");
+			output << "URL parsing failed" << std::endl;
+			continue;
 		}
 
 		PrintURLInfo(output, url, info);

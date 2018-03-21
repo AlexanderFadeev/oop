@@ -1,17 +1,6 @@
 #include "URLParser.hpp"
 #include <iostream>
 
-template <typename T>
-T Read(std::istream& input)
-{
-	T value;
-	if (!(input >> value))
-	{
-		throw std::runtime_error("Read failed");
-	}
-	return value;
-}
-
 void PrintURLInfo(std::ostream& output, const std::string& url, const URLInfo& info)
 {
 	output << url << '\n'
@@ -27,15 +16,23 @@ void PrintURLInfo(std::ostream& output, const std::string& url, const URLInfo& i
 
 void ParseURL(std::istream& input, std::ostream& output)
 {
-	auto url = Read<std::string>(input);
-
-	URLInfo info;
-	if (!ParseURL(url, info))
+	while (true)
 	{
-		throw std::runtime_error("URL parsing failed");
-	}
+		std::string url;
+		std::getline(input, url);
+		if (url.empty())
+		{
+			break;
+		}
 
-	PrintURLInfo(output, url, info);
+		URLInfo info;
+		if (!ParseURL(url, info))
+		{
+			throw std::runtime_error("URL parsing failed");
+		}
+
+		PrintURLInfo(output, url, info);
+	}
 }
 
 int main()

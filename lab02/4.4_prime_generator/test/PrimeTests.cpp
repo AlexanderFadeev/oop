@@ -21,7 +21,7 @@ TEST_CASE("25 prime numbers not greater than 100", "[primes]")
 	CHECK(result.size() == 25);
 }
 
-TEST_CASE("5761455 prime numbers not greater than 100000000", "[primes]")
+TEST_CASE("5761455 prime numbers not greater than 100000000", "[primes][benchmark]")
 {
 	auto result = GeneratePrimeNumbersSet(100000000);
 	CHECK(result.size() == 5761455);

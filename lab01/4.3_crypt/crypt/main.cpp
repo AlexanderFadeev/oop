@@ -33,7 +33,7 @@ void UndoMoveBits(char& c)
 	c = result;
 }
 
-std::function<char(char)> CryptFn(char key)
+std::function<char(char)> GetCryptFn(char key)
 {
 	return [key](char c) {
 		c ^= key;
@@ -42,7 +42,7 @@ std::function<char(char)> CryptFn(char key)
 	};
 }
 
-std::function<char(char)> DecryptFn(char key)
+std::function<char(char)> GetDecryptFn(char key)
 {
 	return [key](char c) {
 		UndoMoveBits(c);
@@ -96,9 +96,9 @@ bool CommandIsWrong(const std::string& command)
 	return command != COMMAND_CRYPT && command != COMMAND_DECRYPT;
 }
 
-std::function<char(char)> TransformationFn(const std::string& command, char key)
+std::function<char(char)> GetTransformationFn(const std::string& command, char key)
 {
-	return (command == COMMAND_CRYPT) ? CryptFn(key) : DecryptFn(key);
+	return (command == COMMAND_CRYPT) ? GetCryptFn(key) : GetDecryptFn(key);
 }
 
 const int KEY_UPPER_BOUND = 255;
@@ -147,7 +147,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	auto fn = TransformationFn(command, static_cast<char>(key));
+	auto fn = GetTransformationFn(command, static_cast<char>(key));
 	if (!Crypt(inputFileName, outputFileName, fn))
 	{
 		ShowUsage();

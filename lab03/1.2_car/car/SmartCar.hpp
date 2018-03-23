@@ -22,6 +22,7 @@ private:
 	std::istream& m_input;
 	std::ostream& m_output;
 
+	bool GetCommandLine(std::string& commandLine);
 	void HandleCommand(const std::string& command);
 	void HandleCommand(Command command, std::optional<int> param = {});
 	Command ParseCommand(const std::string& command);

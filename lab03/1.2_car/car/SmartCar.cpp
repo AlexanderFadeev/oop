@@ -7,11 +7,22 @@ CSmartCar::CSmartCar(std::istream& input, std::ostream& output)
 {
 }
 
+bool CSmartCar::GetCommandLine(std::string& commandLine)
+{
+	m_output << "> ";
+	if (!std::getline(m_input, commandLine))
+	{
+		return false;
+	}
+
+	return !commandLine.empty();
+}
+
 void CSmartCar::HandleCommands()
 {
 	std::string commandLine;
 
-	while (m_output << "> " && std::getline(m_input, commandLine) && !commandLine.empty())
+	while (GetCommandLine(commandLine))
 	{
 		try
 		{

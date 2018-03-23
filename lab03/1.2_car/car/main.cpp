@@ -42,12 +42,35 @@ void RunCommand(std::ostream& output, CCar& car, Command command, int parameter)
 	switch (command)
 	{
 	case Command::SetGear:
+		if (!car.SetGear(parameter))
+		{
+			output << "Failed to set gear to " << parameter << std::endl;
+		}
 		break;
 	case Command::SetSpeed:
+		if (!car.SetSpeed(parameter))
+		{
+			output << "Failed to set speed to " << parameter << std::endl;
+		}
 		break;
 	default:
 		throw std::logic_error("Unknown command with parameter");
 	}
+}
+
+const std::map<CCar::MovingDirection, std::string> MOVING_DIRECTION_TO_STRING{
+	{ CCar::MovingDirection::Forwards, "Forwards" },
+	{ CCar::MovingDirection::Stopped, "Stopped" },
+	{ CCar::MovingDirection::Backwards, "Backwards" },
+};
+
+void Info(std::ostream& output, const CCar& car)
+{
+	auto state = car.GetState();
+	output << "Engine: " << (state.isTurnedOn ? "ON" : "OFF") << std::endl
+		   << "Gear: " << state.gear << std::endl
+		   << "Moving direction: " << MOVING_DIRECTION_TO_STRING.at(state.movingDirection) << std::endl
+		   << "Speed: " << state.speed;
 }
 
 void RunCommand(std::ostream& output, CCar& car, Command command)
@@ -55,10 +78,19 @@ void RunCommand(std::ostream& output, CCar& car, Command command)
 	switch (command)
 	{
 	case Command::Info:
+		Info(output, car);
 		break;
 	case Command::EngineOn:
+		if (!car.TurnOnEngine())
+		{
+			output << "Failed to turn the engine on" << std::endl;
+		}
 		break;
 	case Command::EngineOff:
+		if (!car.TurnOffEngine())
+		{
+			output << "Failed to turn the engine off" << std::endl;
+		}
 		break;
 	default:
 		throw std::logic_error("Unknown command without parameter");
@@ -73,6 +105,7 @@ void HandleCommands(std::istream& input, std::ostream& output, CCar& car)
 		auto command = ParseCommand(commandStr);
 		if (command == Command::Unknown)
 		{
+			output << "Unknown command: " << commandStr << std::endl;
 			continue;
 		}
 
@@ -85,6 +118,7 @@ void HandleCommands(std::istream& input, std::ostream& output, CCar& car)
 		int param;
 		if (!(input >> param))
 		{
+			output << "Failed to read parameter" << std::endl;
 			continue;
 		}
 

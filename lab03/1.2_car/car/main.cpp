@@ -37,7 +37,7 @@ bool CommandNeedsParameter(Command command)
 	return command == Command::SetGear || command == Command::SetSpeed;
 }
 
-void RunCommand(std::ostream& output, Car& car, Command command, int parameter)
+void RunCommand(std::ostream& output, CCar& car, Command command, int parameter)
 {
 	switch (command)
 	{
@@ -50,7 +50,7 @@ void RunCommand(std::ostream& output, Car& car, Command command, int parameter)
 	}
 }
 
-void RunCommand(std::ostream& output, Car& car, Command command)
+void RunCommand(std::ostream& output, CCar& car, Command command)
 {
 	switch (command)
 	{
@@ -65,7 +65,7 @@ void RunCommand(std::ostream& output, Car& car, Command command)
 	}
 }
 
-void HandleCommands(std::istream& input, std::ostream& output, Car& car)
+void HandleCommands(std::istream& input, std::ostream& output, CCar& car)
 {
 	std::string commandStr;
 	while (input >> commandStr)
@@ -96,7 +96,7 @@ int main()
 {
 	try
 	{
-		Car car;
+		CCar car;
 		HandleCommands(std::cin, std::cout, car);
 		return 0;
 	}

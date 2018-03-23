@@ -8,7 +8,7 @@ CCar::State CCar::GetState() const
 	return {
 		m_isTurnedOn,
 		m_gear,
-		m_speed
+		std::abs(m_speed),
 	};
 }
 
@@ -96,7 +96,7 @@ bool CCar::SetGear(int gear)
 
 int CCar::GetSpeed() const
 {
-	return m_speed;
+	return std::abs(m_speed);
 }
 
 bool CCar::SetSpeedImpl(int speed)

@@ -191,6 +191,11 @@ SCENARIO("Car speed", "[car][speed][gears]")
 								CHECK_FALSE(car.SetSpeed(49));
 								CHECK(car.SetSpeed(150));
 								CHECK_FALSE(car.SetSpeed(151));
+
+								AND_THEN("Sixth gear doesn't exist")
+								{
+									REQUIRE_FALSE(car.SetGear(6));
+								}
 							}
 						}
 					}
@@ -249,6 +254,12 @@ SCENARIO("Car reverse gear", "[car][reverse][gear][speed]")
 					REQUIRE(car.SetSpeed(0));
 					REQUIRE(car.SetGear(1));
 				}
+			}
+
+			THEN("Can't change speed further")
+			{
+				car.SetSpeed(20);
+				REQUIRE_FALSE(car.SetGear(-2));
 			}
 		}
 	}

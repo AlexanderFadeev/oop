@@ -20,6 +20,7 @@ private:
 	int m_speed = 0;
 
 	bool SpeedIsInRangeOfGear(int speed, int gear) const;
+	bool SetSpeedImpl(int speed);
 };
 
 struct CCar::State

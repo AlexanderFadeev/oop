@@ -222,14 +222,14 @@ SCENARIO("Car reverse gear", "[car][reverse][gear][speed]")
 			THEN("Can have speed in range 0 - 20")
 			{
 				CHECK(car.SetSpeed(0));
-				CHECK_FALSE(car.SetSpeed(1));
-				CHECK(car.SetSpeed(-20));
-				CHECK_FALSE(car.SetSpeed(-21));
+				CHECK_FALSE(car.SetSpeed(-1));
+				CHECK(car.SetSpeed(20));
+				CHECK_FALSE(car.SetSpeed(21));
 			}
 
 			AND_WHEN("Has speed")
 			{
-				REQUIRE(car.SetSpeed(-10));
+				REQUIRE(car.SetSpeed(10));
 
 				THEN("Gear can be changed to neutral")
 				{

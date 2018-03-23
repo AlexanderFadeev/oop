@@ -99,7 +99,7 @@ int CCar::GetSpeed() const
 	return m_speed;
 }
 
-bool CCar::SetSpeed(int speed)
+bool CCar::SetSpeedImpl(int speed)
 {
 	if (!m_isTurnedOn && speed != 0)
 	{
@@ -118,4 +118,14 @@ bool CCar::SetSpeed(int speed)
 
 	m_speed = speed;
 	return true;
+}
+
+bool CCar::SetSpeed(int speed)
+{
+	if (m_gear < 0 || m_speed < 0)
+	{
+		return SetSpeedImpl(-speed);
+	}
+
+	return SetSpeedImpl(speed);
 }

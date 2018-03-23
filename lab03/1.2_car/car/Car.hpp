@@ -3,6 +3,7 @@
 class CCar
 {
 public:
+	enum class MovingDirection;
 	struct State;
 
 	State GetState() const;
@@ -13,6 +14,7 @@ public:
 	bool SetGear(int gear);
 	int GetSpeed() const;
 	bool SetSpeed(int speed);
+	MovingDirection GetMovingDirection() const;
 
 private:
 	bool m_isTurnedOn = false;
@@ -23,9 +25,17 @@ private:
 	bool SetSpeedImpl(int speed);
 };
 
+enum class CCar::MovingDirection
+{
+	Forwards,
+	Stopped,
+	Backwards,
+};
+
 struct CCar::State
 {
 	bool isTurnedOn;
 	int gear;
 	int speed;
+	MovingDirection movingDirection;
 };

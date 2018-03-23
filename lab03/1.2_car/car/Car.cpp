@@ -6,9 +6,10 @@
 CCar::State CCar::GetState() const
 {
 	return {
-		m_isTurnedOn,
-		m_gear,
-		std::abs(m_speed),
+		IsTurnedOn(),
+		GetGear(),
+		GetSpeed(),
+		GetMovingDirection(),
 	};
 }
 
@@ -128,4 +129,19 @@ bool CCar::SetSpeed(int speed)
 	}
 
 	return SetSpeedImpl(speed);
+}
+
+CCar::MovingDirection CCar::GetMovingDirection() const
+{
+	if (m_speed > 0)
+	{
+		return MovingDirection::Forwards;
+	}
+
+	if (m_speed < 0)
+	{
+		return MovingDirection::Backwards;
+	}
+
+	return MovingDirection::Stopped;
 }

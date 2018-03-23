@@ -98,7 +98,9 @@ SCENARIO("Car speed", "[car][speed][gears]")
 			THEN("Is standing still")
 			{
 				REQUIRE(car.GetSpeed() == 0);
+				REQUIRE(car.GetMovingDirection() == CCar::MovingDirection::Stopped);
 			}
+
 			THEN("Can't be sped up")
 			{
 				REQUIRE_FALSE(car.SetSpeed(5));
@@ -132,6 +134,7 @@ SCENARIO("Car speed", "[car][speed][gears]")
 				{
 					CHECK(car.SetSpeed(15));
 					REQUIRE(car.GetSpeed() == 15);
+					REQUIRE(car.GetMovingDirection() == CCar::MovingDirection::Forwards);
 
 					AND_THEN("Can be turned off only in neutral gear after full stop")
 					{
@@ -223,6 +226,12 @@ SCENARIO("Car reverse gear", "[car][reverse][gear][speed]")
 		WHEN("In reverse gear")
 		{
 			REQUIRE(car.SetGear(-1));
+
+			THEN("Can be sped up")
+			{
+				CHECK(car.SetSpeed(10));
+				REQUIRE(car.GetMovingDirection() == CCar::MovingDirection::Backwards);
+			}
 
 			THEN("Can have speed in range 0 - 20")
 			{

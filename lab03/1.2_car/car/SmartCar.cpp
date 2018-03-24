@@ -24,48 +24,62 @@ void CSmartCar::HandleCommands()
 
 	while (GetCommandLine(commandLine))
 	{
-		try
-		{
-			HandleCommand(commandLine);
-		}
-		catch (const std::exception& e)
-		{
-			m_output << e.what() << std::endl;
-		}
-		catch (...)
-		{
-			m_output << "Unknown exception" << std::endl;
-		}
+		HandleCommandLine(commandLine);
 	}
 }
 
-void CSmartCar::HandleCommand(const std::string& commandLine)
+void CSmartCar::ShowUsage() const
 {
-	std::istringstream buf(commandLine);
-	std::string action;
-	if (!(buf >> action))
+	m_output << " *Usage:" << std::endl
+			 << "    Info" << std::endl
+			 << "    EngineOn" << std::endl
+			 << "    EngineOff" << std::endl
+			 << "    SetGear <gear>" << std::endl
+			 << "    SetSpeed <speed>" << std::endl;
+}
+
+template <typename T>
+std::optional<T> ReadValue(std::istream& input)
+{
+	T value;
+	if (!(input >> value))
 	{
-		throw std::exception("Failed to read command action");
+		return {};
 	}
 
-	auto command = ParseCommand(action);
+	return { value };
+}
 
-	int value;
-	if (buf >> value)
+void CSmartCar::HandleCommandLine(const std::string& commandLine)
+{
+	std::istringstream buf(commandLine);
+	std::string commandStr;
+	if (!(buf >> commandStr))
 	{
-		std::optional<int> param = value;
-		HandleCommand(command, param);
+		m_output << " *Failed to read command" << std::endl;
+		ShowUsage();
 		return;
 	}
 
-	HandleCommand(command);
+	auto command = ParseCommand(commandStr);
+	if (command == CSmartCar::Command::Unknown)
+	{
+		m_output << " *Unknown command: " << commandStr << std::endl;
+		ShowUsage();
+		return;
+	}
+
+	auto param = ReadValue<int>(buf);
+	HandleCommand(command, param);
 }
 
 void CSmartCar::HandleCommand(CSmartCar::Command command, std::optional<int> param)
 {
 	if (CommandNeedsParameter(command) && !param)
 	{
-		throw std::exception("Command needs a parameter");
+		m_output << " *Command needs a parameter" << std::endl;
+		ShowUsage();
+		return;
 	}
 
 	switch (command)
@@ -86,7 +100,7 @@ void CSmartCar::HandleCommand(CSmartCar::Command command, std::optional<int> par
 		SetSpeed(*param);
 		break;
 	default:
-		throw std::exception("Unknown command");
+		m_output << " *Unknown command" << std::endl;
 		break;
 	}
 }
@@ -99,7 +113,7 @@ const std::map<std::string, CSmartCar::Command> CSmartCar::m_stringToCommand = {
 	{ "SetSpeed", Command::SetSpeed },
 };
 
-CSmartCar::Command CSmartCar::ParseCommand(const std::string& command)
+CSmartCar::Command CSmartCar::ParseCommand(const std::string& command) const
 {
 	auto& mapping = m_stringToCommand;
 	auto result = mapping.find(command);
@@ -131,7 +145,7 @@ void CSmartCar::TurnOnEngine()
 {
 	if (!CCar::TurnOnEngine())
 	{
-		m_output << "Failed to turn the engine on" << std::endl;
+		m_output << " *Failed to turn the engine on" << std::endl;
 		return;
 	}
 
@@ -142,7 +156,7 @@ void CSmartCar::TurnOffEngine()
 {
 	if (!CCar::TurnOffEngine())
 	{
-		m_output << "Failed to turn the engine off" << std::endl;
+		m_output << " *Failed to turn the engine off" << std::endl;
 		return;
 	}
 
@@ -153,7 +167,7 @@ void CSmartCar::SetGear(int gear)
 {
 	if (!CCar::SetGear(gear))
 	{
-		m_output << "Failed to set gear to " << gear << std::endl;
+		m_output << " *Failed to set gear to " << gear << std::endl;
 		return;
 	}
 
@@ -164,14 +178,14 @@ void CSmartCar::SetSpeed(int speed)
 {
 	if (!CCar::SetSpeed(speed))
 	{
-		m_output << "Failed to set speed to " << speed << std::endl;
+		m_output << " *Failed to set speed to " << speed << std::endl;
 		return;
 	}
 
 	m_output << " -Speed: " << speed << std::endl;
 }
 
-bool CSmartCar::CommandNeedsParameter(CSmartCar::Command command)
+bool CSmartCar::CommandNeedsParameter(CSmartCar::Command command) const
 {
 	return command == Command::SetGear || command == Command::SetSpeed;
 }

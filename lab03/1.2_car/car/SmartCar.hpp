@@ -22,11 +22,12 @@ private:
 	std::istream& m_input;
 	std::ostream& m_output;
 
+	void ShowUsage() const;
 	bool GetCommandLine(std::string& commandLine);
-	void HandleCommand(const std::string& command);
+	void HandleCommandLine(const std::string& commandLine);
 	void HandleCommand(Command command, std::optional<int> param = {});
-	Command ParseCommand(const std::string& command);
-	bool CommandNeedsParameter(Command command);
+	Command ParseCommand(const std::string& command) const;
+	bool CommandNeedsParameter(Command command) const;
 
 	void Info();
 	void TurnOnEngine();

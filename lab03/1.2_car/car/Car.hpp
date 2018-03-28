@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 class CCar
 {
 public:
@@ -17,6 +19,11 @@ public:
 	MovingDirection GetMovingDirection() const;
 
 private:
+	static const int m_minGear = -1;
+	static const int m_maxGear = 5;
+	static const int m_gearsCount = m_maxGear - m_minGear + 1;
+	static const std::array<std::pair<int, int>, m_gearsCount> m_speedRanges;
+
 	bool m_isTurnedOn = false;
 	int m_gear = 0;
 	int m_speed = 0;

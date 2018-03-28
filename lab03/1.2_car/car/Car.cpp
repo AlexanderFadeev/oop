@@ -1,5 +1,4 @@
 #include "Car.hpp"
-#include <array>
 #include <cmath>
 #include <limits>
 
@@ -45,10 +44,7 @@ bool CCar::TurnOffEngine()
 	return true;
 }
 
-const int MIN_GEAR = -1;
-const int MAX_GEAR = 5;
-
-const std::array<std::pair<int, int>, MAX_GEAR - MIN_GEAR + 1> SPEED_RANGES{ {
+const std::array<std::pair<int, int>, CCar::m_gearsCount> CCar::m_speedRanges{ {
 	{ -20, 0 },
 	{ INT_MIN, INT_MAX },
 	{ 0, 30 },
@@ -65,12 +61,12 @@ int CCar::GetGear() const
 
 bool CCar::SpeedIsInRangeOfGear(int speed, int gear) const
 {
-	if (gear < MIN_GEAR || MAX_GEAR < gear)
+	if (gear < m_minGear || m_maxGear < gear)
 	{
 		return false;
 	}
 
-	auto range = SPEED_RANGES[gear - MIN_GEAR];
+	auto range = m_speedRanges[gear - m_minGear];
 	return (range.first <= speed && speed <= range.second);
 }
 

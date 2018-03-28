@@ -1,5 +1,6 @@
 #include "Car.hpp"
 #include "catch.hpp"
+#include <vector>
 
 SCENARIO("Car engine", "[car][engine]")
 {
@@ -147,61 +148,31 @@ SCENARIO("Car speed", "[car][speed][gears]")
 				}
 			}
 
-			THEN("First gear is in range 0 - 30")
+			THEN("All forward gears have proper speed ranges")
 			{
-				REQUIRE(car.SetGear(1));
+				const std::vector<std::pair<int, int>> ranges{
+					{ 0, 30 },
+					{ 20, 50 },
+					{ 30, 60 },
+					{ 40, 90 },
+					{ 50, 150 },
+				};
 
-				CHECK(car.SetSpeed(0));
-				CHECK_FALSE(car.SetSpeed(-1));
-				CHECK(car.SetSpeed(30));
-				CHECK_FALSE(car.SetSpeed(31));
-
-				AND_THEN("Second gear is in range 20 - 50")
+				for (size_t gear = 1; gear <= ranges.size(); gear++)
 				{
+					REQUIRE(car.SetGear(gear));
 
-					REQUIRE(car.SetGear(2));
+					const std::pair<int, int>& range = ranges[gear - 1];
 
-					CHECK(car.SetSpeed(20));
-					CHECK_FALSE(car.SetSpeed(19));
-					CHECK(car.SetSpeed(50));
-					CHECK_FALSE(car.SetSpeed(51));
+					CHECK(car.SetSpeed(range.first));
+					CHECK_FALSE(car.SetSpeed(range.first - 1));
+					CHECK(car.SetSpeed(range.second));
+					CHECK_FALSE(car.SetSpeed(range.second + 1));
+				}
 
-					AND_THEN("Third gear is in range 30 - 60")
-					{
-
-						REQUIRE(car.SetGear(3));
-
-						CHECK(car.SetSpeed(30));
-						CHECK_FALSE(car.SetSpeed(29));
-						CHECK(car.SetSpeed(60));
-						CHECK_FALSE(car.SetSpeed(61));
-
-						AND_THEN("Fourth gear is in range 40 - 90")
-						{
-
-							REQUIRE(car.SetGear(4));
-
-							CHECK(car.SetSpeed(40));
-							CHECK_FALSE(car.SetSpeed(39));
-							CHECK(car.SetSpeed(90));
-							CHECK_FALSE(car.SetSpeed(91));
-
-							AND_THEN("Fifth gear is in range 50 - 150")
-							{
-								REQUIRE(car.SetGear(5));
-
-								CHECK(car.SetSpeed(50));
-								CHECK_FALSE(car.SetSpeed(49));
-								CHECK(car.SetSpeed(150));
-								CHECK_FALSE(car.SetSpeed(151));
-
-								AND_THEN("Sixth gear doesn't exist")
-								{
-									REQUIRE_FALSE(car.SetGear(6));
-								}
-							}
-						}
-					}
+				AND_THEN("Sixth gear doesn't exist")
+				{
+					REQUIRE_FALSE(car.SetGear(ranges.size() + 1));
 				}
 			}
 		}
@@ -265,7 +236,7 @@ SCENARIO("Car reverse gear", "[car][reverse][gear][speed]")
 				}
 			}
 
-			THEN("Can't change speed further")
+			THEN("Can't change gear further")
 			{
 				car.SetSpeed(20);
 				REQUIRE_FALSE(car.SetGear(-2));

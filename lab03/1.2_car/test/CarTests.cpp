@@ -60,8 +60,11 @@ SCENARIO("Car gears", "[car][gears]")
 			THEN("Gear can be changed only to neutral")
 			{
 				CHECK(car.SetGear(0));
+				CHECK(car.GetGear() == 0);
 				CHECK_FALSE(car.SetGear(-1));
+				CHECK(car.GetGear() == 0);
 				CHECK_FALSE(car.SetGear(1));
+				CHECK(car.GetGear() == 0);
 			}
 		}
 
@@ -78,10 +81,14 @@ SCENARIO("Car gears", "[car][gears]")
 			{
 				THEN("Gears can be changed only to -1, 0 or 1")
 				{
-					CHECK(car.SetGear(-1));
-					CHECK(car.SetGear(0));
-					CHECK(car.SetGear(1));
-					CHECK_FALSE(car.SetGear(2));
+					REQUIRE(car.SetGear(-1));
+					CHECK(car.GetGear() == -1);
+					REQUIRE(car.SetGear(0));
+					CHECK(car.GetGear() == 0);
+					REQUIRE(car.SetGear(1));
+					CHECK(car.GetGear() == 1);
+					REQUIRE_FALSE(car.SetGear(2));
+					CHECK(car.GetGear() == 1);
 				}
 			}
 		}
@@ -129,11 +136,12 @@ SCENARIO("Car speed", "[car][speed][gears]")
 
 			AND_WHEN("Is in first gear")
 			{
-				CHECK(car.SetGear(1));
+				REQUIRE(car.SetGear(1));
+				REQUIRE(car.GetGear() == 1);
 
 				THEN("Can be sped up")
 				{
-					CHECK(car.SetSpeed(15));
+					REQUIRE(car.SetSpeed(15));
 					REQUIRE(car.GetSpeed() == 15);
 					REQUIRE(car.GetMovingDirection() == CCar::MovingDirection::Forwards);
 
@@ -141,8 +149,10 @@ SCENARIO("Car speed", "[car][speed][gears]")
 					{
 						REQUIRE_FALSE(car.TurnOffEngine());
 						REQUIRE(car.SetGear(0));
+						REQUIRE(car.GetGear() == 0);
 						REQUIRE_FALSE(car.TurnOffEngine());
 						REQUIRE(car.SetSpeed(0));
+						REQUIRE(car.GetSpeed() == 0);
 						REQUIRE(car.TurnOffEngine());
 					}
 				}
@@ -161,6 +171,7 @@ SCENARIO("Car speed", "[car][speed][gears]")
 				for (size_t gear = 1; gear <= ranges.size(); gear++)
 				{
 					REQUIRE(car.SetGear(static_cast<int>(gear)));
+					REQUIRE(car.GetGear() == gear);
 
 					const std::pair<int, int>& range = ranges[gear - 1];
 
@@ -173,6 +184,7 @@ SCENARIO("Car speed", "[car][speed][gears]")
 				AND_THEN("Sixth gear doesn't exist")
 				{
 					REQUIRE_FALSE(car.SetGear(static_cast<int>(ranges.size()) + 1));
+					REQUIRE(car.GetGear() == 5);
 				}
 			}
 		}
@@ -191,6 +203,7 @@ SCENARIO("Car reverse gear", "[car][reverse][gear][speed]")
 			THEN("Gear can be changed to reverse")
 			{
 				REQUIRE(car.SetGear(-1));
+				REQUIRE(car.GetGear() == -1);
 			}
 		}
 
@@ -201,6 +214,7 @@ SCENARIO("Car reverse gear", "[car][reverse][gear][speed]")
 			THEN("Can be sped up")
 			{
 				CHECK(car.SetSpeed(10));
+				CHECK(car.GetSpeed() == 10);
 				REQUIRE(car.GetMovingDirection() == CCar::MovingDirection::Backwards);
 			}
 
@@ -208,8 +222,11 @@ SCENARIO("Car reverse gear", "[car][reverse][gear][speed]")
 			{
 				CHECK(car.SetSpeed(0));
 				CHECK_FALSE(car.SetSpeed(-1));
+				CHECK(car.GetSpeed() == 0);
 				CHECK(car.SetSpeed(20));
+				CHECK(car.GetSpeed() == 20);
 				CHECK_FALSE(car.SetSpeed(21));
+				CHECK(car.GetSpeed() == 20);
 			}
 
 			AND_WHEN("Has speed")
@@ -219,10 +236,12 @@ SCENARIO("Car reverse gear", "[car][reverse][gear][speed]")
 				THEN("Gear can be changed to neutral")
 				{
 					REQUIRE(car.SetGear(0));
+					CHECK(car.GetGear() == 0);
 
 					AND_THEN("Gear can't be changed back to reverse without full stop")
 					{
 						CHECK_FALSE(car.SetGear(-1));
+						CHECK(car.GetGear() == 0);
 						REQUIRE(car.SetSpeed(0));
 						REQUIRE(car.SetGear(-1));
 					}
@@ -230,9 +249,11 @@ SCENARIO("Car reverse gear", "[car][reverse][gear][speed]")
 
 				THEN("Gear can be changed to first gear only at 0 speed")
 				{
-					CHECK_FALSE(car.SetGear(1));
+					REQUIRE_FALSE(car.SetGear(1));
+					REQUIRE(car.GetGear() == -1);
 					REQUIRE(car.SetSpeed(0));
 					REQUIRE(car.SetGear(1));
+					REQUIRE(car.GetGear() == 1);
 				}
 			}
 
@@ -240,6 +261,7 @@ SCENARIO("Car reverse gear", "[car][reverse][gear][speed]")
 			{
 				car.SetSpeed(20);
 				REQUIRE_FALSE(car.SetGear(-2));
+				CHECK(car.GetGear() == -1);
 			}
 		}
 	}

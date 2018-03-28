@@ -160,7 +160,7 @@ SCENARIO("Car speed", "[car][speed][gears]")
 
 				for (size_t gear = 1; gear <= ranges.size(); gear++)
 				{
-					REQUIRE(car.SetGear(gear));
+					REQUIRE(car.SetGear(static_cast<int>(gear)));
 
 					const std::pair<int, int>& range = ranges[gear - 1];
 
@@ -172,7 +172,7 @@ SCENARIO("Car speed", "[car][speed][gears]")
 
 				AND_THEN("Sixth gear doesn't exist")
 				{
-					REQUIRE_FALSE(car.SetGear(ranges.size() + 1));
+					REQUIRE_FALSE(car.SetGear(static_cast<int>(ranges.size()) + 1));
 				}
 			}
 		}

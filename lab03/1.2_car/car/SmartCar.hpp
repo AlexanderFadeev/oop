@@ -6,7 +6,7 @@
 #include <optional>
 #include <string>
 
-class CSmartCar : CCar
+class CSmartCar : public CCar
 {
 public:
 	CSmartCar(std::istream& input = std::cin, std::ostream& output = std::cout);

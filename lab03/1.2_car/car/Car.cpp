@@ -1,6 +1,5 @@
 #include "Car.hpp"
 #include <cmath>
-#include <limits>
 
 CCar::State CCar::GetState() const
 {

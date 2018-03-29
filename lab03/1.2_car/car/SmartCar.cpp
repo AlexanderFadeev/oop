@@ -113,7 +113,7 @@ const std::map<std::string, CSmartCar::Command> CSmartCar::m_stringToCommand = {
 	{ "SetSpeed", Command::SetSpeed },
 };
 
-CSmartCar::Command CSmartCar::ParseCommand(const std::string& command) const
+CSmartCar::Command CSmartCar::ParseCommand(const std::string& command)
 {
 	auto& mapping = m_stringToCommand;
 	auto result = mapping.find(command);
@@ -132,13 +132,17 @@ const std::map<CCar::MovingDirection, std::string> CSmartCar::m_movingDirectionT
 	{ MovingDirection::Backwards, "Backwards" },
 };
 
+std::string CSmartCar::GetMovingDirectionString() const
+{
+	return m_movingDirectionToString.at(GetMovingDirection());
+}
+
 void CSmartCar::Info()
 {
-	auto state = GetState();
-	m_output << " -Engine: " << (state.isTurnedOn ? "ON" : "OFF") << std::endl
-			 << " -Gear: " << state.gear << std::endl
-			 << " -Moving direction: " << m_movingDirectionToString.at(state.movingDirection) << std::endl
-			 << " -Speed: " << state.speed << std::endl;
+	m_output << " -Engine: " << (IsTurnedOn() ? "ON" : "OFF") << std::endl
+			 << " -Gear: " << GetGear() << std::endl
+			 << " -Moving direction: " << GetMovingDirectionString() << std::endl
+			 << " -Speed: " << GetSpeed() << std::endl;
 }
 
 void CSmartCar::TurnOnEngine()
@@ -185,7 +189,7 @@ void CSmartCar::SetSpeed(int speed)
 	m_output << " -Speed: " << speed << std::endl;
 }
 
-bool CSmartCar::CommandNeedsParameter(CSmartCar::Command command) const
+bool CSmartCar::CommandNeedsParameter(CSmartCar::Command command)
 {
 	return command == Command::SetGear || command == Command::SetSpeed;
 }

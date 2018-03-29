@@ -6,9 +6,7 @@ class CCar
 {
 public:
 	enum class MovingDirection;
-	struct State;
 
-	State GetState() const;
 	bool IsTurnedOn() const;
 	bool TurnOnEngine();
 	bool TurnOffEngine();
@@ -28,7 +26,7 @@ private:
 	int m_gear = 0;
 	int m_speed = 0;
 
-	bool SpeedIsInRangeOfGear(int speed, int gear) const;
+	static bool SpeedIsInRangeOfGear(int speed, int gear);
 	bool SetSpeedImpl(int speed);
 };
 
@@ -37,12 +35,4 @@ enum class CCar::MovingDirection
 	Forwards,
 	Stopped,
 	Backwards,
-};
-
-struct CCar::State
-{
-	bool isTurnedOn;
-	int gear;
-	int speed;
-	MovingDirection movingDirection;
 };

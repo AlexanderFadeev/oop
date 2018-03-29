@@ -18,6 +18,7 @@ private:
 
 	static const std::map<std::string, CSmartCar::Command> m_stringToCommand;
 	static const std::map<MovingDirection, std::string> m_movingDirectionToString;
+	std::string GetMovingDirectionString() const;
 
 	std::istream& m_input;
 	std::ostream& m_output;
@@ -26,8 +27,8 @@ private:
 	bool GetCommandLine(std::string& commandLine);
 	void HandleCommandLine(const std::string& commandLine);
 	void HandleCommand(Command command, std::optional<int> param = {});
-	Command ParseCommand(const std::string& command) const;
-	bool CommandNeedsParameter(Command command) const;
+	static Command ParseCommand(const std::string& command);
+	static bool CommandNeedsParameter(Command command);
 
 	void Info();
 	void TurnOnEngine();

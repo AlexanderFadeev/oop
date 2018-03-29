@@ -1,16 +1,6 @@
 #include "Car.hpp"
 #include <cmath>
 
-CCar::State CCar::GetState() const
-{
-	return {
-		IsTurnedOn(),
-		GetGear(),
-		GetSpeed(),
-		GetMovingDirection(),
-	};
-}
-
 bool CCar::IsTurnedOn() const
 {
 	return m_isTurnedOn;
@@ -58,14 +48,14 @@ int CCar::GetGear() const
 	return m_gear;
 }
 
-bool CCar::SpeedIsInRangeOfGear(int speed, int gear) const
+bool CCar::SpeedIsInRangeOfGear(int speed, int gear)
 {
 	if (gear < m_minGear || m_maxGear < gear)
 	{
 		return false;
 	}
 
-	auto range = m_speedRanges[gear - m_minGear];
+	auto& range = m_speedRanges[gear - m_minGear];
 	return (range.first <= speed && speed <= range.second);
 }
 

@@ -5,7 +5,12 @@ CVariable::CVariable()
 {
 }
 
-double CVariable::GetValue() const
+void CVariable::InitRelationsImpl() const
+{
+	// Do nothing
+}
+
+double CVariable::CalcValue() const
 {
 	return m_value;
 }
@@ -13,4 +18,5 @@ double CVariable::GetValue() const
 void CVariable::SetValue(double value)
 {
 	m_value = value;
+	Expire();
 }

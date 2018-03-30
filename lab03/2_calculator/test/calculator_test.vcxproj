@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="..\calculator\Calculator.cpp" />
     <ClCompile Include="..\calculator\Function.cpp" />
+    <ClCompile Include="..\calculator\Identifier.cpp" />
     <ClCompile Include="..\calculator\Variable.cpp" />
     <ClCompile Include="CalculatorTests.cpp" />
     <ClCompile Include="main.cpp" />

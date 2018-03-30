@@ -12,7 +12,7 @@ void CCalculator::Var(const std::string& id)
 	ThrowIfNotValid(id);
 	ThrowIfDefined(id);
 
-	std::shared_ptr<CVariable> variable(new CVariable);
+	std::shared_ptr<CVariable> variable = std::make_shared<CVariable>();
 	m_identifiers[id] = variable;
 	m_variables[id] = variable;
 }

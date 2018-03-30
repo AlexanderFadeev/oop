@@ -116,7 +116,7 @@ SCENARIO("Calculator functions")
 			calc.Var(varID);
 			calc.Func(fnID, varID);
 
-			THEN("Function changes it's value with variable")
+			THEN("Function changes its value with variable")
 			{
 				REQUIRE(std::isnan(calc.GetValue(fnID)));
 				calc.Let(varID, 42);
@@ -223,12 +223,12 @@ std::string GetFibID(int id)
 	return buf.str();
 }
 
-void CheckFibSequence(const CCalculator calc, int count, double a = 0, double b = 1)
+void CheckFibonacciSequence(const CCalculator& calc, int count, int a, int b)
 {
 	REQUIRE(calc.GetValue("fib0") == a);
 	REQUIRE(calc.GetValue("fib1") == b);
 
-	double c;
+	int c;
 	for (int i = 2; i < count; i++)
 	{
 		c = a + b;
@@ -239,6 +239,24 @@ void CheckFibSequence(const CCalculator calc, int count, double a = 0, double b 
 	}
 }
 
+void TestFibonacciSequence(CCalculator& calc, int count)
+{
+	calc.Let("v0", 0);
+	calc.Let("v1", 1);
+
+	calc.Func("fib0", "v0");
+	calc.Func("fib1", "v1");
+	for (int i = 2; i < count; i++)
+	{
+		calc.Func(GetFibID(i), GetFibID(i - 1), Operator::Sum, GetFibID(i - 2));
+	}
+
+	CheckFibonacciSequence(calc, count, 0, 1);
+
+	calc.Let("v0", 1);
+	CheckFibonacciSequence(calc, count, 1, 1);
+}
+
 SCENARIO("Calculating Fibonacci sequence")
 {
 	GIVEN("A calculator")
@@ -247,27 +265,20 @@ SCENARIO("Calculating Fibonacci sequence")
 
 		THEN("Fibonacci sequence can be calculated")
 		{
-			calc.Let("v0", 0);
-			calc.Let("v1", 1);
+			TestFibonacciSequence(calc, 5);
+		}
+	}
+}
 
-			calc.Func("fib0", "v0");
-			calc.Func("fib1", "v1");
-			const int count1 = 10;
-			const int count2 = 20;
-			for (int i = 2; i < count2; i++)
-			{
-				calc.Func(GetFibID(i), GetFibID(i - 1), Operator::Sum, GetFibID(i - 2));
-			}
-			CheckFibSequence(calc, count1, 0, 1);
+SCENARIO("Memoization optimizations")
+{
+	GIVEN("A calculator")
+	{
+		CCalculator calc;
 
-			// TODO: uncomment after optimizations
-			//AND_THEN("Even for large indicies")
-			//{
-			//	CheckFibSequence(calc, count2, 0, 1);
-			//}
-
-			calc.Let("v0", 1);
-			CheckFibSequence(calc, count1, 1, 1);
+		THEN("Fibonacci sequence can be calculated for large indicies")
+		{
+			TestFibonacciSequence(calc, 25);
 		}
 	}
 }

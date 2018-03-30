@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Calculator.cpp" />
     <ClCompile Include="Function.cpp" />
+    <ClCompile Include="Identifier.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SmartCalculator.cpp" />
     <ClCompile Include="Variable.cpp" />

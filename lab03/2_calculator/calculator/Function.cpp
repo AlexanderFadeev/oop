@@ -14,6 +14,15 @@ CFunction::CFunction(std::shared_ptr<CIdentifier> operand1, Operator op, std::sh
 {
 }
 
+void CFunction::InitRelationsImpl() const
+{
+	Uses(m_operand1);
+	if (m_operator)
+	{
+		Uses(m_operand2);
+	}
+}
+
 using Operator = CFunction::Operator;
 
 const std::map<Operator, std::function<double(double, double)>> CFunction::m_operatorToFunctionMapping{
@@ -39,7 +48,7 @@ const std::map<Operator, std::function<double(double, double)>> CFunction::m_ope
 	 } },
 };
 
-double CFunction::GetValue() const
+double CFunction::CalcValue() const
 {
 	if (m_operator)
 	{

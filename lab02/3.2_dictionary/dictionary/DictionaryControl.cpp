@@ -85,6 +85,7 @@ void CDictionaryControl::HandleCommands()
 	if (ShouldBeSaved())
 	{
 		m_dictionary.Save();
+		m_output << "Изменения сохранены. До свидания." << std::endl;
 	}
 }
 

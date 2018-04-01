@@ -10,7 +10,7 @@
 |       |                 |       |
 | **2** | Vector          | Done  |
 |       | HTML Decode     | Done  |
-|       | Dictionary      | WIP   |
+|       | Dictionary      | CR    |
 |       | Prime Generator | Done  |
 |       | URL Parser      | Done  |
 |       | Expand Template | WIP   |

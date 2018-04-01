@@ -2,6 +2,15 @@
 #include <sstream>
 #include <string>
 
+bool StringLess::operator()(const std::string& a, const std::string& b) const
+{
+	auto charLess = [](char a, char b) {
+		return std::tolower(a, std::locale()) < std::tolower(b, std::locale());
+	};
+
+	return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(), charLess);
+}
+
 void CDictionary::Add(const std::string& word, const std::string& translation)
 {
 	VerifyIsEnglish(word);

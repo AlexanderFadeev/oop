@@ -89,3 +89,20 @@ SCENARIO("Basic functionality")
 		}
 	}
 }
+
+SCENARIO("Case insensitivity")
+{
+
+	GIVEN("A dictionary")
+	{
+		CDictionary dict;
+
+		THEN("It is case insensitive for English collocataions")
+		{
+			dict.Add("Cat", "Кот");
+			CHECK(dict.Has("Cat"));
+			CHECK(dict.Has("cat"));
+			CHECK(dict.Has("CAT"));
+		}
+	}
+}

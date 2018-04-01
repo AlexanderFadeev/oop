@@ -33,6 +33,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "url_parser_test", "..\5.1_u
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "process_vector_test", "..\1.7_process_vector\test\process_vector_test.vcxproj", "{C3B58F49-A419-4321-84DB-87B49F31BF6C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dictionary", "..\3.2_dictionary\dictionary\dictionary.vcxproj", "{1B9AB3DE-49E2-4352-8B7D-6E30C11E566F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2CAD114E-E2DA-4E1E-8C50-25781AD801F3} = {2CAD114E-E2DA-4E1E-8C50-25781AD801F3}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dictionary_test", "..\3.2_dictionary\test\dictionary_test.vcxproj", "{2CAD114E-E2DA-4E1E-8C50-25781AD801F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -113,6 +120,22 @@ Global
 		{C3B58F49-A419-4321-84DB-87B49F31BF6C}.Release|x64.Build.0 = Release|x64
 		{C3B58F49-A419-4321-84DB-87B49F31BF6C}.Release|x86.ActiveCfg = Release|Win32
 		{C3B58F49-A419-4321-84DB-87B49F31BF6C}.Release|x86.Build.0 = Release|Win32
+		{1B9AB3DE-49E2-4352-8B7D-6E30C11E566F}.Debug|x64.ActiveCfg = Debug|x64
+		{1B9AB3DE-49E2-4352-8B7D-6E30C11E566F}.Debug|x64.Build.0 = Debug|x64
+		{1B9AB3DE-49E2-4352-8B7D-6E30C11E566F}.Debug|x86.ActiveCfg = Debug|Win32
+		{1B9AB3DE-49E2-4352-8B7D-6E30C11E566F}.Debug|x86.Build.0 = Debug|Win32
+		{1B9AB3DE-49E2-4352-8B7D-6E30C11E566F}.Release|x64.ActiveCfg = Release|x64
+		{1B9AB3DE-49E2-4352-8B7D-6E30C11E566F}.Release|x64.Build.0 = Release|x64
+		{1B9AB3DE-49E2-4352-8B7D-6E30C11E566F}.Release|x86.ActiveCfg = Release|Win32
+		{1B9AB3DE-49E2-4352-8B7D-6E30C11E566F}.Release|x86.Build.0 = Release|Win32
+		{2CAD114E-E2DA-4E1E-8C50-25781AD801F3}.Debug|x64.ActiveCfg = Debug|x64
+		{2CAD114E-E2DA-4E1E-8C50-25781AD801F3}.Debug|x64.Build.0 = Debug|x64
+		{2CAD114E-E2DA-4E1E-8C50-25781AD801F3}.Debug|x86.ActiveCfg = Debug|Win32
+		{2CAD114E-E2DA-4E1E-8C50-25781AD801F3}.Debug|x86.Build.0 = Debug|Win32
+		{2CAD114E-E2DA-4E1E-8C50-25781AD801F3}.Release|x64.ActiveCfg = Release|x64
+		{2CAD114E-E2DA-4E1E-8C50-25781AD801F3}.Release|x64.Build.0 = Release|x64
+		{2CAD114E-E2DA-4E1E-8C50-25781AD801F3}.Release|x86.ActiveCfg = Release|Win32
+		{2CAD114E-E2DA-4E1E-8C50-25781AD801F3}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

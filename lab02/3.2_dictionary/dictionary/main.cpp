@@ -1,12 +1,30 @@
-#include "Dictionary.hpp"
+#include "DictionaryControl.hpp"
+#include "FileDictionary.hpp"
 #include <exception>
 #include <iostream>
 
-int main()
+void ShowUsage()
 {
+	std::cerr << "Usage: dictionary.exe <filename>" << std::endl;
+}
+
+const int ARGS_COUNT = 1;
+
+int main(int argc, char* argv[])
+{
+	if (argc < ARGS_COUNT + 1)
+	{
+		std::cerr << "Not enough arguments" << std::endl;
+		ShowUsage();
+		return 1;
+	}
+
 	try
 	{
-		// TODO
+		SetCodePage(1251);
+		CFileDictionary dict(argv[1]);
+		CDictionaryControl control(dict);
+		control.HandleCommands();
 		return 0;
 	}
 	catch (const std::exception& e)

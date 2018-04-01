@@ -282,3 +282,32 @@ SCENARIO("Memoization optimizations")
 		}
 	}
 }
+
+std::string GetFuncID(int id)
+{
+	std::ostringstream buf;
+	buf << "x" << id;
+	return buf.str();
+}
+
+SCENARIO("Stack usage optimizatons")
+{
+	GIVEN("A calculator")
+	{
+		CCalculator calc;
+
+		THEN("Calculations with huge depth can be performed")
+		{
+			calc.Let("x1", 1);
+			for (int i = 2; i < 1000000; i++)
+			{
+				calc.Func(GetFuncID(i), GetFuncID(i - 1), Operator::Sum, "x1");
+			}
+
+			REQUIRE(calc.GetValue("x1000000") == 1000000);
+
+			calc.Let("x1", 2);
+			REQUIRE(calc.GetValue("x1000000") == 2000000);
+		}
+	}
+}

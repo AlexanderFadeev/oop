@@ -39,6 +39,7 @@ SCENARIO("Basic functionality")
 {
 	GIVEN("A dictionary")
 	{
+		SetCodePage(1251);
 		CDictionary dict;
 
 		WHEN("Is created")
@@ -92,9 +93,9 @@ SCENARIO("Basic functionality")
 
 SCENARIO("Case insensitivity")
 {
-
 	GIVEN("A dictionary")
 	{
+		SetCodePage(1251);
 		CDictionary dict;
 
 		THEN("It is case insensitive for English collocataions")
@@ -103,6 +104,47 @@ SCENARIO("Case insensitivity")
 			CHECK(dict.Has("Cat"));
 			CHECK(dict.Has("cat"));
 			CHECK(dict.Has("CAT"));
+		}
+
+		THEN("It is case insensitive for Russian collocataions")
+		{
+			dict.Add("Cat", "Кот");
+			CHECK(dict.Has("Кот"));
+			CHECK(dict.Has("кот"));
+			CHECK(dict.Has("КОТ"));
+		}
+	}
+}
+
+SCENARIO("Reverse translation")
+{
+	GIVEN("A dictionary")
+	{
+		SetCodePage(1251);
+		CDictionary dict;
+
+		WHEN("Words are added")
+		{
+			dict.Add("Cat", "Кот");
+
+			THEN("Russian word can be found")
+			{
+				REQUIRE(dict.Has("Кот"));
+			}
+		}
+
+		WHEN("Words with the same translation are added")
+		{
+			dict.Add("Castle", "Замок");
+			dict.Add("Lock", "Замок");
+
+			THEN("Both words can be found")
+			{
+				auto range = dict.Find("Замок");
+
+				REQUIRE(range.first->second == "Castle");
+				REQUIRE(std::next(range.first)->second == "Lock");
+			}
 		}
 	}
 }

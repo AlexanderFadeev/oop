@@ -1,4 +1,4 @@
-#include "../dictionary/Dictionary.hpp"
+#include "Dictionary.hpp"
 #include "catch.hpp"
 #include <string>
 #include <vector>

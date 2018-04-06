@@ -18,7 +18,7 @@
 | **3** | Car             | CR    |
 |       | Calculator      | WIP   |
 |       |                 |       |
-| **4** |                 | TBA   |
+| **4** | Shape           | WIP   |
 | **5** |                 | TBA   |
 | **6** |                 | TBA   |
 | **7** |                 | TBA   |

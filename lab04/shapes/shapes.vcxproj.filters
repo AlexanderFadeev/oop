@@ -26,5 +26,8 @@
     <ClInclude Include="Shape.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SolidShape.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

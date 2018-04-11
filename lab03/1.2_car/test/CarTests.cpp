@@ -195,8 +195,9 @@ SCENARIO("Car speed", "[car][speed][gears]")
 
 					ExpectSuccess(car, &CCar::SetGear, gear, true, gear, car.GetSpeed(), car.GetMovingDirection());
 
-					ExpectSuccess(car, &CCar::SetSpeed, range.first, true, gear, range.first, car.GetMovingDirection());
-					ExpectSuccess(car, &CCar::SetSpeed, range.second, true, gear, range.second, car.GetMovingDirection());
+					auto direction = range.first ? Direction::Forwards : Direction::Stopped;
+					ExpectSuccess(car, &CCar::SetSpeed, range.first, true, gear, range.first, direction);
+					ExpectSuccess(car, &CCar::SetSpeed, range.second, true, gear, range.second, Direction::Forwards);
 
 					ExpectFailure(car, &CCar::SetSpeed, range.first - 1);
 					ExpectFailure(car, &CCar::SetSpeed, range.second + 1);

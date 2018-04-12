@@ -26,6 +26,8 @@
     <ClCompile Include="Shape.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Canvas.hpp" />
+    <ClInclude Include="CanvasDrawable.hpp" />
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="LineSegment.hpp" />
     <ClInclude Include="Point.hpp" />

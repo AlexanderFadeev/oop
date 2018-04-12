@@ -16,21 +16,6 @@ CLineSegment::CLineSegment(const CPoint& a, const CPoint& b, const CColor& outli
 {
 }
 
-std::string CLineSegment::ToString(int precision) const
-{
-	std::ostringstream buf;
-	buf << std::setprecision(precision);
-
-	buf << "LineSegment {\n"
-		<< FieldsToString(precision)
-		<< "\tpoint A: " << m_a.ToString(precision) << ",\n"
-		<< "\tpoint B: " << m_b.ToString(precision) << ",\n"
-		<< "\tlength: " << GetLength() << ",\n"
-		<< "}\n";
-
-	return buf.str();
-}
-
 double CLineSegment::GetArea() const
 {
 	return 0.0;
@@ -54,4 +39,24 @@ CPoint CLineSegment::GetPointA() const
 CPoint CLineSegment::GetPointB() const
 {
 	return m_b;
+}
+
+std::string CLineSegment::ToString(int precision) const
+{
+	std::ostringstream buf;
+	buf << std::setprecision(precision);
+
+	buf << "LineSegment {\n"
+		<< FieldsToString(precision)
+		<< "\tpoint A: " << m_a.ToString(precision) << ",\n"
+		<< "\tpoint B: " << m_b.ToString(precision) << ",\n"
+		<< "\tlength: " << GetLength() << ",\n"
+		<< "}\n";
+
+	return buf.str();
+}
+
+void CLineSegment::Draw(ICanvas& canvas)
+{
+	canvas.DrawLine(m_a, m_b, m_outlineColor);
 }

@@ -47,5 +47,11 @@
     <ClInclude Include="SolidShape.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CanvasDrawable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Canvas.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

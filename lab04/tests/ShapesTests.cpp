@@ -1,7 +1,19 @@
+#include "Canvas.hpp"
 #include "Color.hpp"
 #include "LineSegment.hpp"
 #include "Point.hpp"
 #include "catch.hpp"
+#include "fakeit.hpp"
+
+using namespace fakeit;
+
+void InitCanvasMock(Mock<ICanvas>& mock)
+{
+	Fake(Method(mock, DrawLine));
+	Fake(Method(mock, FillPolygon));
+	Fake(Method(mock, DrawCircle));
+	Fake(Method(mock, FillCircle));
+}
 
 SCENARIO("Colors")
 {
@@ -64,7 +76,7 @@ SCENARIO("Line Segment")
 	{
 		const CPoint a{ .5, .5 };
 		const CPoint b{ 3.5, 4.5 };
-		const std::string color = "ffffff";
+		const CColor color("ffffff");
 		const auto len = 5;
 
 		CLineSegment line(a, b, color);
@@ -86,6 +98,17 @@ SCENARIO("Line Segment")
 
 				CHECK(expectedLineToString == line.ToString());
 			}
+		}
+
+		THEN("It is drawn properly")
+		{
+			Mock<ICanvas> mock;
+			InitCanvasMock(mock);
+
+			line.Draw(mock.get());
+
+			Verify(Method(mock, DrawLine).Using(a, b, color)).Once();
+			VerifyNoOtherInvocations(mock);
 		}
 	}
 }

@@ -8,6 +8,7 @@ class CLineSegment final
 {
 public:
 	CLineSegment(const CPoint& a, const CPoint& b, const std::string& outlineColor);
+	CLineSegment(const CPoint& a, const CPoint& b, const CColor& outlineColor);
 	~CLineSegment() override = default;
 
 	std::string ToString(int precision = 2) const override;

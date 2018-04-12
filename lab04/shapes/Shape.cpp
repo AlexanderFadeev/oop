@@ -2,12 +2,17 @@
 #include <iomanip>
 #include <sstream>
 
-std::string IShape::GetOutlineColor() const
+CColor IShape::GetOutlineColor() const
 {
 	return m_outlineColor;
 }
 
 IShape::IShape(const std::string& outlineColor)
+	: m_outlineColor(outlineColor)
+{
+}
+
+IShape::IShape(const CColor& outlineColor)
 	: m_outlineColor(outlineColor)
 {
 }
@@ -19,7 +24,7 @@ std::string IShape::FieldsToString(int precision) const
 
 	buf << "\tarea: " << GetArea() << ",\n"
 		<< "\tperimeter: " << GetPerimeter() << ",\n"
-		<< "\toutline color: " << GetOutlineColor() << ",\n";
+		<< "\toutline color: " << m_outlineColor.ToString() << ",\n";
 
 	return buf.str();
 }

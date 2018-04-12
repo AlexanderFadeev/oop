@@ -9,6 +9,13 @@ CLineSegment::CLineSegment(const CPoint& a, const CPoint& b, const std::string& 
 {
 }
 
+CLineSegment::CLineSegment(const CPoint& a, const CPoint& b, const CColor& outlineColor)
+	: m_a(a)
+	, m_b(b)
+	, IShape(outlineColor)
+{
+}
+
 std::string CLineSegment::ToString(int precision) const
 {
 	std::ostringstream buf;

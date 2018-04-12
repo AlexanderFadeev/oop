@@ -2,7 +2,7 @@
 
 #include <string>
 
-class CPoint
+class CPoint final
 {
 public:
 	double x;

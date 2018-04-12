@@ -154,7 +154,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\shapes\LineSegment.cpp" />
+    <ClCompile Include="..\shapes\Point.cpp" />
+    <ClCompile Include="..\shapes\Shape.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ShapesTests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

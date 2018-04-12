@@ -131,10 +131,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Point.cpp" />
     <ClCompile Include="Point.hpp" />
+    <ClCompile Include="Shape.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LineSegment.hpp" />
     <ClInclude Include="Shape.hpp" />
     <ClInclude Include="SolidShape.hpp" />
   </ItemGroup>

@@ -3,7 +3,11 @@
 #include "LineSegment.hpp"
 #include "Point.hpp"
 #include "catch.hpp"
+
+#pragma warning(push)
+#pragma warning(disable : 4100)
 #include "fakeit.hpp"
+#pragma warning(pop)
 
 using namespace fakeit;
 
@@ -50,7 +54,6 @@ SCENARIO("Colors")
 
 	SECTION("Cannot create colors from invalid args")
 	{
-		CHECK_THROWS(CColor(-1, 0, 0));
 		CHECK_THROWS(CColor(256, 0, 0));
 		CHECK_THROWS(CColor("12345"));
 		CHECK_THROWS(CColor("1234567"));

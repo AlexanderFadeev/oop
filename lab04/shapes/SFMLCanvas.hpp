@@ -17,6 +17,12 @@ public:
 	void DrawCircle(const CPoint&, double, const CColor&) override;
 	void FillCircle(const CPoint&, double, const CColor&) override;
 
+	void Display();
+	void WaitForCloseEvent();
+
 private:
 	sf::RenderWindow m_window;
+
+	static sf::Color Color(const CColor&);
+	static sf::Vector2f Vector2f(const CPoint&);
 };

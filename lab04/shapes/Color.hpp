@@ -8,19 +8,20 @@ class CColor final
 {
 public:
 	CColor(const std::string&);
-	CColor(int r, int g, int b);
+	CColor(unsigned r, unsigned g, unsigned b);
 
 	bool operator==(const CColor&) const;
 	bool operator==(const std::string&) const;
 
 	std::string ToString() const;
+	uint32_t ToUInt32() const;
 
 private:
 	static const std::regex m_colorRegex;
 
-	int m_r;
-	int m_g;
-	int m_b;
+	unsigned m_r;
+	unsigned m_g;
+	unsigned m_b;
 
 	static bool IsValidRGBComponent(int);
 	static void ValidateRGBComponent(int);

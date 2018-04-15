@@ -18,7 +18,7 @@ CColor::CColor(const std::string& color)
 	ss >> std::hex >> m_r >> m_g >> m_b;
 }
 
-CColor::CColor(int r, int g, int b)
+CColor::CColor(unsigned r, unsigned g, unsigned b)
 	: m_r(r)
 	, m_g(g)
 	, m_b(b)
@@ -49,6 +49,14 @@ std::string CColor::ToString() const
 		<< std::setw(2) << m_g
 		<< std::setw(2) << m_b;
 	return buf.str();
+}
+
+uint32_t CColor::ToUInt32() const
+{
+	return (m_r << 24)
+		+ (m_g << 16)
+		+ (m_b << 8)
+		+ (0xFFu << 0);
 }
 
 bool CColor::IsValidRGBComponent(int x)

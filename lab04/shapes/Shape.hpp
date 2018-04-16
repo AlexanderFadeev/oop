@@ -12,7 +12,7 @@ public:
 
 	virtual double GetArea() const = 0;
 	virtual double GetPerimeter() const = 0;
-	virtual std::string ToString(int) const = 0;
+	virtual std::string ToString(int precision = 2) const = 0;
 	CColor GetOutlineColor() const;
 
 protected:

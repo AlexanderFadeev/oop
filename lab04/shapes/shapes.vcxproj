@@ -25,6 +25,8 @@
     <ClCompile Include="SFMLCanvas.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="ShapeFactory.cpp" />
+    <ClCompile Include="Shapes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Canvas.hpp" />
@@ -34,10 +36,15 @@
     <ClInclude Include="SFMLCanvas.hpp" />
     <ClInclude Include="Point.hpp" />
     <ClInclude Include="Shape.hpp" />
+    <ClInclude Include="ShapeFactory.hpp" />
+    <ClInclude Include="Shapes.hpp" />
     <ClInclude Include="SolidShape.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="input.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

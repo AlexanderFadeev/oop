@@ -20,7 +20,7 @@ IShape::IShape(const CColor& outlineColor)
 std::string IShape::FieldsToString(int precision) const
 {
 	std::ostringstream buf;
-	buf << std::setprecision(precision);
+	buf << std::setprecision(precision) << std::fixed;
 
 	buf << "\tarea: " << GetArea() << ",\n"
 		<< "\tperimeter: " << GetPerimeter() << ",\n"

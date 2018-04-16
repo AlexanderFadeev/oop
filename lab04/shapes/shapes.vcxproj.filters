@@ -33,6 +33,12 @@
     <ClCompile Include="SFMLCanvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShapeFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shapes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Color.hpp">
@@ -59,8 +65,17 @@
     <ClInclude Include="SFMLCanvas.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShapeFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shapes.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="input.txt" />
   </ItemGroup>
 </Project>

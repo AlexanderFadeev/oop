@@ -44,14 +44,14 @@ CPoint CLineSegment::GetPointB() const
 std::string CLineSegment::ToString(int precision) const
 {
 	std::ostringstream buf;
-	buf << std::setprecision(precision);
+	buf << std::setprecision(precision) << std::fixed;
 
 	buf << "LineSegment {\n"
 		<< FieldsToString(precision)
 		<< "\tpoint A: " << m_a.ToString(precision) << ",\n"
 		<< "\tpoint B: " << m_b.ToString(precision) << ",\n"
 		<< "\tlength: " << GetLength() << ",\n"
-		<< "}\n";
+		<< "}";
 
 	return buf.str();
 }

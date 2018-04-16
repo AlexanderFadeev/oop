@@ -18,11 +18,17 @@ double CPoint::Dist(const CPoint& other) const
 std::string CPoint::ToString(int precision) const
 {
 	std::ostringstream buf;
-	buf << std::setprecision(precision);
+	buf << std::setprecision(precision) << std::fixed;
 
 	buf << "( " << x << ", " << y << " )";
 
 	return buf.str();
+}
+
+std::istream& operator>>(std::istream& input, CPoint& point)
+{
+	input >> point.x >> point.y;
+	return input;
 }
 
 double Dist(const CPoint& a, const CPoint& b)

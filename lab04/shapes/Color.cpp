@@ -6,16 +6,7 @@ const std::regex CColor::m_colorRegex(R"(^#?([\da-fA-F]{2})([\da-fA-F]{2})([\da-
 
 CColor::CColor(const std::string& color)
 {
-	std::smatch match;
-	if (!std::regex_match(color, match, m_colorRegex))
-	{
-		throw std::invalid_argument("Invalid color format");
-	}
-
-	std::stringstream ss;
-
-	ss << match[1] << ' ' << match[2] << ' ' << match[3];
-	ss >> std::hex >> m_r >> m_g >> m_b;
+	*this = color;
 }
 
 CColor::CColor(unsigned r, unsigned g, unsigned b)
@@ -26,6 +17,22 @@ CColor::CColor(unsigned r, unsigned g, unsigned b)
 	ValidateRGBComponent(r);
 	ValidateRGBComponent(g);
 	ValidateRGBComponent(b);
+}
+
+CColor& CColor::operator=(const std::string& color)
+{
+	std::smatch match;
+	if (!std::regex_match(color, match, m_colorRegex))
+	{
+		throw std::invalid_argument("Invalid color format");
+	}
+
+	std::stringstream ss;
+
+	ss << match[1] << ' ' << match[2] << ' ' << match[3];
+	ss >> std::hex >> m_r >> m_g >> m_b;
+
+	return *this;
 }
 
 bool CColor::operator==(const CColor& other) const
@@ -72,6 +79,14 @@ void CColor::ValidateRGBComponent(int x)
 		buf << "Invalid RGB component: " << x;
 		throw std::invalid_argument(buf.str());
 	}
+}
+
+std::istream& operator>>(std::istream& input, CColor& color)
+{
+	std::string colorStr;
+	input >> colorStr;
+	color = colorStr;
+	return input;
 }
 
 bool operator==(const std::string& str, const CColor& color)

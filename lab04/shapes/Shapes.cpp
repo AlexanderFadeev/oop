@@ -1,9 +1,6 @@
 #include "Shapes.hpp"
 #include "SFMLCanvas.hpp"
 
-using ShapePtr = CShapeFactory::ShapePtr;
-using ShapePtrs = CShapeFactory::ShapePtrs;
-
 template <typename PropertyFn>
 ShapePtr FindShapeWithLargestProperty(ShapePtrs& ptrs, PropertyFn fn)
 {
@@ -12,10 +9,21 @@ ShapePtr FindShapeWithLargestProperty(ShapePtrs& ptrs, PropertyFn fn)
 	});
 }
 
+ShapePtr FindShapeWithLargestArea(ShapePtrs& shapes)
+{
+	return FindShapeWithLargestProperty(shapes, &IShape::GetArea);
+	;
+}
+
+ShapePtr FindShapeWithLargestPerimeter(ShapePtrs& shapes)
+{
+	return FindShapeWithLargestProperty(shapes, &IShape::GetPerimeter);
+}
+
 void PrintLargest(std::ostream& output, ShapePtrs shapes)
 {
-	auto shapeWithLargestArea = FindShapeWithLargestProperty(shapes, &IShape::GetArea);
-	auto shapeWithLargestPerimeter = FindShapeWithLargestProperty(shapes, &IShape::GetPerimeter);
+	auto shapeWithLargestArea = FindShapeWithLargestArea(shapes);
+	auto shapeWithLargestPerimeter = FindShapeWithLargestPerimeter(shapes);
 
 	output << "Shape with larges area:\n"
 		   << shapeWithLargestArea->ToString() << '\n'

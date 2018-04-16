@@ -64,14 +64,13 @@ SCENARIO("Colors")
 
 const std::string expectedLineToString =
 	R"(LineSegment {
-	area: 0,
-	perimeter: 10,
+	area: 0.00,
+	perimeter: 10.00,
 	outline color: #FFFFFF,
-	point A: ( 0.5, 0.5 ),
-	point B: ( 3.5, 4.5 ),
-	length: 5,
-}
-)";
+	point A: ( 0.50, 0.50 ),
+	point B: ( 3.50, 4.50 ),
+	length: 5.00,
+})";
 
 SCENARIO("Line Segment")
 {

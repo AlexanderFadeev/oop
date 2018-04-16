@@ -8,5 +8,4 @@ using ShapePtrs = CShapeFactory::ShapePtrs;
 
 ShapePtr FindShapeWithLargestArea(ShapePtrs&);
 ShapePtr FindShapeWithLargestPerimeter(ShapePtrs&);
-void DrawAll(ICanvas& canvas, const ShapePtrs& ptrs);
-void ProcessShapes(std::istream& input, std::ostream& output);
+void PrintLargest(std::ostream& output, ShapePtrs& shapes);

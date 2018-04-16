@@ -1,4 +1,14 @@
 #include "Shapes.hpp"
+#include "Visualization.hpp"
+
+void ProcessShapes(std::istream& input, std::ostream& output)
+{
+	CShapeFactory factory(input);
+	auto shapes = factory.GetAllShapes();
+
+	PrintLargest(output, shapes);
+	Visualize(shapes);
+}
 
 int main() try
 {

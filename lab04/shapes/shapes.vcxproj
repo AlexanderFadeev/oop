@@ -27,6 +27,7 @@
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="ShapeFactory.cpp" />
     <ClCompile Include="Shapes.cpp" />
+    <ClCompile Include="Visualization.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Canvas.hpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="ShapeFactory.hpp" />
     <ClInclude Include="Shapes.hpp" />
     <ClInclude Include="SolidShape.hpp" />
+    <ClInclude Include="Visualization.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -18,19 +18,3 @@ ShapePtr FindShapeWithLargestPerimeter(ShapePtrs& shapes)
 {
 	return FindShapeWithLargestProperty(shapes, &IShape::GetPerimeter);
 }
-
-void PrintLargest(std::ostream& output, ShapePtrs& shapes)
-{
-	auto shapeWithLargestArea = FindShapeWithLargestArea(shapes);
-	auto shapeWithLargestPerimeter = FindShapeWithLargestPerimeter(shapes);
-
-	output << "Shape with largest area:\n"
-		   << shapeWithLargestArea->ToString() << '\n'
-		   << "Shape with largest perimeter:\n"
-		   << shapeWithLargestPerimeter->ToString() << std::endl;
-
-	if (!output)
-	{
-		throw std::runtime_error("Failed to write to output");
-	}
-}

@@ -2,13 +2,6 @@
 #include <iomanip>
 #include <sstream>
 
-CLineSegment::CLineSegment(const CPoint& a, const CPoint& b, const std::string& outlineColor)
-	: m_a(a)
-	, m_b(b)
-	, IShape(outlineColor)
-{
-}
-
 CLineSegment::CLineSegment(const CPoint& a, const CPoint& b, const CColor& outlineColor)
 	: m_a(a)
 	, m_b(b)

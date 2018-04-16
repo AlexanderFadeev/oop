@@ -8,7 +8,6 @@ class CLineSegment final
 	: public IShape
 {
 public:
-	CLineSegment(const CPoint& a, const CPoint& b, const std::string& outlineColor);
 	CLineSegment(const CPoint& a, const CPoint& b, const CColor& outlineColor);
 	~CLineSegment() override = default;
 

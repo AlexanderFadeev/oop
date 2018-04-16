@@ -7,12 +7,6 @@ CColor ISolidShape::GetFillColor() const
 	return m_fillColor;
 }
 
-ISolidShape::ISolidShape(const std::string& outlineColor, const std::string& fillColor)
-	: IShape(outlineColor)
-	, m_fillColor(fillColor)
-{
-}
-
 ISolidShape::ISolidShape(const CColor& outlineColor, const CColor& fillColor)
 	: IShape(outlineColor)
 	, m_fillColor(fillColor)

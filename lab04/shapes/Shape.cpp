@@ -7,11 +7,6 @@ CColor IShape::GetOutlineColor() const
 	return m_outlineColor;
 }
 
-IShape::IShape(const std::string& outlineColor)
-	: m_outlineColor(outlineColor)
-{
-}
-
 IShape::IShape(const CColor& outlineColor)
 	: m_outlineColor(outlineColor)
 {

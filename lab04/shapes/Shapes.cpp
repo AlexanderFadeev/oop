@@ -15,7 +15,7 @@ ShapePtr FindShapeWithLargestProperty(ShapePtrs& ptrs, PropertyFn fn)
 void PrintLargest(std::ostream& output, ShapePtrs shapes)
 {
 	auto shapeWithLargestArea = FindShapeWithLargestProperty(shapes, &IShape::GetArea);
-	auto shapeWithLargestPerimeter = FindShapeWithLargestProperty(shapes, &IShape::GetArea);
+	auto shapeWithLargestPerimeter = FindShapeWithLargestProperty(shapes, &IShape::GetPerimeter);
 
 	output << "Shape with larges area:\n"
 		   << shapeWithLargestArea->ToString() << '\n'

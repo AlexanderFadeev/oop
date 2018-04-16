@@ -6,7 +6,6 @@
 
 class CLineSegment final
 	: public IShape
-	, public ICanvasDrawable
 {
 public:
 	CLineSegment(const CPoint& a, const CPoint& b, const std::string& outlineColor);

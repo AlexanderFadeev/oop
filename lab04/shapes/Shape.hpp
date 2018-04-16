@@ -1,9 +1,11 @@
 #pragma once
 
+#include "CanvasDrawable.hpp"
 #include "Color.hpp"
 #include <string>
 
 class IShape
+	: public ICanvasDrawable
 {
 public:
 	virtual ~IShape() = default;

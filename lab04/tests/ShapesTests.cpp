@@ -176,18 +176,16 @@ SCENARIO("Triangle")
 			}
 		}
 
-		// TODO: Patch FakeIt to work correctly with references
+		THEN("It is drawn properly")
+		{
+			Mock<ICanvas> mock;
+			InitCanvasMock(mock);
 
-		//THEN("It is drawn properly")
-		//{
-		//	Mock<ICanvas> mock;
-		//	InitCanvasMock(mock);
+			triangle.Draw(mock.get());
 
-		//	triangle.Draw(mock.get());
-
-		//	Verify(Method(mock, FillPolygon).Using(std::vector<CPoint>{ a, b, c }, fillColor)).Once();
-		//	VerifyNoOtherInvocations(mock);
-		//}
+			Verify(Method(mock, FillPolygon).Using(std::vector<CPoint>{ a, b, c }, fillColor)).Once();
+			VerifyNoOtherInvocations(mock);
+		}
 	}
 }
 

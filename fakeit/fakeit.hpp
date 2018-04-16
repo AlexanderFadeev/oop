@@ -40,15 +40,14 @@ namespace fakeit {
         typedef typename std::remove_cv<typename std::remove_reference<C>::type>::type type;
     };
 
-    template< class T > struct tuple_arg         { typedef T  type; };
-    template< class T > struct tuple_arg < T& >  { typedef T& type; };
-    template< class T > struct tuple_arg < T&& > { typedef T&&  type; };
+    template< class T > struct tuple_arg { typedef typename std::remove_reference<T>::type  type; };
 
 
 
 
     template<typename... arglist>
-    using ArgumentsTuple = std::tuple < arglist... > ;
+    using ArgumentsTuple = std::tuple < typename std::remove_reference<arglist>::type... >;
+    
 
     template< class T > struct test_arg         { typedef T& type; };
     template< class T > struct test_arg< T& >   { typedef T& type; };

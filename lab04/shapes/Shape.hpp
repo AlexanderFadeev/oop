@@ -18,6 +18,8 @@ public:
 protected:
 	IShape(const std::string& outlineColor);
 	IShape(const CColor& outlineColor);
+
 	std::string FieldsToString(int precision = 2) const;
+
 	CColor m_outlineColor;
 };

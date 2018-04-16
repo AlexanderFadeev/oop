@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LineSegment.hpp"
+#include "Shape.hpp"
 #include <functional>
 #include <iostream>
 #include <map>
@@ -25,4 +25,5 @@ private:
 	static const std::map<std::string, GetShapeFunction> m_getShapeFunctionMapping;
 
 	static ShapePtr GetLine(std::istream&);
+	static ShapePtr GetTriangle(std::istream&);
 };

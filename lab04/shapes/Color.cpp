@@ -24,7 +24,9 @@ CColor& CColor::operator=(const std::string& color)
 	std::smatch match;
 	if (!std::regex_match(color, match, m_colorRegex))
 	{
-		throw std::invalid_argument("Invalid color format");
+		std::ostringstream buf;
+		buf << "Invalid color format: " << color;
+		throw std::invalid_argument(buf.str());
 	}
 
 	std::stringstream ss;

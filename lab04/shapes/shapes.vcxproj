@@ -27,7 +27,8 @@
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="ShapeFactory.cpp" />
     <ClCompile Include="Shapes.cpp" />
-    <ClCompile Include="Visualization.cpp" />
+    <ClCompile Include="SolidShape.cpp" />
+    <ClCompile Include="Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Canvas.hpp" />
@@ -40,7 +41,7 @@
     <ClInclude Include="ShapeFactory.hpp" />
     <ClInclude Include="Shapes.hpp" />
     <ClInclude Include="SolidShape.hpp" />
-    <ClInclude Include="Visualization.hpp" />
+    <ClInclude Include="Triangle.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -131,7 +132,7 @@
       <PreprocessorDefinitions>SFML_DYNAMIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>NotSet</SubSystem>
+      <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)packages\sfml-graphics.2.4.2.0\build\native\lib\Win32\v140\Debug\dynamic;$(SolutionDir)packages\sfml-system.2.4.2.0\build\native\lib\Win32\v140\Debug\dynamic;$(SolutionDir)packages\sfml-window.2.4.2.0\build\native\lib\Win32\v140\Debug\dynamic;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -153,7 +154,7 @@ xcopy /y /d  "$(SolutionDir)packages\sfml-window.redist.2.4.2.0\build\native\bin
       <PreprocessorDefinitions>SFML_DYNAMIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>NotSet</SubSystem>
+      <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)packages\sfml-graphics.2.4.2.0\build\native\lib\x64\v140\Debug\dynamic;$(SolutionDir)packages\sfml-system.2.4.2.0\build\native\lib\x64\v140\Debug\dynamic;$(SolutionDir)packages\sfml-window.2.4.2.0\build\native\lib\x64\v140\Debug\dynamic;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -179,7 +180,7 @@ xcopy /y /d  "$(SolutionDir)packages\sfml-window.redist.2.4.2.0\build\native\bin
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <SubSystem>NotSet</SubSystem>
+      <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)packages\sfml-graphics.2.4.2.0\build\native\lib\Win32\v140\Release\dynamic;$(SolutionDir)packages\sfml-system.2.4.2.0\build\native\lib\Win32\v140\Release\dynamic;$(SolutionDir)packages\sfml-window.2.4.2.0\build\native\lib\Win32\v140\Release\dynamic;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -205,7 +206,7 @@ xcopy /y /d  "$(SolutionDir)packages\sfml-window.redist.2.4.2.0\build\native\bin
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <SubSystem>NotSet</SubSystem>
+      <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)packages\sfml-graphics.2.4.2.0\build\native\lib\x64\v140\Release\dynamic;$(SolutionDir)packages\sfml-system.2.4.2.0\build\native\lib\x64\v140\Release\dynamic;$(SolutionDir)packages\sfml-window.2.4.2.0\build\native\lib\x64\v140\Release\dynamic;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>

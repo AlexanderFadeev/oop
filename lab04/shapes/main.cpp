@@ -1,9 +1,10 @@
+#include "SFMLCanvas.hpp"
 #include "Shapes.hpp"
-#include "Visualization.hpp"
 
 void ProcessShapes(std::istream& input, std::ostream& output);
 void PrintLargest(std::ostream& output, ShapePtrs& shapes);
 void Visualize(ShapePtrs& shapes);
+void DrawAll(ICanvas& canvas, const ShapePtrs& ptrs);
 
 int main() try
 {
@@ -52,4 +53,12 @@ void Visualize(ShapePtrs& shapes)
 	DrawAll(canvas, shapes);
 	canvas.Display();
 	canvas.WaitForCloseEvent();
+}
+
+void DrawAll(ICanvas& canvas, const ShapePtrs& ptrs)
+{
+	for (auto ptr : ptrs)
+	{
+		ptr->Draw(canvas);
+	}
 }

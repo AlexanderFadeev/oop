@@ -162,6 +162,10 @@
     <ClCompile Include="..\shapes\LineSegment.cpp" />
     <ClCompile Include="..\shapes\Point.cpp" />
     <ClCompile Include="..\shapes\Shape.cpp" />
+    <ClCompile Include="..\shapes\ShapeFactory.cpp" />
+    <ClCompile Include="..\shapes\Shapes.cpp" />
+    <ClCompile Include="..\shapes\SolidShape.cpp" />
+    <ClCompile Include="..\shapes\Triangle.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ShapesTests.cpp" />
   </ItemGroup>

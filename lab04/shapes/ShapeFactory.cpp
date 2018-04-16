@@ -1,4 +1,6 @@
 #include "ShapeFactory.hpp"
+#include "LineSegment.hpp"
+#include "Triangle.hpp"
 #include <sstream>
 
 CShapeFactory::CShapeFactory(std::istream& input)
@@ -46,15 +48,28 @@ CShapeFactory::ShapePtrs CShapeFactory::GetAllShapes() const
 
 const std::map<std::string, CShapeFactory::GetShapeFunction> CShapeFactory::m_getShapeFunctionMapping{
 	{ "line", &GetLine },
+	{ "triangle", &GetTriangle },
 };
 
 CShapeFactory::ShapePtr CShapeFactory::GetLine(std::istream& input)
 {
 	CPoint a;
 	CPoint b;
-	CColor c;
+	CColor outlineColor;
 
-	input >> a >> b >> c;
+	input >> a >> b >> outlineColor;
 
-	return std::make_shared<CLineSegment>(a, b, c);
+	return std::make_shared<CLineSegment>(a, b, outlineColor);
+}
+
+CShapeFactory::ShapePtr CShapeFactory::GetTriangle(std::istream& input)
+{
+	CPoint a;
+	CPoint b;
+	CPoint c;
+	CColor outlineColor;
+	CColor fillColor;
+
+	input >> a >> b >> c >> outlineColor >> fillColor;
+	return std::make_shared<CTriangle>(a, b, c, outlineColor, fillColor);
 }

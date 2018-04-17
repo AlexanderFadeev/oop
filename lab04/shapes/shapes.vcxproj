@@ -22,6 +22,7 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="SFMLCanvas.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Shape.cpp" />
@@ -35,6 +36,7 @@
     <ClInclude Include="CanvasDrawable.hpp" />
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="LineSegment.hpp" />
+    <ClInclude Include="Rectangle.hpp" />
     <ClInclude Include="SFMLCanvas.hpp" />
     <ClInclude Include="Point.hpp" />
     <ClInclude Include="Shape.hpp" />

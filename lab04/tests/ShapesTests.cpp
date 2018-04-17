@@ -2,6 +2,7 @@
 #include "Color.hpp"
 #include "LineSegment.hpp"
 #include "Point.hpp"
+#include "Rectangle.hpp"
 #include "ShapeFactory.hpp"
 #include "Triangle.hpp"
 #include "catch.hpp"
@@ -41,6 +42,18 @@ const std::string g_expectedTriangleToString =
 	vertex A: ( 0.50, 0.50 ),
 	vertex B: ( 3.50, 4.50 ),
 	vertex C: ( 0.50, 4.50 ),
+})";
+
+const std::string g_expectedRectangleToString =
+	R"(Rectangle {
+	area: 50.00,
+	perimeter: 30.00,
+	outline color: #777777,
+	fill color: #BEEF42,
+	left top vertex: ( 0.50, 5.50 ),
+	right bottom vertex: ( 5.50, 15.50 ),
+	width: 5.00,
+	height: 10.00,
 })";
 
 SCENARIO("Colors")
@@ -123,7 +136,6 @@ SCENARIO("Line Segment")
 			}
 			AND_THEN("It is properly converted to string")
 			{
-
 				CHECK(g_expectedLineToString == line.ToString());
 			}
 		}
@@ -143,7 +155,6 @@ SCENARIO("Line Segment")
 
 SCENARIO("Triangle")
 {
-
 	GIVEN("A Triangle")
 	{
 		const CPoint a{ .5, .5 };
@@ -171,7 +182,6 @@ SCENARIO("Triangle")
 			}
 			AND_THEN("It is properly converted to string")
 			{
-
 				CHECK(g_expectedTriangleToString == triangle.ToString());
 			}
 		}
@@ -189,6 +199,56 @@ SCENARIO("Triangle")
 	}
 }
 
+SCENARIO("Rectangle")
+{
+	GIVEN("A Rectangle")
+	{
+		const CPoint a{ 0.5, 15.5 };
+		const CPoint b{ 5.5, 5.5 };
+		const CPoint leftTop{ .5, 5.5 };
+		const CPoint rightBot{ 5.5, 15.5 };
+		const CColor outlineColor("777777");
+		const CColor fillColor("beef42");
+		const auto perimeter = 30;
+		const auto area = 50;
+		const auto width = 5;
+		const auto heigth = 10;
+
+		CRectangle rectangle(a, b, outlineColor, fillColor);
+
+		THEN("It is properly initialized")
+		{
+			CHECK(leftTop == rectangle.GetLeftTop());
+			CHECK(rightBot == rectangle.GetRightBottom());
+			CHECK(outlineColor == rectangle.GetOutlineColor());
+			CHECK(fillColor == rectangle.GetFillColor());
+
+			AND_THEN("It has correct property values")
+			{
+				CHECK(perimeter == rectangle.GetPerimeter());
+				CHECK(area == rectangle.GetArea());
+				CHECK(width == rectangle.GetWidth());
+				CHECK(heigth == rectangle.GetHeigth());
+			}
+			AND_THEN("It is properly converted to string")
+			{
+				CHECK(g_expectedRectangleToString == rectangle.ToString());
+			}
+		}
+
+		THEN("It is drawn properly")
+		{
+			Mock<ICanvas> mock;
+			InitCanvasMock(mock);
+
+			rectangle.Draw(mock.get());
+
+			Verify(Method(mock, FillPolygon).Using(std::vector<CPoint>{ leftTop, b, rightBot, a }, fillColor)).Once();
+			VerifyNoOtherInvocations(mock);
+		}
+	}
+}
+
 SCENARIO("Shape Factory")
 {
 	GIVEN("A Shape Factory with valid input data")
@@ -196,11 +256,13 @@ SCENARIO("Shape Factory")
 
 		const std::string validFactoryInputData =
 			R"(line 0.5 .5 3.5 4.5 #FFFFFF
-			   triangle .5 .5 3.5 4.5 .5 4.5 ffffff abcdef)";
+			   triangle .5 .5 3.5 4.5 .5 4.5 ffffff abcdef
+			   rectangle 5.5 15.5 .5 5.5 777777 beef42)";
 
 		const std::vector<std::string> expectedShapesToString{
 			g_expectedLineToString,
 			g_expectedTriangleToString,
+			g_expectedRectangleToString,
 		};
 		auto shapesCount = expectedShapesToString.size();
 

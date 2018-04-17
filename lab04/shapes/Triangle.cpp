@@ -25,17 +25,17 @@ double CTriangle::GetPerimeter() const
 	return ab + bc + ca;
 }
 
-CPoint CTriangle::GetVertexA()
+CPoint CTriangle::GetVertexA() const
 {
 	return m_a;
 }
 
-CPoint CTriangle::GetVertexB()
+CPoint CTriangle::GetVertexB() const
 {
 	return m_b;
 }
 
-CPoint CTriangle::GetVertexC()
+CPoint CTriangle::GetVertexC() const
 {
 	return m_c;
 }

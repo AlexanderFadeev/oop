@@ -10,9 +10,9 @@ public:
 
 	double GetArea() const override;
 	double GetPerimeter() const override;
-	CPoint GetVertexA();
-	CPoint GetVertexB();
-	CPoint GetVertexC();
+	CPoint GetVertexA() const;
+	CPoint GetVertexB() const;
+	CPoint GetVertexC() const;
 
 	std::string ToString(int precision = 2) const override;
 

@@ -158,6 +158,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\shapes\Circle.cpp" />
     <ClCompile Include="..\shapes\Color.cpp" />
     <ClCompile Include="..\shapes\LineSegment.cpp" />
     <ClCompile Include="..\shapes\Point.cpp" />

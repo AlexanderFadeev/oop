@@ -1,4 +1,5 @@
 #include "Canvas.hpp"
+#include "Circle.hpp"
 #include "Color.hpp"
 #include "LineSegment.hpp"
 #include "Point.hpp"
@@ -54,6 +55,16 @@ const std::string g_expectedRectangleToString =
 	right bottom vertex: ( 5.50, 15.50 ),
 	width: 5.00,
 	height: 10.00,
+})";
+
+const std::string g_expectedCircleToString =
+	R"(Circle {
+	area: 314.16,
+	perimeter: 62.83,
+	outline color: #112233,
+	fill color: #FFF111,
+	center point: ( 100500.00, 42.00 ),
+	radius: 10.00,
 })";
 
 SCENARIO("Colors")
@@ -249,6 +260,51 @@ SCENARIO("Rectangle")
 	}
 }
 
+SCENARIO("Circle")
+{
+	GIVEN("A Circle")
+	{
+		const double pi = std::atan(1) * 4;
+		const CPoint center{ 100500, 42 };
+		const double radius = 10;
+		const CColor outlineColor("112233");
+		const CColor fillColor("fff111");
+		const auto perimeter = 2 * pi * radius;
+		const auto area = pi * radius * radius;
+
+		CCircle circle(center, radius, outlineColor, fillColor);
+
+		THEN("It is properly initialized")
+		{
+			CHECK(center == circle.GetCenter());
+			CHECK(radius == circle.GetRadius());
+			CHECK(outlineColor == circle.GetOutlineColor());
+			CHECK(fillColor == circle.GetFillColor());
+
+			AND_THEN("It has correct property values")
+			{
+				CHECK(perimeter == circle.GetPerimeter());
+				CHECK(area == circle.GetArea());
+			}
+			AND_THEN("It is properly converted to string")
+			{
+				CHECK(g_expectedCircleToString == circle.ToString());
+			}
+		}
+
+		THEN("It is drawn properly")
+		{
+			Mock<ICanvas> mock;
+			InitCanvasMock(mock);
+
+			circle.Draw(mock.get());
+
+			Verify(Method(mock, FillCircle).Using(center, radius, fillColor)).Once();
+			VerifyNoOtherInvocations(mock);
+		}
+	}
+}
+
 SCENARIO("Shape Factory")
 {
 	GIVEN("A Shape Factory with valid input data")
@@ -257,12 +313,14 @@ SCENARIO("Shape Factory")
 		const std::string validFactoryInputData =
 			R"(line 0.5 .5 3.5 4.5 #FFFFFF
 			   triangle .5 .5 3.5 4.5 .5 4.5 ffffff abcdef
-			   rectangle 5.5 15.5 .5 5.5 777777 beef42)";
+			   rectangle 5.5 15.5 .5 5.5 777777 beef42
+			   circle 100500.0 42 10 112233 fff111)";
 
 		const std::vector<std::string> expectedShapesToString{
 			g_expectedLineToString,
 			g_expectedTriangleToString,
 			g_expectedRectangleToString,
+			g_expectedCircleToString,
 		};
 		auto shapesCount = expectedShapesToString.size();
 

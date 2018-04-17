@@ -1,4 +1,5 @@
 #include "ShapeFactory.hpp"
+#include "Circle.hpp"
 #include "LineSegment.hpp"
 #include "Rectangle.hpp"
 #include "Triangle.hpp"
@@ -51,6 +52,7 @@ const std::map<std::string, CShapeFactory::GetShapeFunction> CShapeFactory::m_ge
 	{ "line", &GetLine },
 	{ "triangle", &GetTriangle },
 	{ "rectangle", &GetRectangle },
+	{ "circle", &GetCircle },
 };
 
 CShapeFactory::ShapePtr CShapeFactory::GetLine(std::istream& input)
@@ -85,4 +87,15 @@ CShapeFactory::ShapePtr CShapeFactory::GetRectangle(std::istream& input)
 
 	input >> a >> b >> outlineColor >> fillColor;
 	return std::make_shared<CRectangle>(a, b, outlineColor, fillColor);
+}
+
+CShapeFactory::ShapePtr CShapeFactory::GetCircle(std::istream& input)
+{
+	CPoint center;
+	double radius;
+	CColor outlineColor;
+	CColor fillColor;
+
+	input >> center >> radius >> outlineColor >> fillColor;
+	return std::make_shared<CCircle>(center, radius, outlineColor, fillColor);
 }

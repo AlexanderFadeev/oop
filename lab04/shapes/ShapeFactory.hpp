@@ -27,4 +27,5 @@ private:
 	static ShapePtr GetLine(std::istream&);
 	static ShapePtr GetTriangle(std::istream&);
 	static ShapePtr GetRectangle(std::istream&);
+	static ShapePtr GetCircle(std::istream&);
 };

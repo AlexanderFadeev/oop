@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="main.cpp" />
@@ -34,6 +35,7 @@
   <ItemGroup>
     <ClInclude Include="Canvas.hpp" />
     <ClInclude Include="CanvasDrawable.hpp" />
+    <ClInclude Include="Circle.hpp" />
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="LineSegment.hpp" />
     <ClInclude Include="Rectangle.hpp" />

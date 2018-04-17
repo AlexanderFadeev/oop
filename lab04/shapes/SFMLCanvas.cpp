@@ -44,7 +44,8 @@ void CSFMLCanvas::DrawCircle(const CPoint& center, double radius, const CColor& 
 void CSFMLCanvas::FillCircle(const CPoint& center, double radius, const CColor& color)
 {
 	sf::CircleShape circle(static_cast<float>(radius));
-	circle.setPosition(Vector2f(center));
+	CPoint pos{ center.x - radius, center.y - radius };
+	circle.setPosition(Vector2f(pos));
 	circle.setFillColor(Color(color));
 
 	m_window.draw(circle);

@@ -16,57 +16,6 @@
 
 using namespace fakeit;
 
-void InitCanvasMock(Mock<ICanvas>& mock)
-{
-	Fake(Method(mock, DrawLine));
-	Fake(Method(mock, FillPolygon));
-	Fake(Method(mock, DrawCircle));
-	Fake(Method(mock, FillCircle));
-}
-
-const std::string g_expectedLineToString =
-	R"(LineSegment {
-	area: 0.00,
-	perimeter: 10.00,
-	outline color: #FFFFFF,
-	point A: ( 0.50, 0.50 ),
-	point B: ( 3.50, 4.50 ),
-	length: 5.00,
-})";
-
-const std::string g_expectedTriangleToString =
-	R"(Triangle {
-	area: 6.00,
-	perimeter: 12.00,
-	outline color: #FFFFFF,
-	fill color: #ABCDEF,
-	vertex A: ( 0.50, 0.50 ),
-	vertex B: ( 3.50, 4.50 ),
-	vertex C: ( 0.50, 4.50 ),
-})";
-
-const std::string g_expectedRectangleToString =
-	R"(Rectangle {
-	area: 50.00,
-	perimeter: 30.00,
-	outline color: #777777,
-	fill color: #BEEF42,
-	left top vertex: ( 0.50, 5.50 ),
-	right bottom vertex: ( 5.50, 15.50 ),
-	width: 5.00,
-	height: 10.00,
-})";
-
-const std::string g_expectedCircleToString =
-	R"(Circle {
-	area: 314.16,
-	perimeter: 62.83,
-	outline color: #112233,
-	fill color: #FFF111,
-	center point: ( 100500.00, 42.00 ),
-	radius: 10.00,
-})";
-
 SCENARIO("Colors")
 {
 	GIVEN("Valid hex colors")
@@ -122,6 +71,73 @@ SCENARIO("Colors")
 	}
 }
 
+const std::string g_expectedLineToString =
+	R"(LineSegment {
+	area: 0.00,
+	perimeter: 10.00,
+	outline color: #FFFFFF,
+	point A: ( 0.50, 0.50 ),
+	point B: ( 3.50, 4.50 ),
+	length: 5.00,
+})";
+
+const std::string g_expectedTriangleToString =
+	R"(Triangle {
+	area: 6.00,
+	perimeter: 12.00,
+	outline color: #FFFFFF,
+	fill color: #ABCDEF,
+	vertex A: ( 0.50, 0.50 ),
+	vertex B: ( 3.50, 4.50 ),
+	vertex C: ( 0.50, 4.50 ),
+})";
+
+const std::string g_expectedRectangleToString =
+	R"(Rectangle {
+	area: 50.00,
+	perimeter: 30.00,
+	outline color: #777777,
+	fill color: #BEEF42,
+	left top vertex: ( 0.50, 5.50 ),
+	right bottom vertex: ( 5.50, 15.50 ),
+	width: 5.00,
+	height: 10.00,
+})";
+
+const std::string g_expectedCircleToString =
+	R"(Circle {
+	area: 314.16,
+	perimeter: 62.83,
+	outline color: #112233,
+	fill color: #FFF111,
+	center point: ( 100500.00, 42.00 ),
+	radius: 10.00,
+})";
+
+void InitCanvasMock(Mock<ICanvas>& mock)
+{
+	Fake(Method(mock, DrawLine));
+	Fake(Method(mock, FillPolygon));
+	Fake(Method(mock, DrawCircle));
+	Fake(Method(mock, FillCircle));
+}
+
+void CheckShapeProperties(const IShape& shape, double expectedArea,
+	double expectedPerimeter, const std::string& expectedToString, const CColor& expectedOutlineColor)
+{
+	CHECK(expectedPerimeter == shape.GetPerimeter());
+	CHECK(expectedArea == shape.GetArea());
+	CHECK(expectedToString == shape.ToString());
+	CHECK(expectedOutlineColor == shape.GetOutlineColor());
+}
+
+void CheckShapeProperties(const ISolidShape& shape, double expectedArea, double expectedPerimeter,
+	const std::string& expectedToString, const CColor& expectedOutlineColor, const CColor& expectedFillColor)
+{
+	CheckShapeProperties(shape, expectedArea, expectedPerimeter, expectedToString, expectedOutlineColor);
+	CHECK(expectedFillColor == shape.GetFillColor());
+}
+
 SCENARIO("Line Segment")
 {
 	GIVEN("A Line Segment")
@@ -135,20 +151,10 @@ SCENARIO("Line Segment")
 
 		THEN("It is properly initialized")
 		{
+			CheckShapeProperties(line, 0, 2 * len, g_expectedLineToString, color);
 			CHECK(a == line.GetPointA());
 			CHECK(b == line.GetPointB());
-			CHECK(color == line.GetOutlineColor());
-
-			AND_THEN("It has correct property values")
-			{
-				CHECK(len == line.GetLength());
-				CHECK(2 * len == line.GetPerimeter());
-				CHECK(0 == line.GetArea());
-			}
-			AND_THEN("It is properly converted to string")
-			{
-				CHECK(g_expectedLineToString == line.ToString());
-			}
+			CHECK(len == line.GetLength());
 		}
 
 		THEN("It is drawn properly")
@@ -180,21 +186,10 @@ SCENARIO("Triangle")
 
 		THEN("It is properly initialized")
 		{
+			CheckShapeProperties(triangle, area, perimeter, g_expectedTriangleToString, outlineColor, fillColor);
 			CHECK(a == triangle.GetVertexA());
 			CHECK(b == triangle.GetVertexB());
 			CHECK(c == triangle.GetVertexC());
-			CHECK(outlineColor == triangle.GetOutlineColor());
-			CHECK(fillColor == triangle.GetFillColor());
-
-			AND_THEN("It has correct property values")
-			{
-				CHECK(perimeter == triangle.GetPerimeter());
-				CHECK(area == triangle.GetArea());
-			}
-			AND_THEN("It is properly converted to string")
-			{
-				CHECK(g_expectedTriangleToString == triangle.ToString());
-			}
 		}
 
 		THEN("It is drawn properly")
@@ -204,7 +199,12 @@ SCENARIO("Triangle")
 
 			triangle.Draw(mock.get());
 
-			Verify(Method(mock, FillPolygon).Using(std::vector<CPoint>{ a, b, c }, fillColor)).Once();
+			Verify(
+				Method(mock, FillPolygon).Using(std::vector<CPoint>{ a, b, c }, fillColor) +
+				Method(mock, DrawLine).Using(a, b, outlineColor) +
+				Method(mock, DrawLine).Using(b, c, outlineColor) +
+				Method(mock, DrawLine).Using(c, a, outlineColor)
+			).Once();
 			VerifyNoOtherInvocations(mock);
 		}
 	}
@@ -214,37 +214,26 @@ SCENARIO("Rectangle")
 {
 	GIVEN("A Rectangle")
 	{
-		const CPoint a{ 0.5, 15.5 };
-		const CPoint b{ 5.5, 5.5 };
 		const CPoint leftTop{ .5, 5.5 };
+		const CPoint rightTop{ 5.5, 5.5 };
 		const CPoint rightBot{ 5.5, 15.5 };
+		const CPoint leftBot{ 0.5, 15.5 };
 		const CColor outlineColor("777777");
 		const CColor fillColor("beef42");
-		const auto perimeter = 30;
-		const auto area = 50;
 		const auto width = 5;
 		const auto heigth = 10;
+		const auto perimeter = 2 * (width + heigth);
+		const auto area = width * heigth;
 
-		CRectangle rectangle(a, b, outlineColor, fillColor);
+		CRectangle rectangle(leftBot, rightTop, outlineColor, fillColor);
 
 		THEN("It is properly initialized")
 		{
+			CheckShapeProperties(rectangle, area, perimeter, g_expectedRectangleToString, outlineColor, fillColor);
+			CHECK(width == rectangle.GetWidth());
+			CHECK(heigth == rectangle.GetHeigth());
 			CHECK(leftTop == rectangle.GetLeftTop());
 			CHECK(rightBot == rectangle.GetRightBottom());
-			CHECK(outlineColor == rectangle.GetOutlineColor());
-			CHECK(fillColor == rectangle.GetFillColor());
-
-			AND_THEN("It has correct property values")
-			{
-				CHECK(perimeter == rectangle.GetPerimeter());
-				CHECK(area == rectangle.GetArea());
-				CHECK(width == rectangle.GetWidth());
-				CHECK(heigth == rectangle.GetHeigth());
-			}
-			AND_THEN("It is properly converted to string")
-			{
-				CHECK(g_expectedRectangleToString == rectangle.ToString());
-			}
 		}
 
 		THEN("It is drawn properly")
@@ -254,7 +243,13 @@ SCENARIO("Rectangle")
 
 			rectangle.Draw(mock.get());
 
-			Verify(Method(mock, FillPolygon).Using(std::vector<CPoint>{ leftTop, b, rightBot, a }, fillColor)).Once();
+			Verify(
+				Method(mock, FillPolygon).Using(std::vector<CPoint>{ leftTop, rightTop, rightBot, leftBot }, fillColor) +
+				Method(mock, DrawLine).Using(leftTop, rightTop, outlineColor) +
+				Method(mock, DrawLine).Using(rightTop, rightBot, outlineColor) +
+				Method(mock, DrawLine).Using(rightBot, leftBot, outlineColor) +
+				Method(mock, DrawLine).Using(leftBot, leftTop, outlineColor)
+			).Once();
 			VerifyNoOtherInvocations(mock);
 		}
 	}
@@ -276,20 +271,9 @@ SCENARIO("Circle")
 
 		THEN("It is properly initialized")
 		{
+			CheckShapeProperties(circle, area, perimeter, g_expectedCircleToString, outlineColor, fillColor);
 			CHECK(center == circle.GetCenter());
 			CHECK(radius == circle.GetRadius());
-			CHECK(outlineColor == circle.GetOutlineColor());
-			CHECK(fillColor == circle.GetFillColor());
-
-			AND_THEN("It has correct property values")
-			{
-				CHECK(perimeter == circle.GetPerimeter());
-				CHECK(area == circle.GetArea());
-			}
-			AND_THEN("It is properly converted to string")
-			{
-				CHECK(g_expectedCircleToString == circle.ToString());
-			}
 		}
 
 		THEN("It is drawn properly")
@@ -299,7 +283,10 @@ SCENARIO("Circle")
 
 			circle.Draw(mock.get());
 
-			Verify(Method(mock, FillCircle).Using(center, radius, fillColor)).Once();
+			Verify(
+				Method(mock, FillCircle).Using(center, radius, fillColor) +
+				Method(mock, DrawCircle).Using(center, radius, outlineColor)
+			).Once();
 			VerifyNoOtherInvocations(mock);
 		}
 	}

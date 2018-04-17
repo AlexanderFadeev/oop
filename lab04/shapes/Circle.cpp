@@ -46,6 +46,7 @@ std::string CCircle::ToString(int precision) const
 void CCircle::Draw(ICanvas& canvas)
 {
 	canvas.FillCircle(m_center, m_radius, m_fillColor);
+	canvas.DrawCircle(m_center, m_radius, m_outlineColor);
 }
 
 double CCircle::GetPi()

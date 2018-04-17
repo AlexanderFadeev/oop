@@ -63,6 +63,10 @@ void CRectangle::Draw(ICanvas& canvas)
 	CPoint leftBot{ m_leftTop.x, m_rightBot.y };
 
 	canvas.FillPolygon({ m_leftTop, rightTop, m_rightBot, leftBot }, m_fillColor);
+	canvas.DrawLine(m_leftTop, rightTop, m_outlineColor);
+	canvas.DrawLine(rightTop, m_rightBot, m_outlineColor);
+	canvas.DrawLine(m_rightBot, leftBot, m_outlineColor);
+	canvas.DrawLine(leftBot, m_leftTop, m_outlineColor);
 }
 
 template <typename T>

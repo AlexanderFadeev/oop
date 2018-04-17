@@ -58,6 +58,9 @@ std::string CTriangle::ToString(int precision) const
 void CTriangle::Draw(ICanvas& canvas)
 {
 	canvas.FillPolygon({ m_a, m_b, m_c }, m_fillColor);
+	canvas.DrawLine(m_a, m_b, m_outlineColor);
+	canvas.DrawLine(m_b, m_c, m_outlineColor);
+	canvas.DrawLine(m_c, m_a, m_outlineColor);
 }
 
 std::tuple<double, double, double> CTriangle::GetSides() const

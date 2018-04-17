@@ -33,7 +33,7 @@ void CSFMLCanvas::FillPolygon(const std::vector<CPoint>& points, const CColor& c
 void CSFMLCanvas::DrawCircle(const CPoint& center, double radius, const CColor& color)
 {
 	sf::CircleShape circle(static_cast<float>(radius));
-	circle.setPosition(Vector2f(center));
+	circle.setPosition(GetCirclePos(center, radius));
 	circle.setFillColor(sf::Color(0, 0, 0, 0));
 	circle.setOutlineColor(Color(color));
 	circle.setOutlineThickness(1);
@@ -44,8 +44,7 @@ void CSFMLCanvas::DrawCircle(const CPoint& center, double radius, const CColor& 
 void CSFMLCanvas::FillCircle(const CPoint& center, double radius, const CColor& color)
 {
 	sf::CircleShape circle(static_cast<float>(radius));
-	CPoint pos{ center.x - radius, center.y - radius };
-	circle.setPosition(Vector2f(pos));
+	circle.setPosition(GetCirclePos(center, radius));
 	circle.setFillColor(Color(color));
 
 	m_window.draw(circle);
@@ -79,4 +78,10 @@ sf::Color CSFMLCanvas::Color(const CColor& color)
 sf::Vector2f CSFMLCanvas::Vector2f(const CPoint& point)
 {
 	return sf::Vector2f(static_cast<float>(point.x), static_cast<float>(point.y));
+}
+
+sf::Vector2f CSFMLCanvas::GetCirclePos(const CPoint& center, double radius)
+{
+	CPoint pos{ center.x - radius, center.y - radius };
+	return Vector2f(pos);
 }

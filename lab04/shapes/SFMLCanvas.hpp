@@ -25,4 +25,5 @@ private:
 
 	static sf::Color Color(const CColor&);
 	static sf::Vector2f Vector2f(const CPoint&);
+	static sf::Vector2f GetCirclePos(const CPoint&, double);
 };

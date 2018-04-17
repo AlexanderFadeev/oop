@@ -296,7 +296,6 @@ SCENARIO("Shape Factory")
 {
 	GIVEN("A Shape Factory with valid input data")
 	{
-
 		const std::string validFactoryInputData =
 			R"(line 0.5 .5 3.5 4.5 #FFFFFF
 			   triangle .5 .5 3.5 4.5 .5 4.5 ffffff abcdef
@@ -330,6 +329,65 @@ SCENARIO("Shape Factory")
 						CHECK(shapes[index]->ToString() == expectedShapesToString[index]);
 					}
 				}
+			}
+		}
+	}
+
+	GIVEN("Wrong input data") 
+	{
+		std::vector<std::string> wrongInputData{
+			"line1 2 3 4 #666666",
+			"line a 2 3 4 #666666",
+			"line 1 a 3 4 #666666",
+			"line 1 2 a 4 #666666",
+			"line 1 2 3 a #666666",
+			"line 1 2 3 4 #xyzzy1",
+			"line 1 2 3 4",
+			"line 1 2 3 #abcdef",
+			"line 1 2 3 4 5 #abcdef",
+
+			"triangle1 2 3 4 5 6 #abcdef",
+			"triangle a 2 3 4 5 6 #abcdef",
+			"triangle 1 a 3 4 5 6 #abcdef",
+			"triangle 1 2 a 4 5 6 #abcdef",
+			"triangle 1 2 3 a 5 6 #abcdef",
+			"triangle 1 2 3 4 a 6 #abcdef",
+			"triangle 1 2 3 4 5 a #abcdef",
+			"triangle 1 2 3 4 5 6 #wrongc #abcdef",
+			"triangle 1 2 3 4 5 6 #abcdef #wrongc",
+			"triangle 1 2 3 4 5 6 #abcdef",
+			"triangle 1 2 3 4 5 #abcdef #abcdef",
+			"triangle 1 2 3 4 5 6 7 #abcdef #abcdef",
+
+			"rectangle1 2 3 4 #abcdef #123456",
+			"rectangle a 2 3 4 #abcdef #123456",
+			"rectangle 1 a 3 4 #abcdef #123456",
+			"rectangle 1 2 a 4 #abcdef #123456",
+			"rectangle 1 2 3 a #abcdef #123456",
+			"rectangle 1 2 3 4 #wrongc #123456",
+			"rectangle 1 2 3 4 #abcdef #wrongc",
+			"rectangle 1 2 3 4 #abcdef",
+			"rectangle 1 2 3 #abcdef #abcdef",
+			"rectangle 1 2 3 4 5 #abcdef #abcdef",
+
+			"circle1 2 3 #abcdef #abcdef",
+			"circle a 2 3 #abcdef #abcdef",
+			"circle 1 a 3 #abcdef #abcdef",
+			"circle 1 2 a #abcdef #abcdef",
+			"circle 1 2 3 #wrongc #abcdef",
+			"circle 1 2 3 #abcdef #wrongc",
+			"circle 1 2 3 #abcdef",
+			"circle 1 2 #abcdef #abcdef",
+		};
+
+		THEN("Factory throws if it's given wrong data")
+		{
+			for (auto& wrongInputLine : wrongInputData)
+			{
+				std::istringstream iss(wrongInputLine);
+				CShapeFactory factory(iss);
+
+				CHECK_THROWS(factory.GetShape());
 			}
 		}
 	}

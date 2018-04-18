@@ -1,20 +1,16 @@
 #include "Shapes.hpp"
 
-template <typename PropertyFn>
-ShapePtr FindShapeWithLargestProperty(ShapePtrs& ptrs, PropertyFn fn)
-{
-	return *std::max_element(ptrs.begin(), ptrs.end(), [&fn](auto a, auto b) {
-		return std::invoke(fn, *a) < std::invoke(fn, *b);
-	});
-}
-
 ShapePtr FindShapeWithLargestArea(ShapePtrs& shapes)
 {
-	return FindShapeWithLargestProperty(shapes, &IShape::GetArea);
+	return *std::max_element(shapes.begin(), shapes.end(), [](auto a, auto b) {
+		return a->GetArea() < b->GetArea();
+	});
 	;
 }
 
-ShapePtr FindShapeWithLargestPerimeter(ShapePtrs& shapes)
+ShapePtr FindShapeWithSmallestPerimeter(ShapePtrs& shapes)
 {
-	return FindShapeWithLargestProperty(shapes, &IShape::GetPerimeter);
+	return *std::max_element(shapes.begin(), shapes.end(), [](auto a, auto b) {
+		return a->GetPerimeter() < b->GetPerimeter();
+	});
 }

@@ -2,7 +2,7 @@
 #include "Shapes.hpp"
 
 void ProcessShapes(std::istream& input, std::ostream& output);
-void PrintLargest(std::ostream& output, ShapePtrs& shapes);
+void PrintShapesInfo(std::ostream& output, ShapePtrs& shapes);
 void Visualize(ShapePtrs& shapes);
 void DrawAll(ICanvas& canvas, const ShapePtrs& ptrs);
 
@@ -27,18 +27,18 @@ void ProcessShapes(std::istream& input, std::ostream& output)
 	CShapeFactory factory(input);
 	auto shapes = factory.GetAllShapes();
 
-	PrintLargest(output, shapes);
+	PrintShapesInfo(output, shapes);
 	Visualize(shapes);
 }
 
-void PrintLargest(std::ostream& output, ShapePtrs& shapes)
+void PrintShapesInfo(std::ostream& output, ShapePtrs& shapes)
 {
 	auto shapeWithLargestArea = FindShapeWithLargestArea(shapes);
-	auto shapeWithLargestPerimeter = FindShapeWithLargestPerimeter(shapes);
+	auto shapeWithLargestPerimeter = FindShapeWithSmallestPerimeter(shapes);
 
 	output << "Shape with largest area:\n"
 		   << shapeWithLargestArea->ToString() << '\n'
-		   << "Shape with largest perimeter:\n"
+		   << "Shape with smallest perimeter:\n"
 		   << shapeWithLargestPerimeter->ToString() << std::endl;
 
 	if (!output)

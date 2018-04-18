@@ -11,51 +11,35 @@ bool StringLess::operator()(const std::string& a, const std::string& b) const
 	return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(), charLess);
 }
 
+CDictionary::CDictionary()
+	: m_data(std::make_shared<Container>())
+{
+}
+
 void CDictionary::Add(const std::string& word, const std::string& translation)
 {
-	m_data.insert({ word, translation });
+	m_data->insert({ word, translation });
 	if (word != translation)
 	{
-		m_data.insert({ translation, word });
+		m_data->insert({ translation, word });
 	}
 }
 
 bool CDictionary::Has(const std::string& word) const
 {
-	return m_data.find(word) != m_data.end();
+	return m_data->find(word) != m_data->end();
 }
 
 CDictionary::Range CDictionary::Find(const std::string& word) const
 {
-	return m_data.equal_range(word);
+	return m_data->equal_range(word);
 }
 
-void CDictionary::ReadData(std::istream& input)
+const CDictionary::ContainerSPtr CDictionary::GetData()
 {
-	std::string word, translation;
-
-	while (std::getline(input, word) && std::getline(input, translation))
-	{
-		Add(word, translation);
-	}
+	return m_data;
 }
 
-void CDictionary::WriteData(std::ostream& output) const
-{
-	for (auto& relation : m_data)
-	{
-		if (relation.first <= relation.second)
-		{
-			output << relation.first << std::endl
-				   << relation.second << std::endl;
-		}
-	}
-
-	if (!output)
-	{
-		throw std::runtime_error("Failed to write out dictionary data");
-	}
-}
 
 void SetCodePage(int cp)
 {

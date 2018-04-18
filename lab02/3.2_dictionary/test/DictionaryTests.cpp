@@ -3,38 +3,6 @@
 #include <string>
 #include <vector>
 
-const std::vector<std::string> INVALID_RUSSIAN_COLLOCATIONS{
-	"",
-	"42",
-	"Привет111",
-	"Привет!",
-	"Привет-",
-	"Hello",
-};
-
-const std::vector<std::string> VALID_RUSSIAN_COLLOCATIONS{
-	"Привет",
-	"Привет Мир",
-	"кек-чебурек",
-	"Красная Площадь",
-};
-
-const std::vector<std::string> INVALID_ENGLISH_COLLOCATIONS{
-	"",
-	"42",
-	"Hello111",
-	"Hello!",
-	"Hello-",
-	"Привет",
-};
-
-const std::vector<std::string> VALID_ENGLISH_COLLOCATIONS{
-	"Hello",
-	"Hello World",
-	"kek-chebureck",
-	"The Red Square",
-};
-
 SCENARIO("Basic functionality")
 {
 	GIVEN("A dictionary")
@@ -62,45 +30,19 @@ SCENARIO("Basic functionality")
 				}
 			}
 		}
-
-		THEN("Only valid English words or collocations can be added to it")
-		{
-			for (auto& word : VALID_ENGLISH_COLLOCATIONS)
-			{
-				CHECK_NOTHROW(dict.Add(word, "абв"));
-			}
-
-			for (auto& word : INVALID_ENGLISH_COLLOCATIONS)
-			{
-				CHECK_THROWS(dict.Add(word, "абв"));
-			}
-		}
-
-		THEN("Only valid Russian words or collocations can be added to it")
-		{
-			for (auto& word : VALID_RUSSIAN_COLLOCATIONS)
-			{
-				CHECK_NOTHROW(dict.Add("abc", word));
-			}
-
-			for (auto& word : INVALID_RUSSIAN_COLLOCATIONS)
-			{
-				CHECK_THROWS(dict.Add("abc", word));
-			}
-		}
 	}
 }
 
 SCENARIO("Case insensitivity")
 {
-	GIVEN("A dictionary")
+	GIVEN("A dictionary with sample word")
 	{
 		SetCodePage(1251);
 		CDictionary dict;
+		dict.Add("Cat", "Кот");
 
 		THEN("It is case insensitive for English collocataions")
 		{
-			dict.Add("Cat", "Кот");
 			CHECK(dict.Has("Cat"));
 			CHECK(dict.Has("cat"));
 			CHECK(dict.Has("CAT"));
@@ -108,7 +50,6 @@ SCENARIO("Case insensitivity")
 
 		THEN("It is case insensitive for Russian collocataions")
 		{
-			dict.Add("Cat", "Кот");
 			CHECK(dict.Has("Кот"));
 			CHECK(dict.Has("кот"));
 			CHECK(dict.Has("КОТ"));
@@ -127,7 +68,7 @@ SCENARIO("Reverse translation")
 		{
 			dict.Add("Cat", "Кот");
 
-			THEN("Russian word can be found")
+			THEN("Reversive translation can be performed")
 			{
 				REQUIRE(dict.Has("Кот"));
 			}

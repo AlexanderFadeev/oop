@@ -25,14 +25,6 @@ public:
 
 private:
 	Container m_data;
-
-	static const std::regex m_russianRegex;
-	static const std::regex m_englishRegex;
-
-	static bool IsRussian(const std::string word);
-	static bool IsEnglish(const std::string word);
-	static void VerifyIsRussian(const std::string& word);
-	static void VerifyIsEnglish(const std::string& word);
 };
 
 void SetCodePage(int cp);

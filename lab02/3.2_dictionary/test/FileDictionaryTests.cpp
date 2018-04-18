@@ -46,6 +46,8 @@ SCENARIO("File handling")
 
 				CHECK(otherDict.Has("Cat"));
 				CHECK(otherDict.Has("Hi"));
+				CHECK(otherDict.Has("Кот"));
+				CHECK(otherDict.Has("Привет"));
 			}
 		}
 	}

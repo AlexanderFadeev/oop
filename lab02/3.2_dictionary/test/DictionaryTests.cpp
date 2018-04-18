@@ -18,9 +18,10 @@ SCENARIO("Basic functionality")
 			}
 			AND_WHEN("Sample word is added")
 			{
+				dict.Add("Cat", "Кот");
+
 				THEN("Sample word can be found")
 				{
-					dict.Add("Cat", "Кот");
 					REQUIRE(dict.Has("Cat"));
 
 					auto range = dict.Find("Cat");

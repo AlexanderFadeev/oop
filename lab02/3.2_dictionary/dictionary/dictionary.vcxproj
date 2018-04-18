@@ -133,13 +133,11 @@
   <ItemGroup>
     <ClCompile Include="Dictionary.cpp" />
     <ClCompile Include="DictionaryControl.cpp" />
-    <ClCompile Include="FileDictionary.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dictionary.hpp" />
     <ClInclude Include="DictionaryControl.hpp" />
-    <ClInclude Include="FileDictionary.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

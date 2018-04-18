@@ -1,11 +1,37 @@
 #include "DictionaryControl.hpp"
 #include <algorithm>
+#include <fstream>
 
-CDictionaryControl::CDictionaryControl(CFileDictionary& dictionary, std::istream& input, std::ostream& output)
+CDictionaryControl::CDictionaryControl(CDictionary& dictionary,
+	const std::string& dictionaryFilePath, std::istream& input, std::ostream& output)
 	: m_dictionary(dictionary)
+	, m_path(dictionaryFilePath)
 	, m_input(input)
 	, m_output(output)
 {
+	Load();
+}
+
+void CDictionaryControl::Load()
+{
+	std::ifstream file(m_path);
+	if (!file.is_open())
+	{
+		return;
+	}
+
+	m_dictionary.ReadData(file);
+}
+
+void CDictionaryControl::Save()
+{
+	std::ofstream file(m_path);
+	if (!file.is_open())
+	{
+		throw std::runtime_error("Failed to open output file");
+	}
+
+	m_dictionary.WriteData(file);
 }
 
 void CDictionaryControl::PrintTranslations(const std::string& word)
@@ -84,7 +110,7 @@ void CDictionaryControl::HandleCommands()
 
 	if (ShouldBeSaved())
 	{
-		m_dictionary.Save();
+		Save();
 		m_output << "Изменения сохранены. До свидания." << std::endl;
 	}
 }

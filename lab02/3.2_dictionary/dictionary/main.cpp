@@ -1,5 +1,5 @@
 #include "DictionaryControl.hpp"
-#include "FileDictionary.hpp"
+#include "Dictionary.hpp"
 #include <exception>
 #include <iostream>
 
@@ -22,8 +22,8 @@ int main(int argc, char* argv[])
 	try
 	{
 		SetCodePage(1251);
-		CFileDictionary dict(argv[1]);
-		CDictionaryControl control(dict);
+		CDictionary dict;
+		CDictionaryControl control(dict, argv[1]);
 		control.HandleCommands();
 		return 0;
 	}

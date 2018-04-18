@@ -24,18 +24,12 @@
     <ClCompile Include="DictionaryControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileDictionary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dictionary.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DictionaryControl.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FileDictionary.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

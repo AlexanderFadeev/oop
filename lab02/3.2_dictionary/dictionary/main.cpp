@@ -1,4 +1,4 @@
-#include "DictionaryControl.hpp"
+#include "Controller.hpp"
 #include "Dictionary.hpp"
 #include <exception>
 #include <iostream>
@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 	{
 		SetCodePage(1251);
 		CDictionary dict;
-		CDictionaryControl control(dict, argv[1]);
+		CController control(dict, argv[1]);
 		control.HandleCommands();
 		return 0;
 	}

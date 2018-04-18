@@ -155,9 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\dictionary\Dictionary.cpp" />
-    <ClCompile Include="..\dictionary\FileDictionary.cpp" />
     <ClCompile Include="DictionaryTests.cpp" />
-    <ClCompile Include="FileDictionaryTests.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

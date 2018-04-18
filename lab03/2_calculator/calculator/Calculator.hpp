@@ -28,15 +28,6 @@ private:
 	IDMapping<CVariable> m_variables;
 	IDMapping<CFunction> m_functions;
 
-	template <typename T>
-	bool IsIdentifierDefined(const std::string& id, const IDMapping<T>& where) const;
-	template <typename T>
-	void ThrowIfDefined(const std::string& id, const IDMapping<T>& where) const;
-	template <typename T>
-	void ThrowIfNotDefined(const std::string& id, const IDMapping<T>& where) const;
-
-	void ThrowIfNotValid(const std::string& id) const;
-	bool IsIdentifierValid(const std::string& id) const;
 	bool IsIdentifierDefined(const std::string& id) const;
 	void ThrowIfDefined(const std::string& id) const;
 	void ThrowIfNotDefined(const std::string& id) const;

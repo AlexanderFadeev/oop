@@ -1,5 +1,53 @@
 #include "Calculator.hpp"
 
+namespace
+{
+
+template <typename T>
+using IDMapping = std::map<std::string, std::shared_ptr<T>>;
+
+
+template <typename T>
+bool IsIdentifierDefined(const std::string& id, const IDMapping<T>& where)
+{
+	return where.find(id) != where.end();
+}
+
+template <typename T>
+void ThrowIfDefined(const std::string& id, const IDMapping<T>& where)
+{
+	if (IsIdentifierDefined(id, where))
+	{
+		throw std::exception("Identifier is already defined");
+	}
+}
+
+template <typename T>
+void ThrowIfNotDefined(const std::string& id, const IDMapping<T>& where)
+{
+	if (!IsIdentifierDefined(id, where))
+	{
+		throw std::exception("Identifier is not defined");
+	}
+}
+
+const std::regex IDENTIFIER_REGEX(R"(^[_A-Za-z]\w*$)");
+
+bool IsIdentifierValid(const std::string& id)
+{
+	return std::regex_match(id, IDENTIFIER_REGEX);
+}
+
+void ThrowIfNotValid(const std::string& id)
+{
+	if (!IsIdentifierValid(id))
+	{
+		throw std::exception("Identifier is not valid");
+	}
+}
+
+} // namespace
+
 double CCalculator::GetValue(const std::string& id) const
 {
 	ThrowIfNotDefined(id);
@@ -19,7 +67,7 @@ void CCalculator::Var(const std::string& id)
 
 void CCalculator::Let(const std::string& id, double value)
 {
-	if (!IsIdentifierDefined(id, m_variables))
+	if (!::IsIdentifierDefined(id, m_variables))
 	{
 		Var(id);
 	}
@@ -29,7 +77,7 @@ void CCalculator::Let(const std::string& id, double value)
 
 void CCalculator::Let(const std::string& id1, const std::string& id2)
 {
-	ThrowIfNotDefined(id2, m_variables);
+	::ThrowIfNotDefined(id2, m_variables);
 
 	double value = GetValue(id2);
 	Let(id1, value);
@@ -59,57 +107,18 @@ void CCalculator::Func(const std::string& fnID, const std::string& id1, Operator
 	m_identifiers[fnID] = function;
 	m_functions[fnID] = function;
 }
-
-const std::regex CCalculator::m_identifierRegex(R"(^[_A-Za-z]\w*$)");
-
-bool CCalculator::IsIdentifierValid(const std::string& id) const
-{
-	return std::regex_match(id, m_identifierRegex);
-}
-
-template <typename T>
-bool CCalculator::IsIdentifierDefined(const std::string& id, const IDMapping<T>& where) const
-{
-	return where.find(id) != where.end();
-}
-
 bool CCalculator::IsIdentifierDefined(const std::string& id) const
 {
-	return IsIdentifierDefined(id, m_identifiers);
-}
-
-void CCalculator::ThrowIfNotValid(const std::string& id) const
-{
-	if (!IsIdentifierValid(id))
-	{
-		throw std::exception("Identifier is not valid");
-	}
-}
-
-template <typename T>
-void CCalculator::ThrowIfDefined(const std::string& id, const IDMapping<T>& where) const
-{
-	if (IsIdentifierDefined(id, where))
-	{
-		throw std::exception("Identifier is already defined");
-	}
+	return ::IsIdentifierDefined(id, m_identifiers);
 }
 
 void CCalculator::ThrowIfDefined(const std::string& id) const
 {
-	ThrowIfDefined(id, m_identifiers);
+	::ThrowIfDefined(id, m_identifiers);
 }
 
-template <typename T>
-void CCalculator::ThrowIfNotDefined(const std::string& id, const IDMapping<T>& where) const
-{
-	if (!IsIdentifierDefined(id, where))
-	{
-		throw std::exception("Identifier is not defined");
-	}
-}
 
 void CCalculator::ThrowIfNotDefined(const std::string& id) const
 {
-	ThrowIfNotDefined(id, m_identifiers);
+	::ThrowIfNotDefined(id, m_identifiers);
 }

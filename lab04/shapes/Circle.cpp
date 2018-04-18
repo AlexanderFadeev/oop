@@ -7,6 +7,10 @@ CCircle::CCircle(const CPoint& center, double radius, const CColor& outlineColor
 	, m_center(center)
 	, m_radius(radius)
 {
+	if (radius < 0)
+	{
+		throw std::domain_error("Negative radius value");
+	}
 }
 
 double CCircle::GetArea() const

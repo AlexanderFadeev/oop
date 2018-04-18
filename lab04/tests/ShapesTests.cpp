@@ -290,6 +290,11 @@ SCENARIO("Circle")
 			VerifyNoOtherInvocations(mock);
 		}
 	}
+
+	SECTION("Throws when negative radius is given")
+	{
+		CHECK_THROWS(CCircle({}, -1, {}, {}));
+	}
 }
 
 SCENARIO("Shape Factory")
@@ -378,6 +383,7 @@ SCENARIO("Shape Factory")
 			"circle 1 2 3 #abcdef #wrongc",
 			"circle 1 2 3 #abcdef",
 			"circle 1 2 #abcdef #abcdef",
+			"circle 1 2 -3 #abcdef #abcdef",
 		};
 
 		THEN("Factory throws if it's given wrong data")

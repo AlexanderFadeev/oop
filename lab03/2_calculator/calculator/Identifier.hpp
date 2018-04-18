@@ -1,28 +1,30 @@
 #pragma once
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 class CIdentifier
 	: public std::enable_shared_from_this<CIdentifier>
 {
 public:
+	virtual ~CIdentifier() = default;
+
 	double GetValue() const;
 
 protected:
+	void Uses(std::weak_ptr<CIdentifier> id);
 	void Expire() const;
-	void Uses(std::weak_ptr<const CIdentifier> id) const;
-	virtual void InitRelationsImpl() const = 0;
-	virtual double CalcValue() const = 0;
 
 private:
-	mutable std::vector<std::weak_ptr<const CIdentifier>> m_usesIDs;
-	mutable std::vector<std::weak_ptr<const CIdentifier>> m_usedInIDs;
+	using WeakPtr = std::weak_ptr<const CIdentifier>;
+	using WeakPtrVec = std::vector<WeakPtr>;
 
-	mutable bool m_isActual = false;
-	mutable bool m_relationsInitialized = false;
-	mutable double m_value;
-
-	void InitRelations() const;
+	virtual double CalcValue() const = 0;
 	void Update() const;
+
+	WeakPtrVec m_usesIDs;
+	WeakPtrVec m_usedInIDs;
+
+	mutable std::optional<double> m_value = {};
 };

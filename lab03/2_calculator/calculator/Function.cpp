@@ -14,7 +14,7 @@ CFunction::CFunction(std::shared_ptr<CIdentifier> operand1, Operator op, std::sh
 {
 }
 
-void CFunction::InitRelationsImpl() const
+void CFunction::Init()
 {
 	Uses(m_operand1);
 	if (m_operator)

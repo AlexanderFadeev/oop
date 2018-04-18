@@ -5,9 +5,9 @@ CVariable::CVariable()
 {
 }
 
-void CVariable::InitRelationsImpl() const
+CVariable::CVariable(double value)
+	: m_value(value)
 {
-	// Do nothing
 }
 
 double CVariable::CalcValue() const

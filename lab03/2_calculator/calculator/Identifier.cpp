@@ -2,56 +2,51 @@
 #include <queue>
 #include <stack>
 
-void CIdentifier::Uses(std::weak_ptr<const CIdentifier> id) const
+void CIdentifier::Uses(std::weak_ptr<CIdentifier> id)
 {
 	m_usesIDs.push_back(id);
 	id.lock()->m_usedInIDs.push_back(weak_from_this());
 }
 
-void CIdentifier::InitRelations() const
-{
-	if (m_relationsInitialized)
-	{
-		return;
-	}
-
-	InitRelationsImpl();
-}
-
 void CIdentifier::Update() const
 {
-	if (m_isActual)
+	if (m_value)
 	{
 		return;
 	}
-	InitRelations();
 
-	for (auto& id : m_usesIDs)
+	for (auto& idWPtr : m_usesIDs)
 	{
-		id.lock()->Update();
+		if (auto idSPtr = idWPtr.lock())
+		{
+			idSPtr->Update();
+		}
 	}
 
 	m_value = CalcValue();
-	m_isActual = true;
+
+	return;
 }
 
 void CIdentifier::Expire() const
 {
-	if (!m_isActual)
+	if (!m_value)
 	{
 		return;
 	}
+	m_value = {};
 
-	m_isActual = false;
-
-	for (auto& id : m_usedInIDs)
+	for (auto& idWPtr : m_usedInIDs)
 	{
-		id.lock()->Expire();
+		if (auto idSPtr = idWPtr.lock())
+		{
+			idSPtr->Expire();
+		}
 	}
 }
 
 double CIdentifier::GetValue() const
 {
 	Update();
-	return m_value;
+	return *m_value;
 }

@@ -12,7 +12,7 @@ void CCalculator::Var(const std::string& id)
 	ThrowIfNotValid(id);
 	ThrowIfDefined(id);
 
-	std::shared_ptr<CVariable> variable = std::make_shared<CVariable>();
+	auto variable = CVariable::New();
 	m_identifiers[id] = variable;
 	m_variables[id] = variable;
 }
@@ -41,7 +41,7 @@ void CCalculator::Func(const std::string& fnID, const std::string& id)
 	ThrowIfDefined(fnID);
 	ThrowIfNotDefined(id);
 
-	std::shared_ptr<CFunction> function = std::make_shared<CFunction>(m_identifiers.at(id));
+	auto function = CFunction::New(m_identifiers.at(id));
 	m_identifiers[fnID] = function;
 	m_functions[fnID] = function;
 }
@@ -55,7 +55,7 @@ void CCalculator::Func(const std::string& fnID, const std::string& id1, Operator
 	ThrowIfNotDefined(id1);
 	ThrowIfNotDefined(id2);
 
-	auto function = std::make_shared<CFunction>(m_identifiers.at(id1), op, m_identifiers.at(id2));
+	auto function = CFunction::New(m_identifiers.at(id1), op, m_identifiers.at(id2));
 	m_identifiers[fnID] = function;
 	m_functions[fnID] = function;
 }

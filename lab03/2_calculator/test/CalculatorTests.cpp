@@ -1,6 +1,7 @@
 #include "Calculator.hpp"
 #include "catch.hpp"
 #include <array>
+#include <iostream>
 #include <sstream>
 
 const std::array<std::string, 5> INVALID_IDENTIFIERS{
@@ -41,7 +42,7 @@ SCENARIO("Calculator variables")
 		{
 			for (auto& i : VALID_IDENTIFIERS)
 			{
-				CHECK_NOTHROW(calc.Var(i));
+				CHECK_NOTHROW(calc.Let(i, 42));
 			}
 		}
 
@@ -290,24 +291,39 @@ std::string GetFuncID(int id)
 	return buf.str();
 }
 
-SCENARIO("Stack usage optimizatons")
+#ifdef STACK_USAGE_OPTIMIZATIONS
+
+SCENARIO("Stack usage optimizatons", "[benchmark]")
 {
 	GIVEN("A calculator")
 	{
-		CCalculator calc;
-
-		THEN("Calculations with huge depth can be performed")
+		try
 		{
-			calc.Let("x1", 1);
-			for (int i = 2; i < 1000000; i++)
+			CCalculator calc;
+
+			THEN("Calculations with huge depth can be performed")
 			{
-				calc.Func(GetFuncID(i), GetFuncID(i - 1), Operator::Sum, "x1");
+				const int count = 1000000;
+
+				calc.Let("x1", 1);
+				for (int i = 2; i <= count; i++)
+				{
+					calc.Func(GetFuncID(i), GetFuncID(i - 1), Operator::Sum, "x1");
+				}
+
+				REQUIRE(calc.GetValue(GetFuncID(count)) == count);
+
+				AND_THEN("Function can be calculated for another variable value")
+				{
+					calc.Let("x1", 2);
+					REQUIRE(calc.GetValue(GetFuncID(count)) == count * 2);
+				}
 			}
-
-			REQUIRE(calc.GetValue("x1000000") == 1000000);
-
-			calc.Let("x1", 2);
-			REQUIRE(calc.GetValue("x1000000") == 2000000);
+		}
+		catch (...)
+		{
+			std::cerr << "WTF\n";
 		}
 	}
 }
+#endif // !STACK_USAGE_OPTIMIZATIONS

@@ -2,10 +2,13 @@
 #include <queue>
 #include <stack>
 
-void CIdentifier::Uses(std::weak_ptr<CIdentifier> id)
+void CIdentifier::Uses(std::weak_ptr<CIdentifier> idWPtr)
 {
-	m_usesIDs.push_back(id);
-	id.lock()->m_usedInIDs.push_back(weak_from_this());
+	m_usesIDs.push_back(idWPtr);
+	if (auto idSPtr = idWPtr.lock())
+	{
+		idSPtr->m_usedInIDs.push_back(weak_from_this());
+	}
 }
 
 void CIdentifier::Update() const

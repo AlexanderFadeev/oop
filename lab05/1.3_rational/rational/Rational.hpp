@@ -11,6 +11,10 @@ public:
 
 	bool operator==(const CRational&) const;
 	bool operator!=(const CRational&) const;
+	bool operator<(const CRational&) const;
+	bool operator>(const CRational&) const;
+	bool operator<=(const CRational&) const;
+	bool operator>=(const CRational&) const;
 
 	int GetNumerator() const;
 	int GetDenominator() const;

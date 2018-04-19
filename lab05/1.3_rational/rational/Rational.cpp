@@ -76,6 +76,26 @@ bool CRational::operator!=(const CRational& other) const
 	return !operator==(other);
 }
 
+bool CRational::operator<(const CRational& other) const
+{
+	return 1ll * m_numerator * other.m_denominator < 1ll * other.m_numerator * m_denominator;
+}
+
+bool CRational::operator>(const CRational& other) const
+{
+	return other.operator<(*this);
+}
+
+bool CRational::operator<=(const CRational& other) const
+{
+	return !operator>(other);
+}
+
+bool CRational::operator>=(const CRational& other) const
+{
+	return !operator<(other);
+}
+
 int CRational::GetNumerator() const
 {
 	return m_numerator;

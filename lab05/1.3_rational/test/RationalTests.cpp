@@ -1,5 +1,5 @@
-#include "catch.hpp"
 #include "Rational.hpp"
+#include "catch.hpp"
 
 namespace
 {
@@ -10,26 +10,6 @@ void CheckRational(const CRational& r, int expectedNumerator, int expectedDenomi
 	CHECK(expectedDenominator == r.GetDenominator());
 	CHECK(expectedToDouble == r.ToDouble());
 }
-
-template <typename T1, typename T2>
-void CheckEqual(const T1& a, const T2& b)
-{
-	CHECK(a == b);
-	CHECK(b == a);
-	CHECK_FALSE(a != b);
-	CHECK_FALSE(b != a);
-}
-
-template <typename T1, typename T2>
-void CheckNotEqual(const T1& a, const T2& b)
-{
-	CHECK(a != b);
-	CHECK(b != a);
-	CHECK_FALSE(a == b);
-	CHECK_FALSE(b == a);
-}
-
-} // namespace
 
 SCENARIO("Construction")
 {
@@ -69,6 +49,24 @@ SCENARIO("Construction")
 	}
 }
 
+template <typename T1, typename T2>
+void CheckEqual(const T1& a, const T2& b)
+{
+	CHECK(a == b);
+	CHECK(b == a);
+	CHECK_FALSE(a != b);
+	CHECK_FALSE(b != a);
+}
+
+template <typename T1, typename T2>
+void CheckNotEqual(const T1& a, const T2& b)
+{
+	CHECK(a != b);
+	CHECK(b != a);
+	CHECK_FALSE(a == b);
+	CHECK_FALSE(b == a);
+}
+
 SCENARIO("Operators == and !=")
 {
 	GIVEN("Equal rational numbers")
@@ -99,23 +97,83 @@ SCENARIO("Operators == and !=")
 		int m = 5;
 		int n = 6;
 
-		THEN("Ints can be checked for equality with rational")
+		THEN("Ints are properly checked for equality with rational")
 		{
 			CheckNotEqual(a, m);
 			CheckEqual(a, n);
 		}
 	}
 
-	GIVEN("Rational number and double numbers")
-	{
-		CRational a(25, 4);
-		double x = 5.0;
-		double y = 6.25;
+}
 
-		THEN("Doubles can be checked for equality with rational")
+template <typename T1, typename T2>
+void CheckComparisonsLess(const T1& a, const T2& b)
+{
+	CHECK(a < b);
+	CHECK(a <= b);
+	CHECK(b > a);
+	CHECK(b >= a);
+	CHECK_FALSE(a > b);
+	CHECK_FALSE(a >= b);
+	CHECK_FALSE(b < a);
+	CHECK_FALSE(b <= a);
+}
+
+template <typename T1, typename T2>
+void CheckComparisonsEqual(const T1& a, const T2& b)
+{
+	CHECK(a <= b);
+	CHECK(a >= b);
+	CHECK(b <= a);
+	CHECK(b >= a);
+	CHECK_FALSE(a < b);
+	CHECK_FALSE(a > b);
+	CHECK_FALSE(b < a);
+	CHECK_FALSE(b > a);
+}
+
+SCENARIO("Operators <, >, <=, >=")
+{
+	GIVEN("Different rational numbers")
+	{
+		CRational a(4, 5);
+		CRational b(7, 3);
+
+		THEN("Comparison operators are working properly")
 		{
-			CheckNotEqual(a, x);
-			CheckEqual(a, y);
+			CheckComparisonsLess(a, b);
+		}
+	}
+
+	GIVEN("Equal rational numbers")
+	{
+		CRational a(8, 10);
+		CRational b(12, 15);
+
+		THEN("Comparison operators are working properly")
+		{
+			CheckComparisonsEqual(a, b);
+		}
+		THEN("Comparison of rational number with itself works properly")
+		{
+			CheckComparisonsEqual(a, a);
+		}
+	}
+
+	GIVEN("Rational number and int numbers")
+	{
+		CRational a(48, 8);
+		int m = 5;
+		int n = 6;
+		int k = 7;
+
+		THEN("Ints are properly compared with rational")
+		{
+			CheckComparisonsLess(m, a);
+			CheckComparisonsLess(a, k);
+			CheckComparisonsEqual(a, n);
 		}
 	}
 }
+
+} // namespace

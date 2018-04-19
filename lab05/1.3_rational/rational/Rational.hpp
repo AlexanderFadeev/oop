@@ -12,6 +12,10 @@ public:
 	const CRational operator+() const;
 	const CRational operator-() const;
 
+
+	const CRational operator+(const CRational&) const;
+	const CRational operator-(const CRational&) const;
+
 	bool operator==(const CRational&) const;
 	bool operator!=(const CRational&) const;
 	bool operator<(const CRational&) const;

@@ -1,5 +1,6 @@
 #include "Rational.hpp"
 #include <cmath>
+#include <limits>
 #include <stdexcept>
 
 namespace
@@ -21,6 +22,12 @@ T GCD(T a, T b)
 	return a ? a : 1;
 }
 
+template <typename T, typename Ret = T>
+Ret LCM(T a, T b)
+{
+	return Ret(1) * a / GCD(a, b) * b;
+}
+
 template <typename T>
 void Normalize(T& a, T& b)
 {
@@ -33,6 +40,17 @@ void Normalize(T& a, T& b)
 		b *= -1;
 	}
 }
+
+
+template <typename T1, typename T2>
+bool Overflows(T2 value)
+{
+	return value > std::numeric_limits<T1>::max()
+		|| value < std::numeric_limits<T1>::min();
+}
+
+const std::overflow_error EXCEPTION_NUMERATOR_OVERFLOW("Numerator overflow");
+const std::overflow_error EXCEPTION_DENOMINATOR_OVERFLOW("Denominator overflow");
 
 } // namespace
 
@@ -72,7 +90,36 @@ const CRational CRational::operator+() const
 
 const CRational CRational::operator-() const
 {
+	if (m_numerator == INT_MIN)
+	{
+		throw EXCEPTION_NUMERATOR_OVERFLOW;
+	}
+
 	return CRational(-m_numerator, m_denominator);
+}
+
+const CRational CRational::operator+(const CRational& other) const
+{
+	long long denominator = LCM<long long>(m_denominator, other.m_denominator);
+	long long numerator = m_numerator * (denominator / m_denominator)
+		+ other.m_numerator * (denominator / other.m_denominator);
+	
+	Normalize(numerator, denominator);
+	if (Overflows<int>(numerator))
+	{
+		throw EXCEPTION_NUMERATOR_OVERFLOW;
+	}
+	if (Overflows<int>(denominator))
+	{
+		throw EXCEPTION_DENOMINATOR_OVERFLOW;
+	}
+
+	return CRational(static_cast<int>(numerator), static_cast<int>(denominator));
+}
+
+const CRational CRational::operator-(const CRational& other) const
+{
+	return operator+(-other);
 }
 
 bool CRational::operator==(const CRational& other) const

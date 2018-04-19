@@ -1,5 +1,6 @@
 #include "Rational.hpp"
 #include "catch.hpp"
+#include <limits>
 
 namespace
 {
@@ -103,7 +104,6 @@ SCENARIO("Operators == and !=")
 			CheckEqual(a, n);
 		}
 	}
-
 }
 
 template <typename T1, typename T2>
@@ -191,6 +191,77 @@ SCENARIO("Unary + and -")
 		{
 			CHECK(-a == munusA);
 		}
+	}
+}
+
+SCENARIO("Operators + and -")
+{
+	GIVEN("Rational numbers")
+	{
+		CRational a(1, 6);
+		CRational b(1, 3);
+		CRational c(5, 6);
+		CRational result(1, 2);
+
+		THEN("Sum is calculated properly and is normalized")
+		{
+			CHECK(a + b == result);
+		}
+		THEN("Difference is calculated properly and is normalized")
+		{
+			CHECK(c - b == result);
+		}
+	}
+
+	GIVEN("Rational number and int")
+	{
+		CRational a(7, 5);
+		int n = 2;
+
+		THEN("Sum and difference are calculated properly")
+		{
+			CHECK((a + n) == CRational(17, 5));
+			CHECK((a - n) == CRational(-3, 5));
+		}
+	}
+}
+
+SCENARIO("Overflows")
+{
+	SECTION("Unary -")
+	{
+		CRational r(INT_MIN);
+		CHECK_THROWS(-r);
+	}
+
+	SECTION("Operators + and - : denominator overflow")
+	{
+		CRational a(1, 1 << 16);
+		CRational b(1, (1 << 16) + 1);
+		CHECK_THROWS(a + b);
+		CHECK_THROWS(a - b);
+	}
+
+	SECTION("Operators + and - : numerator overflow")
+	{
+		CRational max(INT_MAX);
+		CRational min(INT_MIN);
+		CHECK_THROWS(max + 1);
+		CHECK_THROWS(min - 1);
+	}
+
+	SECTION("Operators + and - : numerator does not overflow in process of calculations")
+	{
+		CRational max(INT_MAX, 2);
+		CRational min(INT_MIN, 3);
+		CHECK_NOTHROW(max + 1);
+		CHECK_NOTHROW(min - 1);
+	}
+
+	SECTION("Operators + and - : denominator does not overflow in process of calculations")
+	{
+		CRational a(1, 1 << 30);
+		CHECK_NOTHROW(a + a);
 	}
 }
 

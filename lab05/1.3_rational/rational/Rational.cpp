@@ -93,12 +93,12 @@ const CRational CRational::operator-() const
 	return CRational(-m_numerator, m_denominator);
 }
 
-const CRational operator+(const CRational& lhs, const CRational& rhs)
+CRational& CRational::operator+=(const CRational& rhs)
 {
-	long long denominator = LCM<long long>(lhs.m_denominator, rhs.m_denominator);
-	long long numerator = lhs.m_numerator * (denominator / lhs.m_denominator)
-		                + rhs.m_numerator * (denominator / rhs.m_denominator);
-	
+	long long denominator = LCM<long long>(m_denominator, rhs.m_denominator);
+	long long numerator = m_numerator * (denominator / m_denominator)
+		            + rhs.m_numerator * (denominator / rhs.m_denominator);
+
 	Normalize(numerator, denominator);
 	if (Overflows<int>(numerator))
 	{
@@ -109,12 +109,25 @@ const CRational operator+(const CRational& lhs, const CRational& rhs)
 		throw EXCEPTION_DENOMINATOR_OVERFLOW;
 	}
 
-	return CRational(static_cast<int>(numerator), static_cast<int>(denominator));
+	m_numerator = static_cast<int>(numerator);
+	m_denominator = static_cast<int>(denominator);
+
+	return *this;
 }
 
-const CRational operator-(const CRational& lhs, const CRational& rhs)
+CRational& CRational::operator-=(const CRational& rhs)
 {
-	return lhs + -rhs;
+	return *this += -rhs;
+}
+
+const CRational operator+(CRational lhs, const CRational& rhs)
+{
+	return lhs += rhs;
+}
+
+const CRational operator-(CRational lhs, const CRational& rhs)
+{
+	return lhs -= rhs;
 }
 
 bool operator==(const CRational& lhs, const CRational& rhs)

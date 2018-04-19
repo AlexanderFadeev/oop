@@ -221,7 +221,9 @@ SCENARIO("Operators + and -")
 		THEN("Sum and difference are calculated properly")
 		{
 			CHECK((a + n) == CRational(17, 5));
+			CHECK((n + a) == CRational(17, 5));
 			CHECK((a - n) == CRational(-3, 5));
+			CHECK((n - a) == CRational(3, 5));
 		}
 	}
 }
@@ -234,32 +236,85 @@ SCENARIO("Overflows")
 		CHECK_THROWS(-r);
 	}
 
-	SECTION("Operators + and - : denominator overflow")
+	SECTION("Operators +, -, +=, -= : denominator overflow")
 	{
 		CRational a(1, 1 << 16);
 		CRational b(1, (1 << 16) + 1);
 		CHECK_THROWS(a + b);
 		CHECK_THROWS(a - b);
+		CHECK_THROWS(a += b);
+		CHECK_THROWS(a -= b);
 	}
 
-	SECTION("Operators + and - : numerator overflow")
+	SECTION("Operators +, -, +=, -= : numerator overflow")
 	{
 		CRational max(INT_MAX);
 		CRational min(INT_MIN);
 		CHECK_THROWS(max + 1);
 		CHECK_THROWS(min - 1);
+		CHECK_THROWS(max += 1);
+		CHECK_THROWS(min -= 1);
 	}
 
-	SECTION("Operators + and - : numerator does not overflow in process of calculations")
+	SECTION("Operators +, -, +=, -=:  numerator does not overflow in process of calculations")
 	{
-		CHECK_NOTHROW(CRational(INT_MAX, 2) + CRational(1, 2));
-		CHECK_NOTHROW(CRational(INT_MIN, 3) - CRational(1, 3));
+		CRational a(INT_MAX, 2);
+		CRational b(INT_MIN, 3);
+		CRational da(1, 2);
+		CRational db(1, 3);
+		CHECK_NOTHROW(a + da);
+		CHECK_NOTHROW(b - db);
+		CHECK_NOTHROW(a += da);
+		CHECK_NOTHROW(b -= db);
 	}
 
-	SECTION("Operators + and - : denominator does not overflow in process of calculations")
+	SECTION("Operators +, -, +=, -= : denominator does not overflow in process of calculations")
 	{
 		CRational a(1, 1 << 30);
 		CHECK_NOTHROW(a + a);
+	}
+}
+
+template <typename T>
+void CheckIncrementAndDecrement(CRational& a, T d)
+{
+	CRational orig = a;
+
+	WHEN("Operator += is used")
+	{
+		(a += d) += d;
+
+		THEN("Object is modified properly")
+		{
+			CHECK(a == orig + d + d);
+		}
+
+		AND_WHEN("Operator -= is used")
+		{
+			(a -= d) -= d;
+
+			THEN("Object's value is equal to its original value")
+			{
+				CHECK(a == orig);
+			}
+		}
+	}
+}
+
+SCENARIO("Operators += and -=")
+{
+	GIVEN("Rational numbers")
+	{
+		CRational a(1, 6);
+		CRational d(5, 6);
+		CheckIncrementAndDecrement(a, d);
+	}
+
+	GIVEN("Rational number and int")
+	{
+		CRational a(7, 5);
+		int d = 2;
+		CheckIncrementAndDecrement(a, d);
 	}
 }
 

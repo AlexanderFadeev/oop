@@ -4,8 +4,13 @@ class CRational final
 {
 public:
 	CRational();
-	CRational(int value);
+	CRational(int&& value);
 	CRational(int numerator, int denominator);
+
+	operator double() const;
+
+	bool operator==(const CRational&) const;
+	bool operator!=(const CRational&) const;
 
 	int GetNumerator() const;
 	int GetDenominator() const;

@@ -34,7 +34,7 @@ void Normalize(T& a, T& b)
 	}
 }
 
-}
+} // namespace
 
 CRational::CRational()
 	: m_numerator(0)
@@ -42,7 +42,7 @@ CRational::CRational()
 {
 }
 
-CRational::CRational(int value)
+CRational::CRational(int&& value)
 	: m_numerator(value)
 	, m_denominator(1)
 {
@@ -60,6 +60,22 @@ CRational::CRational(int numerator, int denominator)
 	Normalize(m_numerator, m_denominator);
 }
 
+CRational::operator double() const
+{
+	return 1.0 * m_numerator / m_denominator;
+}
+
+bool CRational::operator==(const CRational& other) const
+{
+	return m_numerator == other.m_numerator
+		&& m_denominator == other.m_denominator;
+}
+
+bool CRational::operator!=(const CRational& other) const
+{
+	return !operator==(other);
+}
+
 int CRational::GetNumerator() const
 {
 	return m_numerator;
@@ -72,5 +88,5 @@ int CRational::GetDenominator() const
 
 double CRational::ToDouble() const
 {
-	return 1.0 * m_numerator / m_denominator;
+	return double(*this);
 }

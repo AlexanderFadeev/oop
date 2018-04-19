@@ -65,6 +65,16 @@ CRational::operator double() const
 	return 1.0 * m_numerator / m_denominator;
 }
 
+const CRational CRational::operator+() const
+{
+	return *this;
+}
+
+const CRational CRational::operator-() const
+{
+	return CRational(-m_numerator, m_denominator);
+}
+
 bool CRational::operator==(const CRational& other) const
 {
 	return m_numerator == other.m_numerator

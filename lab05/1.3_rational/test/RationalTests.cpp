@@ -176,4 +176,22 @@ SCENARIO("Operators <, >, <=, >=")
 	}
 }
 
+SCENARIO("Unary + and -")
+{
+	GIVEN("A rational number")
+	{
+		CRational a(6, 8);
+		const CRational munusA(-6, 8);
+
+		THEN("Unary + returns same value")
+		{
+			CHECK(+a == a);
+		}
+		THEN("Unary - returns opposite value")
+		{
+			CHECK(-a == munusA);
+		}
+	}
+}
+
 } // namespace

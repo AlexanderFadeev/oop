@@ -9,6 +9,9 @@ public:
 
 	operator double() const;
 
+	const CRational operator+() const;
+	const CRational operator-() const;
+
 	bool operator==(const CRational&) const;
 	bool operator!=(const CRational&) const;
 	bool operator<(const CRational&) const;

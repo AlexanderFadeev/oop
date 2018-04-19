@@ -120,6 +120,27 @@ CRational& CRational::operator-=(const CRational& rhs)
 	return *this += -rhs;
 }
 
+CRational& CRational::operator*=(const CRational& rhs)
+{
+	long long numerator = 1ll * m_numerator * rhs.m_numerator;
+	long long denominator = 1ll * m_denominator * rhs.m_denominator;
+
+	Normalize(numerator, denominator);
+	if (Overflows<int>(numerator))
+	{
+		throw EXCEPTION_NUMERATOR_OVERFLOW;
+	}
+	if (Overflows<int>(denominator))
+	{
+		throw EXCEPTION_DENOMINATOR_OVERFLOW;
+	}
+
+	m_numerator = static_cast<int>(numerator);
+	m_denominator = static_cast<int>(denominator);
+
+	return *this;
+}
+
 const CRational operator+(CRational lhs, const CRational& rhs)
 {
 	return lhs += rhs;
@@ -128,6 +149,11 @@ const CRational operator+(CRational lhs, const CRational& rhs)
 const CRational operator-(CRational lhs, const CRational& rhs)
 {
 	return lhs -= rhs;
+}
+
+const CRational operator*(CRational lhs, const CRational& rhs)
+{
+	return lhs *= rhs;
 }
 
 bool operator==(const CRational& lhs, const CRational& rhs)

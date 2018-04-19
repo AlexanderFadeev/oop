@@ -12,9 +12,11 @@ public:
 
 	CRational& operator+=(const CRational&);
 	CRational& operator-=(const CRational&);
+	CRational& operator*=(const CRational&);
 
 	friend const CRational operator+(CRational, const CRational&);
 	friend const CRational operator-(CRational, const CRational&);
+	friend const CRational operator*(CRational, const CRational&);
 
 	friend bool operator==(const CRational&, const CRational&);
 	friend bool operator!=(const CRational&, const CRational&);

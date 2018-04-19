@@ -256,7 +256,7 @@ SCENARIO("Overflows")
 		CHECK_THROWS(min -= 1);
 	}
 
-	SECTION("Operators +, -, +=, -=:  numerator does not overflow in process of calculations")
+	SECTION("Operators +, -, +=, -= : numerator does not overflow in process of calculations")
 	{
 		CRational a(INT_MAX, 2);
 		CRational b(INT_MIN, 3);
@@ -272,6 +272,44 @@ SCENARIO("Overflows")
 	{
 		CRational a(1, 1 << 30);
 		CHECK_NOTHROW(a + a);
+	}
+
+	SECTION("Operators *, *= : denominator overflow")
+	{
+		CRational a(1, 1 << 16);
+		CRational b(1, (1 << 16) + 1);
+		CHECK_THROWS(a * b);
+		CHECK_THROWS(a *= b);
+	}
+
+	SECTION("Operators *, *= : numerator overflow")
+	{
+		CRational max(INT_MAX);
+		CRational min(INT_MIN);
+		CHECK_THROWS(min * -1);
+		CHECK_THROWS(min *= -1);
+		CHECK_THROWS(max * 2);
+		CHECK_THROWS(min * 2);
+		CHECK_THROWS(max *= 2);
+		CHECK_THROWS(min *= 2);
+	}
+
+	SECTION("Operators *, *= : numerator does not overflow in process of calculations")
+	{
+		CRational a(INT_MAX, 2);
+		CRational b(INT_MIN, 2);
+		CHECK_NOTHROW(a * 2);
+		CHECK_NOTHROW(b * 2);
+		CHECK_NOTHROW(a *= 2);
+		CHECK_NOTHROW(b *= 2);
+	}
+
+	SECTION("Operators *, *= : denominator does not overflow in process of calculations")
+	{
+		CRational a(2, 1 << 30);
+		CRational k(1, 2);
+		CHECK_NOTHROW(a * k);
+		CHECK_NOTHROW(a *= k);
 	}
 }
 
@@ -315,6 +353,88 @@ SCENARIO("Operators += and -=")
 		CRational a(7, 5);
 		int d = 2;
 		CheckIncrementAndDecrement(a, d);
+	}
+
+	SECTION("Exception safety")
+	{
+		CRational a(INT_MAX - 1, INT_MAX);
+		CRational orig = a;
+		CHECK_THROWS(a += CRational(1, 2));
+		CHECK(a == orig);
+		CHECK_THROWS(a += CRational(2, INT_MAX));
+		CHECK(a == orig);
+	}
+}
+
+SCENARIO("Operator *")
+{
+	GIVEN("Rational numbers")
+	{
+		CRational a(9, 2);
+		CRational b(2, 3);
+		CRational product(3, 1);
+
+		THEN("Product is calculated properly and is normalized")
+		{
+			CHECK(a * b == product);
+		}
+	}
+
+	GIVEN("Rational number and int")
+	{
+		CRational a(7, 10);
+		int n = 4;
+		CRational product(14, 5);
+
+		THEN("Product is calculated properly and is normalized")
+		{
+			CHECK((a * n) == product);
+			CHECK((n * a) == product);
+		}
+	}
+}
+
+template <typename T>
+void CheckMultiplicationAssignment(CRational a, T k)
+{
+	CRational orig = a;
+
+	WHEN("Operator *= is used")
+	{
+		(a *= k) *= k;
+
+		THEN("Object is modified properly")
+		{
+			CHECK(a == orig * k * k);
+		}
+	}
+}
+
+
+SCENARIO("Operator *=")
+{
+	GIVEN("Rational numbers")
+	{
+		CRational a(16, 7);
+		CRational b(3, 2);
+		CheckMultiplicationAssignment(a, b);
+	}
+
+	GIVEN("Rational number and int")
+	{
+		CRational a(7, 6);
+		int n = 2;
+		CheckMultiplicationAssignment(a, n);
+	}
+
+	SECTION("Exception safety")
+	{
+		CRational a((1 << 30) - 1, (1 << 30) + 1);
+		CRational orig = a;
+		CHECK_THROWS(a *= 42);
+		CHECK(a == orig);
+		CHECK_THROWS(a *= CRational(1, 42));
+		CHECK(a == orig);
 	}
 }
 

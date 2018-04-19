@@ -4,24 +4,21 @@ class CRational final
 {
 public:
 	CRational();
-	CRational(int&& value);
+	CRational(int value);
 	CRational(int numerator, int denominator);
-
-	operator double() const;
 
 	const CRational operator+() const;
 	const CRational operator-() const;
 
+	friend const CRational operator+(const CRational&, const CRational&);
+	friend const CRational operator-(const CRational&, const CRational&);
 
-	const CRational operator+(const CRational&) const;
-	const CRational operator-(const CRational&) const;
-
-	bool operator==(const CRational&) const;
-	bool operator!=(const CRational&) const;
-	bool operator<(const CRational&) const;
-	bool operator>(const CRational&) const;
-	bool operator<=(const CRational&) const;
-	bool operator>=(const CRational&) const;
+	friend bool operator==(const CRational&, const CRational&);
+	friend bool operator!=(const CRational&, const CRational&);
+	friend bool operator< (const CRational&, const CRational&);
+	friend bool operator> (const CRational&, const CRational&);
+	friend bool operator<=(const CRational&, const CRational&);
+	friend bool operator>=(const CRational&, const CRational&);
 
 	int GetNumerator() const;
 	int GetDenominator() const;

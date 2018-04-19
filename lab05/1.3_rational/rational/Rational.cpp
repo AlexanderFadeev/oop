@@ -60,7 +60,7 @@ CRational::CRational()
 {
 }
 
-CRational::CRational(int&& value)
+CRational::CRational(int value)
 	: m_numerator(value)
 	, m_denominator(1)
 {
@@ -78,11 +78,6 @@ CRational::CRational(int numerator, int denominator)
 	Normalize(m_numerator, m_denominator);
 }
 
-CRational::operator double() const
-{
-	return 1.0 * m_numerator / m_denominator;
-}
-
 const CRational CRational::operator+() const
 {
 	return *this;
@@ -98,11 +93,11 @@ const CRational CRational::operator-() const
 	return CRational(-m_numerator, m_denominator);
 }
 
-const CRational CRational::operator+(const CRational& other) const
+const CRational operator+(const CRational& lhs, const CRational& rhs)
 {
-	long long denominator = LCM<long long>(m_denominator, other.m_denominator);
-	long long numerator = m_numerator * (denominator / m_denominator)
-		+ other.m_numerator * (denominator / other.m_denominator);
+	long long denominator = LCM<long long>(lhs.m_denominator, rhs.m_denominator);
+	long long numerator = lhs.m_numerator * (denominator / lhs.m_denominator)
+		                + rhs.m_numerator * (denominator / rhs.m_denominator);
 	
 	Normalize(numerator, denominator);
 	if (Overflows<int>(numerator))
@@ -117,40 +112,40 @@ const CRational CRational::operator+(const CRational& other) const
 	return CRational(static_cast<int>(numerator), static_cast<int>(denominator));
 }
 
-const CRational CRational::operator-(const CRational& other) const
+const CRational operator-(const CRational& lhs, const CRational& rhs)
 {
-	return operator+(-other);
+	return lhs + -rhs;
 }
 
-bool CRational::operator==(const CRational& other) const
+bool operator==(const CRational& lhs, const CRational& rhs)
 {
-	return m_numerator == other.m_numerator
-		&& m_denominator == other.m_denominator;
+	return lhs.m_numerator == rhs.m_numerator
+		&& lhs.m_denominator == rhs.m_denominator;
 }
 
-bool CRational::operator!=(const CRational& other) const
+bool operator!=(const CRational& lhs, const CRational& rhs)
 {
-	return !operator==(other);
+	return !(lhs == rhs);
 }
 
-bool CRational::operator<(const CRational& other) const
+bool operator<(const CRational& lhs, const CRational& rhs)
 {
-	return 1ll * m_numerator * other.m_denominator < 1ll * other.m_numerator * m_denominator;
+	return 1ll * lhs.m_numerator * rhs.m_denominator < 1ll * rhs.m_numerator * lhs.m_denominator;
 }
 
-bool CRational::operator>(const CRational& other) const
+bool operator>(const CRational& lhs, const CRational& rhs)
 {
-	return other.operator<(*this);
+	return rhs < lhs;
 }
 
-bool CRational::operator<=(const CRational& other) const
+bool operator<=(const CRational& lhs, const CRational& rhs)
 {
-	return !operator>(other);
+	return !(lhs > rhs);
 }
 
-bool CRational::operator>=(const CRational& other) const
+bool operator>=(const CRational& lhs, const CRational& rhs)
 {
-	return !operator<(other);
+	return !(lhs < rhs);
 }
 
 int CRational::GetNumerator() const
@@ -165,5 +160,5 @@ int CRational::GetDenominator() const
 
 double CRational::ToDouble() const
 {
-	return double(*this);
+	return 1.0 * m_numerator / m_denominator;
 }

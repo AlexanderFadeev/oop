@@ -252,10 +252,8 @@ SCENARIO("Overflows")
 
 	SECTION("Operators + and - : numerator does not overflow in process of calculations")
 	{
-		CRational max(INT_MAX, 2);
-		CRational min(INT_MIN, 3);
-		CHECK_NOTHROW(max + 1);
-		CHECK_NOTHROW(min - 1);
+		CHECK_NOTHROW(CRational(INT_MAX, 2) + CRational(1, 2));
+		CHECK_NOTHROW(CRational(INT_MIN, 3) - CRational(1, 3));
 	}
 
 	SECTION("Operators + and - : denominator does not overflow in process of calculations")

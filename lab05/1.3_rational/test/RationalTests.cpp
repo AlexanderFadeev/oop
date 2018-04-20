@@ -550,6 +550,7 @@ SCENARIO("Operators >> and <<")
 	GIVEN("Invalid rational string representations")
 	{
 		std::vector<std::string> testCases{
+			"1/0",
 			"/2",
 			"100/",
 			"42 5",
@@ -561,7 +562,8 @@ SCENARIO("Operators >> and <<")
 			GIVEN("An istream with invalid data and CRational object")
 			{
 				std::istringstream is(testCase);
-				CRational r;
+				CRational r(22, 7);
+				CRational orig = r;
 
 				WHEN("Data is read from istream to CRational")
 				{
@@ -570,6 +572,11 @@ SCENARIO("Operators >> and <<")
 					THEN("Istream's to bool conversion is false")
 					{
 						CHECK(!is);
+						
+						AND_THEN("Object is not modified")
+						{
+							CHECK(r == orig);
+						}
 					}
 				}
 			}

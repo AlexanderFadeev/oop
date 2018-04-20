@@ -196,14 +196,20 @@ bool operator>=(const CRational& lhs, const CRational& rhs)
 std::istream& operator>>(std::istream& is, CRational& r)
 {
 	char c;
-	is >> r.m_numerator >> c >> r.m_denominator;
+	int numerator;
+	int denominator;
+	is >> numerator >> c >> denominator;
 
-	if (c != RATIONAL_SEPARATOR || r.m_denominator == 0)
+	if (c != RATIONAL_SEPARATOR || denominator == 0)
 	{
 		is.setstate(std::ios::failbit);
+	} 
+	else {
+		Normalize(numerator, denominator);
+		r.m_numerator = numerator;
+		r.m_denominator = denominator;
 	}
 
-	Normalize(r.m_numerator, r.m_denominator);
 	return is;
 }
 

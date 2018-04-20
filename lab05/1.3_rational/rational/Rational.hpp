@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 class CRational final
 {
 public:
@@ -26,6 +28,9 @@ public:
 	friend bool operator> (const CRational&, const CRational&);
 	friend bool operator<=(const CRational&, const CRational&);
 	friend bool operator>=(const CRational&, const CRational&);
+
+	friend std::istream& operator>>(std::istream&, CRational&);
+	friend std::ostream& operator<<(std::ostream&, const CRational&);
 
 	int GetNumerator() const;
 	int GetDenominator() const;

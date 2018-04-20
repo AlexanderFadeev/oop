@@ -52,6 +52,8 @@ bool Overflows(T2 value)
 const std::overflow_error EXCEPTION_NUMERATOR_OVERFLOW("Numerator overflow");
 const std::overflow_error EXCEPTION_DENOMINATOR_OVERFLOW("Denominator overflow");
 
+const char RATIONAL_SEPARATOR = '/';
+
 } // namespace
 
 CRational::CRational()
@@ -201,6 +203,25 @@ bool operator<=(const CRational& lhs, const CRational& rhs)
 bool operator>=(const CRational& lhs, const CRational& rhs)
 {
 	return !(lhs < rhs);
+}
+
+std::istream& operator>>(std::istream& is, CRational& r)
+{
+	char c;
+	is >> r.m_numerator >> c >> r.m_denominator;
+
+	if (c != RATIONAL_SEPARATOR || r.m_denominator == 0)
+	{
+		is.setstate(std::ios::failbit);
+	}
+
+	Normalize(r.m_numerator, r.m_denominator);
+	return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const CRational& r)
+{
+	return os << r.m_numerator << '/' << r.m_denominator;
 }
 
 int CRational::GetNumerator() const

@@ -1,6 +1,8 @@
 #include "Rational.hpp"
 #include "catch.hpp"
 #include <limits>
+#include <vector>
+#include <sstream>
 
 namespace
 {
@@ -467,7 +469,7 @@ void CheckMultiplicationAndDivisionAssignment(CRational a, T k)
 	}
 }
 
-SCENARIO("Operator *=")
+SCENARIO("Operators *= and /=")
 {
 	GIVEN("Rational numbers")
 	{
@@ -497,5 +499,83 @@ SCENARIO("Operator *=")
 		CHECK(a == orig);
 	}
 }
+
+
+struct TestCase
+{
+	std::string data;
+	std::string extraData;
+	CRational value;
+};
+
+void CheckTestCase(const TestCase& testCase)
+{
+	GIVEN("An istream with valid rational number")
+	{
+		std::stringstream ss;
+		ss << testCase.data << testCase.extraData;
+
+		THEN("Value is properly read from istream")
+		{
+			CRational r;
+			ss >> r;
+			CHECK(r == testCase.value);
+
+			AND_THEN("Extra data is not taken from istream")
+			{
+				std::string extra;
+				std::getline(ss, extra);
+				CHECK(extra == testCase.extraData);
+			}
+		}
+	}
+}
+
+SCENARIO("Operators >> and <<")
+{
+	GIVEN("Valid rational string representations and corresponding values")
+	{
+		std::vector<TestCase> testCases{
+			{ "22/7", " ", { 22, 7 } },
+			{ "21/7", "#", { 3, 1 } },
+			{ "36/8", " 123", { 9, 2 } },
+		};
+
+		for (auto& testCase : testCases)
+		{
+			CheckTestCase(testCase);
+		}
+	}
+
+	GIVEN("Invalid rational string representations")
+	{
+		std::vector<std::string> testCases{
+			"/2",
+			"100/",
+			"42 5",
+			"!2/3",
+		};
+
+		for (auto& testCase : testCases)
+		{
+			GIVEN("An istream with invalid data and CRational object")
+			{
+				std::istringstream is(testCase);
+				CRational r;
+
+				WHEN("Data is read from istream to CRational")
+				{
+					is >> r;
+
+					THEN("Istream's to bool conversion is false")
+					{
+						CHECK(!is);
+					}
+				}
+			}
+		}
+	}
+}
+
 
 } // namespace

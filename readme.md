@@ -15,10 +15,10 @@
 |       | URL Parser      | Done  |
 |       | Expand Template | WIP   |
 |       |                 |       |
-| **3** | Car             | CR    |
+| **3** | Car             | Done  |
 |       | Calculator      | WIP   |
 |       |                 |       |
-| **4** | Shape           | WIP   |
+| **4** | Shape           | CR    |
 |       |                 |       |
 | **5** | Rational        | WIP   |
 |       | String          | TODO  |

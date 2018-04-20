@@ -141,6 +141,17 @@ CRational& CRational::operator*=(const CRational& rhs)
 	return *this;
 }
 
+CRational& CRational::operator/=(CRational rhs)
+{
+	if (rhs == 0)
+	{
+		throw std::domain_error("Zero division");
+	}
+
+	std::swap(rhs.m_numerator, rhs.m_denominator);
+	return *this *= rhs;
+}
+
 const CRational operator+(CRational lhs, const CRational& rhs)
 {
 	return lhs += rhs;
@@ -154,6 +165,11 @@ const CRational operator-(CRational lhs, const CRational& rhs)
 const CRational operator*(CRational lhs, const CRational& rhs)
 {
 	return lhs *= rhs;
+}
+
+const CRational operator/(CRational lhs, const CRational& rhs)
+{
+	return lhs /= rhs;
 }
 
 bool operator==(const CRational& lhs, const CRational& rhs)

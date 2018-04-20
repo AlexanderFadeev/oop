@@ -274,42 +274,76 @@ SCENARIO("Overflows")
 		CHECK_NOTHROW(a + a);
 	}
 
-	SECTION("Operators *, *= : denominator overflow")
+	SECTION("Operators *, *=, /, /= : denominator overflow")
 	{
 		CRational a(1, 1 << 16);
 		CRational b(1, (1 << 16) + 1);
 		CHECK_THROWS(a * b);
 		CHECK_THROWS(a *= b);
+		CHECK_THROWS(a / (1 / b));
+		CHECK_THROWS(a /= (1 / b));
 	}
 
-	SECTION("Operators *, *= : numerator overflow")
+	SECTION("Operators *, *=, /, /= : numerator overflow")
 	{
 		CRational max(INT_MAX);
 		CRational min(INT_MIN);
+		CRational half(1, 2);
 		CHECK_THROWS(min * -1);
 		CHECK_THROWS(min *= -1);
+		CHECK_THROWS(min / -1);
+		CHECK_THROWS(min /= -1);
+
 		CHECK_THROWS(max * 2);
 		CHECK_THROWS(min * 2);
 		CHECK_THROWS(max *= 2);
 		CHECK_THROWS(min *= 2);
+
+		CHECK_THROWS(max / half);
+		CHECK_THROWS(min / half);
+		CHECK_THROWS(max /= half);
+		CHECK_THROWS(min /= half);
 	}
 
-	SECTION("Operators *, *= : numerator does not overflow in process of calculations")
+	SECTION("Operators *, *=, /, /= : numerator does not overflow in process of calculations")
 	{
 		CRational a(INT_MAX, 2);
 		CRational b(INT_MIN, 2);
-		CHECK_NOTHROW(a * 2);
-		CHECK_NOTHROW(b * 2);
-		CHECK_NOTHROW(a *= 2);
-		CHECK_NOTHROW(b *= 2);
+		CRational half(1, 2);
+
+		SECTION("Multiplication")
+		{
+			CHECK_NOTHROW(a * 2);
+			CHECK_NOTHROW(b * 2);
+			CHECK_NOTHROW(a *= 2);
+			CHECK_NOTHROW(b *= 2);
+		}
+
+		SECTION("Division")
+		{
+			CHECK_NOTHROW(a / half);
+			CHECK_NOTHROW(b / half);
+			CHECK_NOTHROW(a /= half);
+			CHECK_NOTHROW(b /= half);
+		}
 	}
 
-	SECTION("Operators *, *= : denominator does not overflow in process of calculations")
+	SECTION("Operators *, *=, /, /= : denominator does not overflow in process of calculations")
 	{
 		CRational a(2, 1 << 30);
 		CRational k(1, 2);
-		CHECK_NOTHROW(a * k);
-		CHECK_NOTHROW(a *= k);
+
+		SECTION("Multiplication")
+		{
+			CHECK_NOTHROW(a * k);
+			CHECK_NOTHROW(a *= k);
+		}
+
+		SECTION("Division")
+		{
+			CHECK_NOTHROW(a / (1 / k));
+			CHECK_NOTHROW(a /= (1 / k));
+		}
 	}
 }
 
@@ -366,36 +400,49 @@ SCENARIO("Operators += and -=")
 	}
 }
 
-SCENARIO("Operator *")
+SCENARIO("Operators * and /")
 {
 	GIVEN("Rational numbers")
 	{
 		CRational a(9, 2);
 		CRational b(2, 3);
-		CRational product(3, 1);
+		CRational c(3, 2);
+		CRational result(3, 1);
 
 		THEN("Product is calculated properly and is normalized")
 		{
-			CHECK(a * b == product);
+			CHECK(a * b == result);
+		}
+
+		THEN("Quotient is calculated properly and is normalized")
+		{
+			CHECK(a / c == result);
 		}
 	}
 
 	GIVEN("Rational number and int")
 	{
-		CRational a(7, 10);
-		int n = 4;
-		CRational product(14, 5);
+		CRational a(3, 10);
+		int n = 12;
+		CRational product(18, 5);
+		CRational quotient1(1, 40);
+		CRational quotient2(40);
 
 		THEN("Product is calculated properly and is normalized")
 		{
 			CHECK((a * n) == product);
 			CHECK((n * a) == product);
 		}
+		THEN("Quotients are calculated properly and are normalized")
+		{
+			CHECK((a / n) == quotient1);
+			CHECK((n / a) == quotient2);
+		}
 	}
 }
 
 template <typename T>
-void CheckMultiplicationAssignment(CRational a, T k)
+void CheckMultiplicationAndDivisionAssignment(CRational a, T k)
 {
 	CRational orig = a;
 
@@ -407,9 +454,18 @@ void CheckMultiplicationAssignment(CRational a, T k)
 		{
 			CHECK(a == orig * k * k);
 		}
+
+		AND_WHEN("Operator /= is used")
+		{
+			(a /= k) /= k;
+
+			THEN("Object's value is equal to its original value")
+			{
+				CHECK(a == orig);
+			}
+		}
 	}
 }
-
 
 SCENARIO("Operator *=")
 {
@@ -417,14 +473,14 @@ SCENARIO("Operator *=")
 	{
 		CRational a(16, 7);
 		CRational b(3, 2);
-		CheckMultiplicationAssignment(a, b);
+		CheckMultiplicationAndDivisionAssignment(a, b);
 	}
 
 	GIVEN("Rational number and int")
 	{
 		CRational a(7, 6);
 		int n = 2;
-		CheckMultiplicationAssignment(a, n);
+		CheckMultiplicationAndDivisionAssignment(a, n);
 	}
 
 	SECTION("Exception safety")
@@ -434,6 +490,10 @@ SCENARIO("Operator *=")
 		CHECK_THROWS(a *= 42);
 		CHECK(a == orig);
 		CHECK_THROWS(a *= CRational(1, 42));
+		CHECK(a == orig);
+		CHECK_THROWS(a /= 42);
+		CHECK(a == orig);
+		CHECK_THROWS(a /= CRational(1, 42));
 		CHECK(a == orig);
 	}
 }

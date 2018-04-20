@@ -19,6 +19,9 @@
 |       | Calculator      | WIP   |
 |       |                 |       |
 | **4** | Shape           | WIP   |
-| **5** |                 | TBA   |
+|       |                 |       |
+| **5** | Rational        | WIP   |
+|       | String          | TODO  |
+|       |                 |       |
 | **6** |                 | TBA   |
 | **7** |                 | TBA   |

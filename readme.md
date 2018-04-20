@@ -20,8 +20,8 @@
 |       |                 |       |
 | **4** | Shape           | CR    |
 |       |                 |       |
-| **5** | Rational        | WIP   |
-|       | String          | TODO  |
+| **5** | Rational        | CR    |
+|       | String          | WIP   |
 |       |                 |       |
 | **6** |                 | TBA   |
 | **7** |                 | TBA   |

@@ -45,6 +45,11 @@ CString::~CString()
 
 CString& CString::operator=(const CString& rhs)
 {
+	if (this == &rhs)
+	{
+		return *this;
+	}
+
 	Resize(rhs.GetLength() + 1);
 	std::memcpy(m_pData, rhs.GetData(), rhs.GetLength());
 	return *this;

@@ -56,9 +56,16 @@ SCENARIO("Construction")
 	}
 }
 
-SCENARIO("Assignment")
+SCENARIO("Operator =")
 {
-	SECTION("From const CString")
+	SECTION("C-string")
+	{
+		CString str;
+		str = C_STR;
+		CheckString(str, C_STR);
+	}
+
+	SECTION("Const CString")
 	{
 		const CString other(C_STR, LEN);
 		CString str;
@@ -66,13 +73,27 @@ SCENARIO("Assignment")
 		CheckString(str, STL_STR);
 	}
 
-	SECTION("From rvalue CString")
+	SECTION("Self")
+	{
+		CString str(STL_STR);
+		str = str;
+		CheckString(str, STL_STR);
+	}
+
+	SECTION("Rvalue CString")
 	{
 		CString other(C_STR, LEN);
 		CString str;
 		str = std::move(other);
 		CheckString(str, STL_STR);
 		CheckString(other, "");
+	}
+
+	SECTION("STL string")
+	{
+		CString str;
+		str = STL_STR;
+		CheckString(str, STL_STR);
 	}
 }
 
@@ -106,7 +127,7 @@ SCENARIO("Substring")
 	}
 	SECTION("Exact suffix of string")
 	{
-		CheckSubstring(str, STL_STR, 4, 3);
+		CheckSubstring(str, STL_STR, 4);
 	}
 	SECTION("Overflowed suffix of string")
 	{

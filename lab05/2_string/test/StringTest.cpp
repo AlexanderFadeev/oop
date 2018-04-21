@@ -19,9 +19,18 @@ SCENARIO("Construction")
 		CString str;
 		CheckString(str, "");
 	}
-
 	SECTION("From c-string")
 	{
+		SECTION("Nullptr")
+		{
+			CString str(nullptr);
+			CheckString(str, "");
+		}
+		SECTION("Nullptr with size")
+		{
+			CString str(nullptr, LEN);
+			CheckString(str, "");
+		}
 		SECTION("Null-terminated")
 		{
 			CString str(C_STR);
@@ -33,14 +42,12 @@ SCENARIO("Construction")
 			CheckString(str, STL_STR);
 		}
 	}
-
 	SECTION("From const CString")
 	{
 		const CString other(C_STR, LEN);
 		CString str(other);
 		CheckString(str, STL_STR);
 	}
-
 	SECTION("From rvalue CString")
 	{
 		CString other(C_STR, LEN);
@@ -48,51 +55,9 @@ SCENARIO("Construction")
 		CheckString(str, STL_STR);
 		CheckString(other, "");
 	}
-
 	SECTION("From std::string")
 	{
 		CString str(STL_STR);
-		CheckString(str, STL_STR);
-	}
-}
-
-SCENARIO("Operator =")
-{
-	SECTION("C-string")
-	{
-		CString str;
-		str = C_STR;
-		CheckString(str, C_STR);
-	}
-
-	SECTION("Const CString")
-	{
-		const CString other(C_STR, LEN);
-		CString str;
-		str = other;
-		CheckString(str, STL_STR);
-	}
-
-	SECTION("Self")
-	{
-		CString str(STL_STR);
-		str = str;
-		CheckString(str, STL_STR);
-	}
-
-	SECTION("Rvalue CString")
-	{
-		CString other(C_STR, LEN);
-		CString str;
-		str = std::move(other);
-		CheckString(str, STL_STR);
-		CheckString(other, "");
-	}
-
-	SECTION("STL string")
-	{
-		CString str;
-		str = STL_STR;
 		CheckString(str, STL_STR);
 	}
 }
@@ -132,5 +97,128 @@ SCENARIO("Substring")
 	SECTION("Overflowed suffix of string")
 	{
 		CheckSubstring(str, STL_STR, 5, 42);
+	}
+}
+
+SCENARIO("Operator =")
+{
+	SECTION("Nullptr")
+	{
+		CString str;
+		str = nullptr;
+		CheckString(str, "");
+	}
+	SECTION("C-string")
+	{
+		CString str;
+		str = C_STR;
+		CheckString(str, C_STR);
+	}
+	SECTION("Const CString")
+	{
+		const CString other(C_STR, LEN);
+		CString str;
+		str = other;
+		CheckString(str, STL_STR);
+	}
+	SECTION("Self")
+	{
+		CString str(STL_STR);
+		str = str;
+		CheckString(str, STL_STR);
+	}
+	SECTION("Rvalue CString")
+	{
+		CString other(C_STR, LEN);
+		CString str;
+		str = std::move(other);
+		CheckString(str, STL_STR);
+		CheckString(other, "");
+	}
+	SECTION("STL string")
+	{
+		CString str;
+		str = STL_STR;
+		CheckString(str, STL_STR);
+	}
+}
+
+void CheckStringConcatenation(const CString& string, const std::string prefix, const std::string suffix)
+{
+	CheckString(string, prefix + suffix);
+}
+
+SCENARIO("Operator +=")
+{
+	GIVEN("A string")
+	{
+		CString str(STL_STR);
+
+		THEN("It operator += modifies string properly")
+		{
+			SECTION("Nullptr")
+			{
+				str += nullptr;
+				CheckStringConcatenation(str, STL_STR, "");
+			}
+			SECTION("C-string")
+			{
+				str += C_STR;
+				CheckStringConcatenation(str, STL_STR, C_STR);
+			}
+			SECTION("Const CString")
+			{
+				const CString other(C_STR, LEN);
+				str += other;
+				CheckStringConcatenation(str, STL_STR, STL_STR);
+			}
+			SECTION("Self")
+			{
+				str += str;
+				CheckStringConcatenation(str, STL_STR, STL_STR);
+			}
+			SECTION("STL string")
+			{
+				str += STL_STR;
+				CheckStringConcatenation(str, STL_STR, STL_STR);
+			}
+		}
+	}
+}
+
+SCENARIO("Operator +")
+{
+	GIVEN("A string")
+	{
+		CString str(STL_STR);
+
+		THEN("It operator + returns concatentaion of strings")
+		{
+			SECTION("Nullptr")
+			{
+				CheckStringConcatenation(str + nullptr, STL_STR, "");
+				CheckStringConcatenation(nullptr + str, "", STL_STR);
+			}
+			SECTION("C-string")
+			{
+				CheckStringConcatenation(str + C_STR, STL_STR, C_STR);
+				CheckStringConcatenation(C_STR + str, C_STR, STL_STR);
+			}
+			SECTION("Const CString")
+			{
+				const CString other(C_STR, LEN);
+				CheckStringConcatenation(str + other, STL_STR, STL_STR);
+				CheckStringConcatenation(other + str, STL_STR, STL_STR);
+			}
+			SECTION("Self")
+			{
+				CheckStringConcatenation(str + str, STL_STR, STL_STR);
+			}
+			SECTION("STL string")
+			{
+				CheckStringConcatenation(str + STL_STR, STL_STR, STL_STR);
+				CheckStringConcatenation(STL_STR + str, STL_STR, STL_STR);
+			}
+		}
 	}
 }

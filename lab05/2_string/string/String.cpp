@@ -1,6 +1,18 @@
 #include "String.hpp"
 #include <algorithm>
+#include <cmath>
 #include <cstring>
+
+namespace
+{
+
+template <typename T>
+T CeilPowerOf2(T value)
+{
+	return T(1) << std::lround(std::ceil(std::log2(value)));
+}
+
+} // namespace
 
 CString::CString()
 	: CString(nullptr, 0)
@@ -8,23 +20,27 @@ CString::CString()
 }
 
 CString::CString(const char* pString)
-	: CString(pString, std::strlen(pString))
+	: CString(pString, pString ? std::strlen(pString) : 0)
 {
-}
+} 
 
 CString::CString(const char* pString, size_t length)
 	: m_pData(nullptr)
+	, m_capacity(0)
 {
-	Resize(length + 1);
-	if (pString)
+	if (!pString)
 	{
-		std::memcpy(m_pData, pString, m_size);
+		Resize(1);
+		return;
 	}
+
+	Resize(length + 1);
+	std::memcpy(m_pData, pString, m_size);
 }
 
 CString::CString(const CString& other)
+	: CString(other.GetData(), other.GetLength())
 {
-	*this = other;
 }
 
 CString::CString(CString&& other)
@@ -59,7 +75,23 @@ CString& CString::operator=(CString&& rhs)
 {
 	std::swap(m_pData, rhs.m_pData);
 	std::swap(m_size, rhs.m_size);
+	std::swap(m_capacity, rhs.m_capacity);
 	return *this;
+}
+
+CString& CString::operator+=(const CString& rhs)
+{
+	auto newSize = m_size + rhs.GetLength();
+	ReserveAtLeast(newSize);
+	std::memcpy(m_pData + m_size - 1, rhs.GetData(), rhs.GetLength());
+	m_size = newSize;
+	m_pData[m_size - 1] = '\0';
+	return *this;
+}
+
+const CString operator+(CString lhs, const CString& rhs)
+{
+	return lhs += rhs;
 }
 
 void CString::Clear()
@@ -84,17 +116,33 @@ CString CString::SubString(size_t start, size_t length) const
 	return CString(m_pData + start, length);
 }
 
-void CString::Resize(size_t newSize)
+void CString::Resize(size_t size)
 {
-	auto newPData = new char[newSize];
+	Reserve(size);
+	m_pData[size - 1] = '\0';
+	m_size = size;
+}
+
+void CString::Reserve(size_t capacity)
+{
+	if (m_capacity >= capacity)
+	{
+		return;
+	}
+
+	auto newPData = new char[capacity];
 
 	if (m_pData)
 	{
-		std::memcpy(newPData, m_pData, std::min(m_size, newSize));
+		std::memcpy(newPData, m_pData, std::min(m_size, capacity));
 		delete[] m_pData;
 	}
 
-	newPData[newSize - 1] = '\0';
 	m_pData = newPData;
-	m_size = newSize;
+	m_capacity = capacity;
+}
+
+void CString::ReserveAtLeast(size_t capacity)
+{
+	Reserve(CeilPowerOf2(capacity));
 }

@@ -15,6 +15,9 @@ public:
 
 	CString& operator=(const CString&);
 	CString& operator=(CString&&);
+	CString& operator+=(const CString&);
+
+	friend const CString operator+(CString, const CString&);
 
 	void Clear();
 
@@ -23,8 +26,11 @@ public:
 	CString SubString(size_t start, size_t length = SIZE_MAX) const;
 
 private:
-	void Resize(size_t newSize);
+	void Resize(size_t size);
+	void Reserve(size_t capacity);
+	void ReserveAtLeast(size_t capacity);
 
 	char* m_pData;
 	size_t m_size;
+	size_t m_capacity;
 };

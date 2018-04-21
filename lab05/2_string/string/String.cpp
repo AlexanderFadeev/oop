@@ -1,5 +1,6 @@
 #include "String.hpp"
 #include <algorithm>
+#include <cctype>
 #include <cmath>
 #include <cstring>
 
@@ -10,6 +11,11 @@ template <typename T>
 T CeilPowerOf2(T value)
 {
 	return T(1) << std::lround(std::ceil(std::log2(value)));
+}
+
+bool IsSeparator(int ch)
+{
+	return std::isspace(ch) || ch == EOF;
 }
 
 } // namespace
@@ -163,10 +169,46 @@ bool operator>=(const CString& lhs, const CString& rhs)
 	return !(lhs < rhs);
 }
 
+std::istream& operator>>(std::istream& is, CString& str)
+{
+	is >> std::ws;
+
+	char ch;
+	while (is.get(ch))
+	{
+		if (IsSeparator(ch))
+		{
+			is.unget();
+			break;
+		}
+
+		str.PushBack(ch);
+	}
+
+	return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const CString& str)
+{
+	for (size_t index = 0; index < str.m_size; index++)
+	{
+		os << str.m_pData[index];
+	}
+
+	return os;
+}
 
 void CString::Clear()
 {
 	Resize(1);
+}
+
+void CString::PushBack(char ch)
+{
+	ReserveAtLeast(m_size + 1);
+	m_size++;
+	m_pData[m_size - 1] = '\0';
+	m_pData[m_size - 2] = ch;
 }
 
 size_t CString::GetLength() const

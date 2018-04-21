@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 
 class CString
 {
@@ -29,7 +30,11 @@ public:
 	friend bool operator<=(const CString&, const CString&);
 	friend bool operator>=(const CString&, const CString&);
 
+	friend std::istream& operator>>(std::istream&, CString&);
+	friend std::ostream& operator<<(std::ostream&, const CString&);
+	
 	void Clear();
+	void PushBack(char ch);
 
 	size_t GetLength() const;
 	const char* GetData() const;

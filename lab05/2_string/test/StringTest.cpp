@@ -1,5 +1,6 @@
 #include "String.hpp"
 #include "catch.hpp"
+#include <sstream>
 #include <string>
 
 void CheckString(const CString& string, const std::string expected)
@@ -309,6 +310,82 @@ SCENARIO("Operator []")
 				str[i] = 'z';
 				CHECK(str[i] == 'z');
 			}
+		}
+	}
+}
+
+struct TestCase
+{
+	std::string prefix;
+	std::string data;
+	std::string postfix;
+};
+
+void CheckTestCase(const TestCase& testCase)
+{
+	GIVEN("String and istream with data")
+	{
+		CString str;
+		std::stringstream ss;
+		ss << testCase.prefix << testCase.data << testCase.postfix;
+
+		THEN("Data from istream is properly read to string")
+		{
+			ss >> str;
+			CHECK(str == testCase.data);
+
+			AND_THEN("No extra chars are takes from stream")
+			{
+				std::string rest;
+				std::getline(ss, rest);
+				CHECK(rest == testCase.postfix);
+			}
+		}
+	}
+
+	GIVEN("String with data and ostream")
+	{
+		std::string str(testCase.data);
+		std::stringstream ss;
+
+		THEN("Data is properly written to stream")
+		{
+			std::string data;
+			ss << str;
+			ss >> data;
+			CHECK(data == testCase.data);
+		}
+	}
+}
+
+SCENARIO("Operators >> and <<")
+{
+	std::vector<TestCase> testCases{
+		{ "", "abc", "" },
+		{ " ", "!@#$%^&*()_+", " " },
+		{ " \t ", "asdf", " \t " },
+	};
+
+	for (auto& testCase : testCases)
+	{
+		CheckTestCase(testCase);
+	}
+}
+
+SCENARIO("Push back method")
+{
+	GIVEN("A string")
+	{
+		CString str(C_STR, LEN);
+
+		THEN("Characters can be pushed back to it")
+		{
+			for (auto ch : STL_STR)
+			{
+				str.PushBack(ch);
+			}
+
+			CheckStringConcatenation(str, STL_STR, STL_STR);
 		}
 	}
 }

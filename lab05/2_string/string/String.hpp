@@ -19,6 +19,13 @@ public:
 
 	friend const CString operator+(CString, const CString&);
 
+	friend bool operator==(const CString&, const CString&);
+	friend bool operator!=(const CString&, const CString&);
+	friend bool operator<(const CString&, const CString&);
+	friend bool operator>(const CString&, const CString&);
+	friend bool operator<=(const CString&, const CString&);
+	friend bool operator>=(const CString&, const CString&);
+
 	void Clear();
 
 	size_t GetLength() const;

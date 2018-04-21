@@ -192,7 +192,7 @@ SCENARIO("Operator +")
 	{
 		CString str(STL_STR);
 
-		THEN("It operator + returns concatentaion of strings")
+		THEN("Operator + returns concatentaion of strings")
 		{
 			SECTION("Nullptr")
 			{
@@ -218,6 +218,66 @@ SCENARIO("Operator +")
 			{
 				CheckStringConcatenation(str + STL_STR, STL_STR, STL_STR);
 				CheckStringConcatenation(STL_STR + str, STL_STR, STL_STR);
+			}
+		}
+	}
+}
+
+void CheckStringsComparisonLess(const CString& a, const CString& b)
+{
+	CHECK(a != b);
+	CHECK(b != a);
+	CHECK(a < b);
+	CHECK(b > a);
+	CHECK(a <= b);
+	CHECK(b >= a);
+	CHECK_FALSE(a == b);
+	CHECK_FALSE(b == a);
+	CHECK_FALSE(a > b);
+	CHECK_FALSE(b < a);
+	CHECK_FALSE(a >= b);
+	CHECK_FALSE(b <= a);
+}
+
+void CheckStringsComparisonEqual(const CString& a, const CString& b)
+{
+	CHECK(a == b);
+	CHECK(b == a);
+	CHECK(a <= b);
+	CHECK(a >= b);
+	CHECK(b <= a);
+	CHECK(b >= a);
+	CHECK_FALSE(a != b);
+	CHECK_FALSE(b != a);
+	CHECK_FALSE(a < b);
+	CHECK_FALSE(a > b);
+	CHECK_FALSE(b < a);
+	CHECK_FALSE(b > a);
+}
+
+SCENARIO("Comparison operators")
+{
+	GIVEN("Strings")
+	{
+		const std::vector<CString> strVec{
+			{},
+			"a",
+			"aaaaa",
+			"abc",
+			"abcde",
+			"b"
+			"bb"
+		};
+
+		THEN("Comparison operators work properly")
+		{
+			for (size_t i = 0; i < strVec.size(); i++)
+			{
+				CheckStringsComparisonEqual(strVec[i], strVec[i]);
+				for (size_t j = i + 1; j < strVec.size(); j++)
+				{
+					CheckStringsComparisonLess(strVec[i], strVec[j]);
+				}
 			}
 		}
 	}

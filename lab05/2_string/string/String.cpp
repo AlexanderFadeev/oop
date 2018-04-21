@@ -94,6 +94,74 @@ const CString operator+(CString lhs, const CString& rhs)
 	return lhs += rhs;
 }
 
+bool operator==(const CString& lhs, const CString& rhs)
+{
+	if (lhs.GetLength() != rhs.GetLength())
+	{
+		return false;
+	}
+
+	//TODO: Refactor when operator[] is implemented
+
+	auto len = lhs.GetLength();
+	auto lData = lhs.GetData();
+	auto rData = rhs.GetData();
+
+	for (size_t index = 0; index < len; index++)
+	{
+		if (lData[index] != rData[index])
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool operator!=(const CString& lhs, const CString& rhs)
+{
+	return !(lhs == rhs);
+}
+
+bool operator<(const CString& lhs, const CString& rhs)
+{
+	auto minLen = std::min(lhs.GetLength(), rhs.GetLength());
+
+	//TODO: Refactor when operator[] is implemented
+	auto lData = lhs.GetData();
+	auto rData = rhs.GetData();
+
+	for (size_t index = 0; index < minLen; index++)
+	{
+		if (lData[index] < rData[index])
+		{
+			return true;
+		}
+		if (lData[index] > rData[index])
+		{
+			return false;
+		}
+	}
+
+	return lhs.GetLength() < rhs.GetLength();
+}
+
+bool operator>(const CString& lhs, const CString& rhs)
+{
+	return rhs < lhs;
+}
+
+bool operator<=(const CString& lhs, const CString& rhs)
+{
+	return !(lhs > rhs);
+}
+
+bool operator>=(const CString& lhs, const CString& rhs)
+{
+	return !(lhs < rhs);
+}
+
+
 void CString::Clear()
 {
 	Resize(1);

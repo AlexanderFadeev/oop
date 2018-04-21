@@ -89,6 +89,16 @@ CString& CString::operator+=(const CString& rhs)
 	return *this;
 }
 
+char& CString::operator[](size_t index)
+{
+	return m_pData[index];
+}
+
+const char& CString::operator[](size_t index) const
+{
+	return m_pData[index];
+}
+
 const CString operator+(CString lhs, const CString& rhs)
 {
 	return lhs += rhs;
@@ -101,15 +111,11 @@ bool operator==(const CString& lhs, const CString& rhs)
 		return false;
 	}
 
-	//TODO: Refactor when operator[] is implemented
-
 	auto len = lhs.GetLength();
-	auto lData = lhs.GetData();
-	auto rData = rhs.GetData();
 
 	for (size_t index = 0; index < len; index++)
 	{
-		if (lData[index] != rData[index])
+		if (lhs[index] != rhs[index])
 		{
 			return false;
 		}
@@ -127,17 +133,13 @@ bool operator<(const CString& lhs, const CString& rhs)
 {
 	auto minLen = std::min(lhs.GetLength(), rhs.GetLength());
 
-	//TODO: Refactor when operator[] is implemented
-	auto lData = lhs.GetData();
-	auto rData = rhs.GetData();
-
 	for (size_t index = 0; index < minLen; index++)
 	{
-		if (lData[index] < rData[index])
+		if (lhs[index] < rhs[index])
 		{
 			return true;
 		}
-		if (lData[index] > rData[index])
+		if (lhs[index] > rhs[index])
 		{
 			return false;
 		}

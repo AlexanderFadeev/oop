@@ -282,3 +282,33 @@ SCENARIO("Comparison operators")
 		}
 	}
 }
+
+SCENARIO("Operator []")
+{
+	GIVEN("Const string")
+	{
+		const CString str(STL_STR);
+
+		THEN("Const operator[] returns correct values")
+		{
+			for (size_t i = 0; i < str.GetLength(); i++)
+			{
+				CHECK(str[i] == STL_STR[i]);
+			}
+		}
+	}
+	GIVEN("Non-const string")
+	{
+		CString str(STL_STR);
+
+		THEN("Operator[] returns correct references which can be modified")
+		{
+			for (size_t i = 0; i < str.GetLength(); i++)
+			{
+				CHECK(str[i] == STL_STR[i]);
+				str[i] = 'z';
+				CHECK(str[i] == 'z');
+			}
+		}
+	}
+}

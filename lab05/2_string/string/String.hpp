@@ -17,6 +17,9 @@ public:
 	CString& operator=(CString&&);
 	CString& operator+=(const CString&);
 
+	char& operator[](size_t);
+	const char& operator[](size_t) const;
+
 	friend const CString operator+(CString, const CString&);
 
 	friend bool operator==(const CString&, const CString&);

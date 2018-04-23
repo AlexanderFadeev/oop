@@ -34,12 +34,12 @@ void ProcessShapes(std::istream& input, std::ostream& output)
 void PrintShapesInfo(std::ostream& output, ShapePtrs& shapes)
 {
 	auto shapeWithLargestArea = FindShapeWithLargestArea(shapes);
-	auto shapeWithLargestPerimeter = FindShapeWithSmallestPerimeter(shapes);
+	auto shapeWithSmallestPerimeter = FindShapeWithSmallestPerimeter(shapes);
 
 	output << "Shape with largest area:\n"
 		   << shapeWithLargestArea->ToString() << '\n'
 		   << "Shape with smallest perimeter:\n"
-		   << shapeWithLargestPerimeter->ToString() << std::endl;
+		   << shapeWithSmallestPerimeter->ToString() << std::endl;
 
 	if (!output)
 	{
@@ -55,9 +55,9 @@ void Visualize(ShapePtrs& shapes)
 	canvas.WaitForCloseEvent();
 }
 
-void DrawAll(ICanvas& canvas, const ShapePtrs& ptrs)
+void DrawAll(ICanvas& canvas, const ShapePtrs& shapePtrs)
 {
-	for (auto ptr : ptrs)
+	for (auto ptr : shapePtrs)
 	{
 		ptr->Draw(canvas);
 	}

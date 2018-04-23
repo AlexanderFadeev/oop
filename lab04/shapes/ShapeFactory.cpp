@@ -24,7 +24,7 @@ CShapeFactory::ShapePtr CShapeFactory::GetShape() const
 
 	iss >> type;
 
-	auto& mapping = m_getShapeFunctionMapping;
+	const auto& mapping = m_getShapeFunctionMapping;
 	auto fn = mapping.find(type);
 	if (fn == mapping.end())
 	{

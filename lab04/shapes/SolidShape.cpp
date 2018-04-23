@@ -2,22 +2,27 @@
 #include <iomanip>
 #include <sstream>
 
-CColor ISolidShape::GetFillColor() const
+CColor CSolidShape::GetFillColor() const
 {
 	return m_fillColor;
 }
 
-ISolidShape::ISolidShape(const CColor& outlineColor, const CColor& fillColor)
-	: IShape(outlineColor)
+CColor CSolidShape::GetOutlineColor() const
+{
+	return CShape::GetOutlineColor(); 
+}
+
+CSolidShape::CSolidShape(const CColor& outlineColor, const CColor& fillColor)
+	: CShape(outlineColor)
 	, m_fillColor(fillColor)
 {
 }
 
-std::string ISolidShape::FieldsToString(int precision) const
+std::string CSolidShape::FieldsToString(int precision) const
 {
 	std::ostringstream buf;
 
-	buf << IShape::FieldsToString(precision);
+	buf << CShape::FieldsToString(precision);
 	buf << "\tfill color: " << m_fillColor.ToString() << ",\n";
 
 	return buf.str();

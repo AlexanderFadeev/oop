@@ -41,9 +41,11 @@
     <ClInclude Include="Rectangle.hpp" />
     <ClInclude Include="SFMLCanvas.hpp" />
     <ClInclude Include="Point.hpp" />
+    <ClInclude Include="IShape.hpp" />
     <ClInclude Include="Shape.hpp" />
     <ClInclude Include="ShapeFactory.hpp" />
     <ClInclude Include="Shapes.hpp" />
+    <ClInclude Include="ISolidShape.hpp" />
     <ClInclude Include="SolidShape.hpp" />
     <ClInclude Include="Triangle.hpp" />
   </ItemGroup>

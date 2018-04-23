@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Shape.hpp"
+#include "IShape.hpp"
 #include <functional>
 #include <iostream>
 #include <map>

@@ -1,22 +1,16 @@
 #pragma once
 
-#include "CanvasDrawable.hpp"
-#include "Color.hpp"
-#include <string>
+#include "IShape.hpp"
 
-class IShape
-	: public ICanvasDrawable
+
+class CShape
+	: public virtual IShape
 {
 public:
-	virtual ~IShape() = default;
-
-	virtual double GetArea() const = 0;
-	virtual double GetPerimeter() const = 0;
-	virtual std::string ToString(int precision = 2) const = 0;
-	CColor GetOutlineColor() const;
+	CColor GetOutlineColor() const override;
 
 protected:
-	IShape(const CColor& outlineColor);
+	CShape(const CColor& outlineColor);
 
 	std::string FieldsToString(int precision = 2) const;
 

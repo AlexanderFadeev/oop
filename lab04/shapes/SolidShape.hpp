@@ -1,15 +1,18 @@
 #pragma once
 
+#include "ISolidShape.hpp"
 #include "Shape.hpp"
 
-class ISolidShape
-	: public IShape
+class CSolidShape
+	: public CShape
+	, public virtual ISolidShape
 {
 public:
-	CColor GetFillColor() const;
+	CColor GetFillColor() const override;
+	CColor GetOutlineColor() const override; // Fix for warning 4250: `inherits via dominance`
 
 protected:
-	ISolidShape(const CColor& outlineColor, const CColor& fillColor);
+	CSolidShape(const CColor& outlineColor, const CColor& fillColor);
 
 	std::string FieldsToString(int precision = 2) const;
 

@@ -2,17 +2,17 @@
 #include <iomanip>
 #include <sstream>
 
-CColor IShape::GetOutlineColor() const
+CColor CShape::GetOutlineColor() const
 {
 	return m_outlineColor;
 }
 
-IShape::IShape(const CColor& outlineColor)
+CShape::CShape(const CColor& outlineColor)
 	: m_outlineColor(outlineColor)
 {
 }
 
-std::string IShape::FieldsToString(int precision) const
+std::string CShape::FieldsToString(int precision) const
 {
 	std::ostringstream buf;
 	buf << std::setprecision(precision) << std::fixed;

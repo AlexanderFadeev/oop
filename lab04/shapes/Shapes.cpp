@@ -10,7 +10,7 @@ ShapePtr FindShapeWithLargestArea(ShapePtrs& shapes)
 
 ShapePtr FindShapeWithSmallestPerimeter(ShapePtrs& shapes)
 {
-	return *std::max_element(shapes.begin(), shapes.end(), [](auto a, auto b) {
+	return *std::min_element(shapes.begin(), shapes.end(), [](auto a, auto b) {
 		return a->GetPerimeter() < b->GetPerimeter();
 	});
 }

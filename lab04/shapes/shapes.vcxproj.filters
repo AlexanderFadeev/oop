@@ -62,12 +62,6 @@
     <ClInclude Include="Point.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shape.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SolidShape.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CanvasDrawable.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -90,6 +84,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Circle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IShape.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ISolidShape.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidShape.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

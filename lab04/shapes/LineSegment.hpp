@@ -5,11 +5,10 @@
 #include "Shape.hpp"
 
 class CLineSegment final
-	: public IShape
+	: public CShape
 {
 public:
 	CLineSegment(const CPoint& a, const CPoint& b, const CColor& outlineColor);
-	~CLineSegment() override = default;
 
 	double GetArea() const override;
 	double GetPerimeter() const override;

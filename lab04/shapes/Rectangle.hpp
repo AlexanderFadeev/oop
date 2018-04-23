@@ -2,7 +2,8 @@
 
 #include "SolidShape.hpp"
 
-class CRectangle : public ISolidShape
+class CRectangle 
+	: public CSolidShape
 {
 public:
 	CRectangle(const CPoint&, const CPoint&, const CColor&, const CColor&);

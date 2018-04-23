@@ -3,7 +3,7 @@
 #include "SolidShape.hpp"
 
 class CTriangle final
-	: public ISolidShape
+	: public CSolidShape
 {
 public:
 	CTriangle(const CPoint&, const CPoint&, const CPoint&, const CColor&, const CColor&);

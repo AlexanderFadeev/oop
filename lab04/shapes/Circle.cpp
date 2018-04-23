@@ -3,7 +3,7 @@
 #include <sstream>
 
 CCircle::CCircle(const CPoint& center, double radius, const CColor& outlineColor, const CColor& fillColor)
-	: ISolidShape(outlineColor, fillColor)
+	: CSolidShape(outlineColor, fillColor)
 	, m_center(center)
 	, m_radius(radius)
 {

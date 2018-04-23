@@ -3,7 +3,7 @@
 #include "SolidShape.hpp"
 
 class CCircle final
-	: public ISolidShape
+	: public CSolidShape
 {
 public:
 	CCircle(const CPoint&, double, const CColor&, const CColor&);

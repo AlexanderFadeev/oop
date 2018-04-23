@@ -3,7 +3,7 @@
 #include <sstream>
 
 CRectangle::CRectangle(const CPoint& a, const CPoint& b, const CColor& outlineColor, const CColor& fillColor)
-	: ISolidShape(outlineColor, fillColor)
+	: CSolidShape(outlineColor, fillColor)
 	, m_leftTop(a)
 	, m_rightBot(b)
 {

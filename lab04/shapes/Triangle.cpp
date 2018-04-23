@@ -4,7 +4,7 @@
 
 CTriangle::CTriangle(const CPoint& a, const CPoint& b, const CPoint& c,
 	const CColor& outlineColor, const CColor& fillColor)
-	: ISolidShape(outlineColor, fillColor)
+	: CSolidShape(outlineColor, fillColor)
 	, m_a(a)
 	, m_b(b)
 	, m_c(c)

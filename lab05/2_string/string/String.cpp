@@ -228,11 +228,68 @@ CString CString::SubString(size_t start, size_t length) const
 	return CString(m_pData + start, length);
 }
 
+CString::Iterator CString::Begin()
+{
+	return { m_pData };
+}
+
+CString::Iterator CString::End()
+{
+	return { m_pData + m_size - 1};
+}
+
+CString::ConstIterator CString::CBegin() const
+{
+	return { m_pData };
+}
+
+CString::ConstIterator CString::CEnd() const
+{
+	return { m_pData + m_size - 1};
+}
+
+CString::ReverseIterator CString::RBegin()
+{
+	return ReverseIterator(End());
+}
+
+CString::ReverseIterator CString::REnd()
+{
+	return ReverseIterator(Begin());
+}
+
+CString::ConstReverseIterator CString::CRBegin() const
+{
+	return ConstReverseIterator(CEnd());
+}
+
+CString::ConstReverseIterator CString::CREnd() const
+{
+	return ConstReverseIterator(CBegin());
+}
+
+#pragma region RangeBasedForSupport
+CString::Iterator CString::begin()
+{
+	return Begin();
+}
+
+CString::Iterator CString::end()
+{
+	return End();
+}
+#pragma endregion
+
 void CString::Resize(size_t size)
 {
-	Reserve(size);
+	Reallocate(size);
 	m_pData[size - 1] = '\0';
 	m_size = size;
+}
+
+void CString::ReserveAtLeast(size_t capacity)
+{
+	Reserve(CeilPowerOf2(capacity));
 }
 
 void CString::Reserve(size_t capacity)
@@ -242,6 +299,11 @@ void CString::Reserve(size_t capacity)
 		return;
 	}
 
+	Reallocate(capacity);
+}
+
+void CString::Reallocate(size_t capacity)
+{
 	auto newPData = new char[capacity];
 
 	if (m_pData)
@@ -252,9 +314,4 @@ void CString::Reserve(size_t capacity)
 
 	m_pData = newPData;
 	m_capacity = capacity;
-}
-
-void CString::ReserveAtLeast(size_t capacity)
-{
-	Reserve(CeilPowerOf2(capacity));
 }

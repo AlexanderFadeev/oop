@@ -1,11 +1,20 @@
 #pragma once
 
-#include <string>
 #include <iostream>
+#include <iterator>
+#include <string>
 
 class CString
 {
 public:
+	template <typename ValueType>
+	class CIterator;
+
+	using Iterator = CIterator<char>;
+	using ConstIterator = CIterator<const char>;
+	using ReverseIterator = std::reverse_iterator<Iterator>;
+	using ConstReverseIterator = std::reverse_iterator<ConstIterator>;
+
 	CString();
 	CString(const char*);
 	CString(const char*, size_t);
@@ -40,12 +49,29 @@ public:
 	const char* GetData() const;
 	CString SubString(size_t start, size_t length = SIZE_MAX) const;
 
+	Iterator Begin();
+	Iterator End();
+	ConstIterator CBegin() const;
+	ConstIterator CEnd() const;
+	ReverseIterator RBegin();
+	ReverseIterator REnd();
+	ConstReverseIterator CRBegin() const;
+	ConstReverseIterator CREnd() const;
+
+#pragma region RangeBasedForSupport
+	Iterator begin();
+	Iterator end();
+#pragma endregion
+
 private:
 	void Resize(size_t size);
-	void Reserve(size_t capacity);
 	void ReserveAtLeast(size_t capacity);
+	void Reserve(size_t capacity);
+	void Reallocate(size_t capacity);
 
 	char* m_pData;
 	size_t m_size;
 	size_t m_capacity;
 };
+
+#include "Iterator.hpp"

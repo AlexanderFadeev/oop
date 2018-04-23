@@ -389,3 +389,65 @@ SCENARIO("Push back method")
 		}
 	}
 }
+
+SCENARIO("Iterators")
+{
+	GIVEN("A string")
+	{
+		CString str = "iterator";
+		CString filled = "########";
+		auto fillChar = '#';
+		auto minChar = 'a';
+		auto maxChar = 't';
+
+		THEN("It can be const-iterated via for loop")
+		{
+			char max = str[0];
+			for (auto it = str.CBegin(); it != str.CEnd(); it++)
+			{
+				if (*it > max)
+				{
+					max = *it;
+				}
+			}
+			CHECK(max == maxChar);
+		}
+		THEN("It can be non-const-iterated via for loop")
+		{
+			for (auto it = str.Begin(); it != str.End(); it++)
+			{
+				*it = fillChar;
+			}
+			CHECK(str == filled);
+		}
+		THEN("It can be iterated via range-based for loop")
+		{
+			for (auto& it : str)
+			{
+				it = fillChar;
+			}
+			CHECK(str == filled);
+		}
+		THEN("It can be const-iterated via STL algorithms")
+		{
+			auto minmax = std::minmax_element(str.CBegin(), str.CEnd());
+			CHECK(*minmax.first == minChar);
+			CHECK(*minmax.second == maxChar);
+		}
+		THEN("It can be non-const-iterated via STL algorithms")
+		{
+			std::fill(str.Begin(), str.End(), fillChar);
+			CHECK(str == filled);
+		}
+		THEN("It can be reverse-iterated")
+		{
+			auto minmax = std::minmax_element(str.RBegin(), str.REnd());
+			CHECK(*minmax.first == minChar);
+			CHECK(*minmax.second == maxChar);
+
+			std::string reversed;
+			std::copy(str.RBegin(), str.REnd(), std::back_inserter(reversed));
+			CHECK(reversed == "rotareti");
+		}
+	}
+}

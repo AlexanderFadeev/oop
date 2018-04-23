@@ -24,5 +24,8 @@
     <ClCompile Include="..\string\String.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\string\Iterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

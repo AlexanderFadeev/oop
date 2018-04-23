@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Canvas.hpp"
+#include "ICanvas.hpp"
 #include <SFML\Graphics.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Window.hpp>

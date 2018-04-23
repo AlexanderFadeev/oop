@@ -33,8 +33,8 @@
     <ClCompile Include="Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Canvas.hpp" />
-    <ClInclude Include="CanvasDrawable.hpp" />
+    <ClInclude Include="ICanvas.hpp" />
+    <ClInclude Include="ICanvasDrawable.hpp" />
     <ClInclude Include="Circle.hpp" />
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="LineSegment.hpp" />

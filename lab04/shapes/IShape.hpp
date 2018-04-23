@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CanvasDrawable.hpp"
+#include "ICanvasDrawable.hpp"
 #include "Color.hpp"
 #include <string>
 

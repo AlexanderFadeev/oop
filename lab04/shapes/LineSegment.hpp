@@ -1,6 +1,5 @@
 #pragma once
 
-#include "CanvasDrawable.hpp"
 #include "Point.hpp"
 #include "Shape.hpp"
 

@@ -230,22 +230,22 @@ CString CString::SubString(size_t start, size_t length) const
 
 CString::Iterator CString::Begin()
 {
-	return { m_pData };
+	return GetIterator<Iterator>(0);
 }
 
 CString::Iterator CString::End()
 {
-	return { m_pData + m_size - 1};
+	return GetIterator<Iterator>(m_size - 1);
 }
 
 CString::ConstIterator CString::CBegin() const
 {
-	return { m_pData };
+	return GetIterator<ConstIterator>(0);
 }
 
 CString::ConstIterator CString::CEnd() const
 {
-	return { m_pData + m_size - 1};
+	return GetIterator<ConstIterator>(m_size - 1);
 }
 
 CString::ReverseIterator CString::RBegin()
@@ -314,4 +314,14 @@ void CString::Reallocate(size_t capacity)
 
 	m_pData = newPData;
 	m_capacity = capacity;
+}
+
+template <typename T>
+inline T CString::GetIterator(size_t index) const
+{
+#ifndef NDEBUG
+	return T(m_pData + index, m_pData, m_pData + m_size - 1);
+#else
+	return T(m_pData + index);
+#endif // !NDEBUG
 }

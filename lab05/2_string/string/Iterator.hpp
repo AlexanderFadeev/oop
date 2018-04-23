@@ -14,8 +14,11 @@ public:
 	typedef ValueType&                      reference;
 #pragma endregion
 
-	CIterator(ValueType* = nullptr);
+	CIterator(ValueType* ptr = nullptr);
 	CIterator(const CIterator&);
+#ifndef NDEBUG
+	CIterator(ValueType* ptr, ValueType* begin, ValueType* end);
+#endif // !NDEBUG
 
 	CIterator& operator=(const CIterator&);
 
@@ -43,4 +46,8 @@ public:
 
 private:
 	ValueType* m_ptr;
+#ifndef NDEBUG
+	ValueType* m_begin;
+	ValueType* m_end;
+#endif // !NDEBUG
 };

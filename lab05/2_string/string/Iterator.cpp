@@ -1,5 +1,5 @@
 #include "Iterator.hpp"
-
+#include <cassert>
 
 template <typename T>
 using CIterator = CString::CIterator<T>;
@@ -10,28 +10,54 @@ CIterator<T>::CIterator(T* ptr)
 {
 }
 
+#ifndef NDEBUG
+template <typename T>
+CIterator<T>::CIterator(T* ptr, T* begin, T* end)
+	: m_ptr(ptr)
+	, m_begin(begin)
+	, m_end(end)
+{
+}
+#endif // !NDEBUG
+
+
 template <typename T>
 CIterator<T>::CIterator(const CIterator<T>& it)
 	: m_ptr(it.m_ptr)
+#ifndef NDEBUG
+	, m_begin(it.m_begin)
+	, m_end(it.m_end)
+#endif // !NDEBUG
+
 {
 }
 
 template <typename T>
-CIterator<T>& CString::CIterator<T>::operator=(const CIterator& rhs)
+CIterator<T>& CIterator<T>::operator=(const CIterator& rhs)
 {
 	m_ptr = rhs.m_ptr;
+
+#ifndef NDEBUG
+	m_begin = rhs.m_begin;
+	m_end = rhs.m_end;
+#endif // !NDEBUG
+
 	return *this;
 }
+
+#include <iostream>
 
 template <typename T>
 T& CIterator<T>::operator*()
 {
+	assert(m_begin <= m_ptr && m_ptr < m_end);
 	return *m_ptr;
 }
 
 template<typename T>
 T& CIterator<T>::operator[](size_t index)
 {
+	assert(m_begin <= m_ptr + index && m_ptr + index < m_end);
 	return m_ptr[index];
 }
 

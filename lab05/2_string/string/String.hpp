@@ -69,6 +69,9 @@ private:
 	void Reserve(size_t capacity);
 	void Reallocate(size_t capacity);
 
+	template <typename T>
+	T GetIterator(size_t) const;
+
 	char* m_pData;
 	size_t m_size;
 	size_t m_capacity;

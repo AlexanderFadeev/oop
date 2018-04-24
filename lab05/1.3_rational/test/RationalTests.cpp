@@ -584,5 +584,50 @@ SCENARIO("Operators >> and <<")
 	}
 }
 
+void CheckCompoundFraction(CRational r, int integral, CRational rational)
+{
+	auto compound = r.ToCompoundFraction();
+	CHECK(compound.first == integral);
+	CHECK(compound.second == rational);
+}
+
+SCENARIO("Compound fractions")
+{
+	GIVEN("A rational number")
+	{
+		CRational r(42, 35);
+
+		THEN("Compound fraction for it is calculated properly")
+		{
+			CheckCompoundFraction(r, 1, {1, 5});
+		}
+	}
+
+	GIVEN("A negative rational number")
+	{
+		CRational r(-42, 15);
+
+		THEN("Compound fraction for it is calculated properly")
+		{
+			CheckCompoundFraction(r, -2, { -4, 5 });
+		}
+	}
+
+	GIVEN("An integer rational number")
+	{
+		CRational n(42);
+		auto compound = n.ToCompoundFraction();
+
+		THEN("Integral part is equal to the number itself")
+		{
+			CHECK(compound.first == n);
+
+			AND_THEN("Rational part is equal to zero")
+			{
+				CHECK(compound.second == 0);
+			}
+		}
+	}
+}
 
 } // namespace

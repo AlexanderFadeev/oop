@@ -5,6 +5,8 @@
 class CRational final
 {
 public:
+	using CompoundFraction = std::pair<int, CRational>;
+
 	CRational(int numerator = 0, int denominator = 1);
 
 	const CRational operator+() const;
@@ -33,6 +35,7 @@ public:
 	int GetNumerator() const;
 	int GetDenominator() const;
 	double ToDouble() const;
+	CompoundFraction ToCompoundFraction() const;
 
 private:
 	int m_numerator;

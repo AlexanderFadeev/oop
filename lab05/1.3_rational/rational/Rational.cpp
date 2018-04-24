@@ -232,3 +232,10 @@ double CRational::ToDouble() const
 {
 	return 1.0 * m_numerator / m_denominator;
 }
+
+CRational::CompoundFraction CRational::ToCompoundFraction() const
+{
+	int integral = m_numerator / m_denominator;
+	CRational rational = *this - integral;
+	return { integral, rational };
+}

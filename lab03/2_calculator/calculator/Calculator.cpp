@@ -2,19 +2,15 @@
 
 namespace
 {
-
-template <typename T>
-using IDMapping = std::map<std::string, std::shared_ptr<T>>;
-
-
-template <typename T>
-bool IsIdentifierDefined(const std::string& id, const IDMapping<T>& where)
+	
+template <typename IDMappingSPtr>
+bool IsIdentifierDefined(const std::string& id, const IDMappingSPtr& where)
 {
-	return where.find(id) != where.end();
+	return where->find(id) != where->end();
 }
 
-template <typename T>
-void ThrowIfDefined(const std::string& id, const IDMapping<T>& where)
+template <typename IDMappingSPtr>
+void ThrowIfDefined(const std::string& id, const IDMappingSPtr& where)
 {
 	if (IsIdentifierDefined(id, where))
 	{
@@ -22,8 +18,8 @@ void ThrowIfDefined(const std::string& id, const IDMapping<T>& where)
 	}
 }
 
-template <typename T>
-void ThrowIfNotDefined(const std::string& id, const IDMapping<T>& where)
+template <typename IDMappingSPtr>
+void ThrowIfNotDefined(const std::string& id, const IDMappingSPtr& where)
 {
 	if (!IsIdentifierDefined(id, where))
 	{
@@ -48,11 +44,20 @@ void ThrowIfNotValid(const std::string& id)
 
 } // namespace
 
-double CCalculator::GetValue(const std::string& id) const
+CCalculator::CCalculator()
+	: m_variables(std::make_shared<IDMapping<CVariable>>())
+	, m_functions(std::make_shared<IDMapping<CFunction>>())
 {
-	ThrowIfNotDefined(id);
+}
 
-	return m_identifiers.at(id)->GetValue();
+std::optional<double> CCalculator::GetValue(const std::string& id) const
+{
+	if (!IsIdentifierDefined(id))
+	{
+		return std::nullopt;
+	}
+
+	return GetID(id)->GetValue();
 }
 
 void CCalculator::Var(const std::string& id)
@@ -61,8 +66,7 @@ void CCalculator::Var(const std::string& id)
 	ThrowIfDefined(id);
 
 	auto variable = CVariable::New();
-	m_identifiers[id] = variable;
-	m_variables[id] = variable;
+	m_variables->insert({ id, variable });
 }
 
 void CCalculator::Let(const std::string& id, double value)
@@ -72,14 +76,14 @@ void CCalculator::Let(const std::string& id, double value)
 		Var(id);
 	}
 
-	m_variables.at(id)->SetValue(value);
+	m_variables->at(id)->SetValue(value);
 }
 
 void CCalculator::Let(const std::string& id1, const std::string& id2)
 {
-	::ThrowIfNotDefined(id2, m_variables);
+	ThrowIfNotDefined(id2);
 
-	double value = GetValue(id2);
+	double value = *GetValue(id2);
 	Let(id1, value);
 }
 
@@ -89,9 +93,8 @@ void CCalculator::Func(const std::string& fnID, const std::string& id)
 	ThrowIfDefined(fnID);
 	ThrowIfNotDefined(id);
 
-	auto function = CFunction::New(m_identifiers.at(id));
-	m_identifiers[fnID] = function;
-	m_functions[fnID] = function;
+	auto function = CFunction::New(GetID(id));
+	m_functions->insert({ fnID, function });
 }
 
 using Operator = CFunction::Operator;
@@ -103,22 +106,46 @@ void CCalculator::Func(const std::string& fnID, const std::string& id1, Operator
 	ThrowIfNotDefined(id1);
 	ThrowIfNotDefined(id2);
 
-	auto function = CFunction::New(m_identifiers.at(id1), op, m_identifiers.at(id2));
-	m_identifiers[fnID] = function;
-	m_functions[fnID] = function;
+	auto function = CFunction::New(GetID(id1), op, GetID(id2));
+	m_functions->insert({ fnID, function });
 }
+
+CCalculator::IDMappingSPtr<CVariable> CCalculator::GetVariables()
+{
+	return m_variables;
+}
+
+CCalculator::IDMappingSPtr<CFunction> CCalculator::GetFunctions()
+{
+	return m_functions;
+}
+
+CCalculator::IDSPtr CCalculator::GetID(const std::string& id) const
+{
+	if (::IsIdentifierDefined(id, m_functions))
+	{
+		return m_functions->at(id);
+	}
+
+	return m_variables->at(id);
+}
+
 bool CCalculator::IsIdentifierDefined(const std::string& id) const
 {
-	return ::IsIdentifierDefined(id, m_identifiers);
+	return ::IsIdentifierDefined(id, m_functions)
+		|| ::IsIdentifierDefined(id, m_variables);
 }
 
 void CCalculator::ThrowIfDefined(const std::string& id) const
 {
-	::ThrowIfDefined(id, m_identifiers);
+	::ThrowIfDefined(id, m_functions);
+	::ThrowIfDefined(id, m_variables);
 }
-
 
 void CCalculator::ThrowIfNotDefined(const std::string& id) const
 {
-	::ThrowIfNotDefined(id, m_identifiers);
+	if (!IsIdentifierDefined(id))
+	{
+		throw std::exception("Identifier is not defined");
+	}
 }

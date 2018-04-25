@@ -26,5 +26,5 @@ private:
 	WeakPtrVec m_usesIDs;
 	WeakPtrVec m_usedInIDs;
 
-	mutable std::optional<double> m_value = {};
+	mutable std::optional<double> m_value = std::nullopt;
 };

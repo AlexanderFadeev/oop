@@ -27,10 +27,13 @@
     <ClCompile Include="Function.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SmartCalculator.cpp">
+    <ClCompile Include="Identifier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Identifier.cpp">
+    <ClCompile Include="IdentifierSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,7 +50,10 @@
     <ClInclude Include="Function.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SmartCalculator.hpp">
+    <ClInclude Include="IdentifierSet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

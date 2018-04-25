@@ -53,7 +53,7 @@ SCENARIO("Calculator variables")
 
 			THEN("It's NaN")
 			{
-				REQUIRE(std::isnan(calc.GetValue(id)));
+				REQUIRE(std::isnan(*calc.GetValue(id)));
 			}
 			THEN("It can't be redefined")
 			{
@@ -62,7 +62,7 @@ SCENARIO("Calculator variables")
 			THEN("It can have value assigned to it")
 			{
 				calc.Let(id, 42);
-				REQUIRE(calc.GetValue(id) == 42);
+				REQUIRE(*calc.GetValue(id) == 42);
 			}
 			THEN("It can't have value of undefined variable assigned to it")
 			{
@@ -79,7 +79,6 @@ SCENARIO("Calculator variables")
 				AND_THEN("It does not change with other variable")
 				{
 					calc.Let(otherID, 420);
-					REQUIRE(calc.GetValue(id) == 42);
 				}
 			}
 		}
@@ -119,7 +118,7 @@ SCENARIO("Calculator functions")
 
 			THEN("Function changes its value with variable")
 			{
-				REQUIRE(std::isnan(calc.GetValue(fnID)));
+				REQUIRE(std::isnan(*calc.GetValue(fnID)));
 				calc.Let(varID, 42);
 				REQUIRE(calc.GetValue(fnID) == 42);
 			}
@@ -142,52 +141,56 @@ SCENARIO("Calculator functions")
 					REQUIRE_THROWS(calc.Func(fnID, var1ID));
 					REQUIRE_THROWS(calc.Func(fnID, var1ID, Operator::Sum, var2ID));
 				}
+				AND_THEN("Variable can have value of function be assigned to it")
+				{
+					REQUIRE_NOTHROW(calc.Let(var1ID, fnID));
+				}
 			}
 
 			THEN("Sum operator is functioning properly")
 			{
 				calc.Func(fnID, var1ID, Operator::Sum, var2ID);
 
-				REQUIRE(std::isnan(calc.GetValue(fnID)));
+				REQUIRE(std::isnan(*calc.GetValue(fnID)));
 				calc.Let(var1ID, .42);
-				REQUIRE(std::isnan(calc.GetValue(fnID)));
+				REQUIRE(std::isnan(*calc.GetValue(fnID)));
 				calc.Let(var2ID, 12.95);
-				REQUIRE(calc.GetValue(fnID) == 13.37);
+				REQUIRE(*calc.GetValue(fnID) == 13.37);
 			}
 
 			THEN("Diff operator is functioning properly")
 			{
 				calc.Func(fnID, var1ID, Operator::Diff, var2ID);
 
-				REQUIRE(std::isnan(calc.GetValue(fnID)));
+				REQUIRE(std::isnan(*calc.GetValue(fnID)));
 				calc.Let(var1ID, 13.37);
-				REQUIRE(std::isnan(calc.GetValue(fnID)));
+				REQUIRE(std::isnan(*calc.GetValue(fnID)));
 				calc.Let(var2ID, .42);
-				REQUIRE(calc.GetValue(fnID) == 12.95);
+				REQUIRE(*calc.GetValue(fnID) == 12.95);
 			}
 
 			THEN("Mul operator is functioning properly")
 			{
 				calc.Func(fnID, var1ID, Operator::Mul, var2ID);
 
-				REQUIRE(std::isnan(calc.GetValue(fnID)));
+				REQUIRE(std::isnan(*calc.GetValue(fnID)));
 				calc.Let(var1ID, .42);
-				REQUIRE(std::isnan(calc.GetValue(fnID)));
+				REQUIRE(std::isnan(*calc.GetValue(fnID)));
 				calc.Let(var2ID, 1000);
-				REQUIRE(calc.GetValue(fnID) == 420);
+				REQUIRE(*calc.GetValue(fnID) == 420);
 			}
 
 			THEN("Div operator is functioning properly")
 			{
 				calc.Func(fnID, var1ID, Operator::Div, var2ID);
 
-				REQUIRE(std::isnan(calc.GetValue(fnID)));
+				REQUIRE(std::isnan(*calc.GetValue(fnID)));
 				calc.Let(var1ID, 420);
-				REQUIRE(std::isnan(calc.GetValue(fnID)));
+				REQUIRE(std::isnan(*calc.GetValue(fnID)));
 				calc.Let(var2ID, 1000);
-				REQUIRE(calc.GetValue(fnID) == .42);
+				REQUIRE(*calc.GetValue(fnID) == .42);
 				calc.Let(var2ID, 0);
-				REQUIRE(std::isnan(calc.GetValue(fnID)));
+				REQUIRE(std::isnan(*calc.GetValue(fnID)));
 			}
 		}
 	}
@@ -209,10 +212,10 @@ SCENARIO("Calculating circle radius")
 			calc.Let("pi", pi);
 			calc.Func("radiusSquared", "radius", Operator::Mul, "radius");
 			calc.Func("area", "pi", Operator::Mul, "radiusSquared");
-			REQUIRE(calc.GetValue("area") == pi * radius1 * radius1);
+			REQUIRE(*calc.GetValue("area") == pi * radius1 * radius1);
 
 			calc.Let("radius", radius2);
-			REQUIRE(calc.GetValue("area") == pi * radius2 * radius2);
+			REQUIRE(*calc.GetValue("area") == pi * radius2 * radius2);
 		}
 	}
 }
@@ -226,8 +229,8 @@ std::string GetFibID(int id)
 
 void CheckFibonacciSequence(const CCalculator& calc, int count, int a, int b)
 {
-	REQUIRE(calc.GetValue("fib0") == a);
-	REQUIRE(calc.GetValue("fib1") == b);
+	REQUIRE(*calc.GetValue("fib0") == a);
+	REQUIRE(*calc.GetValue("fib1") == b);
 
 	int c;
 	for (int i = 2; i < count; i++)
@@ -236,7 +239,7 @@ void CheckFibonacciSequence(const CCalculator& calc, int count, int a, int b)
 		a = b;
 		b = c;
 
-		REQUIRE(calc.GetValue(GetFibID(i)) == b);
+		REQUIRE(*calc.GetValue(GetFibID(i)) == b);
 	}
 }
 
@@ -311,12 +314,12 @@ SCENARIO("Stack usage optimizatons", "[benchmark]")
 					calc.Func(GetFuncID(i), GetFuncID(i - 1), Operator::Sum, "x1");
 				}
 
-				REQUIRE(calc.GetValue(GetFuncID(count)) == count);
+				REQUIRE(*calc.GetValue(GetFuncID(count)) == count);
 
 				AND_THEN("Function can be calculated for another variable value")
 				{
 					calc.Let("x1", 2);
-					REQUIRE(calc.GetValue(GetFuncID(count)) == count * 2);
+					REQUIRE(*calc.GetValue(GetFuncID(count)) == count * 2);
 				}
 			}
 		}

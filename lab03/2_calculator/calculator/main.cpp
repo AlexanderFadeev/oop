@@ -1,5 +1,12 @@
+#include "Calculator.hpp"
+#include "Controller.hpp"
+
 int main()
 {
-	// TODO
+	CCalculator calc;
+	CController controller(calc);
+
+	controller.HandleUserCommands();
+
 	return 0;
 }

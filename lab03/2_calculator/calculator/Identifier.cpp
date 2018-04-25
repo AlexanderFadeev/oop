@@ -37,7 +37,7 @@ void CIdentifier::Expire() const
 	{
 		return;
 	}
-	m_value = {};
+	m_value = std::nullopt;
 
 	for (auto& idWPtr : m_usedInIDs)
 	{

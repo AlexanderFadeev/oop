@@ -132,17 +132,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Calculator.cpp" />
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="Identifier.cpp" />
+    <ClCompile Include="IdentifierSet.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SmartCalculator.cpp" />
     <ClCompile Include="Variable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calculator.hpp" />
+    <ClInclude Include="Controller.hpp" />
     <ClInclude Include="Function.hpp" />
     <ClInclude Include="Identifier.hpp" />
-    <ClInclude Include="SmartCalculator.hpp" />
+    <ClInclude Include="IdentifierSet.hpp" />
     <ClInclude Include="Variable.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

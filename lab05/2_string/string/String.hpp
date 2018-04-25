@@ -69,7 +69,8 @@ private:
 	void Resize(size_t size);
 	void ReserveAtLeast(size_t capacity);
 	void Reserve(size_t capacity);
-	void Reallocate(size_t capacity);
+	void Reallocate(size_t capacity, bool shouldCopyData = true);
+	void Allocate(size_t capacity);
 
 	template <typename T>
 	T GetIterator(size_t) const;

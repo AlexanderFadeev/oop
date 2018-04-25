@@ -72,8 +72,10 @@ CString& CString::operator=(const CString& rhs)
 		return *this;
 	}
 
-	Resize(rhs.GetLength() + 1);
-	std::memcpy(m_pData, rhs.GetData(), rhs.GetLength());
+	m_size = rhs.GetLength() + 1;
+	Allocate(m_size);
+	std::memcpy(m_pData, rhs.GetData(), m_size);
+	
 	return *this;
 }
 
@@ -312,18 +314,27 @@ void CString::Reserve(size_t capacity)
 	Reallocate(capacity);
 }
 
-void CString::Reallocate(size_t capacity)
+void CString::Reallocate(size_t capacity, bool shouldCopyData)
 {
 	auto newPData = new char[capacity];
 
 	if (m_pData)
 	{
-		std::memcpy(newPData, m_pData, std::min(m_size, capacity));
+		if (shouldCopyData)
+		{
+			std::memcpy(newPData, m_pData, std::min(m_size, capacity));
+		}
+
 		delete[] m_pData;
 	}
 
 	m_pData = newPData;
 	m_capacity = capacity;
+}
+
+void CString::Allocate(size_t capacity)
+{
+	Reallocate(capacity, false);
 }
 
 template <typename T>

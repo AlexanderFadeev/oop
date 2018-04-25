@@ -81,9 +81,17 @@ CString& CString::operator=(const CString& rhs)
 
 CString& CString::operator=(CString&& rhs)
 {
+	if (this == &rhs)
+	{
+		return *this;
+	}
+
 	std::swap(m_pData, rhs.m_pData);
 	std::swap(m_size, rhs.m_size);
 	std::swap(m_capacity, rhs.m_capacity);
+	
+	rhs.Clear();
+
 	return *this;
 }
 

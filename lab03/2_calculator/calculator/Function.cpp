@@ -2,24 +2,24 @@
 #include <exception>
 #include <limits>
 
-CFunction::CFunction(std::shared_ptr<CIdentifier> id)
-	: m_operand1(id)
+CFunction::CFunction(std::weak_ptr<CIdentifier> id)
+	: m_operand1WPtr(id)
 {
 }
 
-CFunction::CFunction(std::shared_ptr<CIdentifier> operand1, Operator op, std::shared_ptr<CIdentifier> operand2)
-	: m_operand1(operand1)
+CFunction::CFunction(std::weak_ptr<CIdentifier> operand1, Operator op, std::weak_ptr<CIdentifier> operand2)
+	: m_operand1WPtr(operand1)
 	, m_operator(op)
-	, m_operand2(operand2)
+	, m_operand2WPtr(operand2)
 {
 }
 
 void CFunction::Init()
 {
-	Uses(m_operand1);
+	Uses(m_operand1WPtr);
 	if (m_operator)
 	{
-		Uses(m_operand2);
+		Uses(m_operand2WPtr);
 	}
 }
 
@@ -50,14 +50,26 @@ const std::map<Operator, std::function<double(double, double)>> CFunction::m_ope
 
 double CFunction::CalcValue() const
 {
-	if (m_operator)
+	auto operand1SPtr = m_operand1WPtr.lock();
+	if (!operand1SPtr)
 	{
-		auto fn = m_operatorToFunctionMapping.at(*m_operator);
-		double val1 = m_operand1->GetValue();
-		double val2 = m_operand2->GetValue();
-
-		return fn(val1, val2);
+		throw std::logic_error("Weak pointers to first operand expired");
 	}
 
-	return m_operand1->GetValue();
+	if (!m_operator)
+	{
+		return operand1SPtr->GetValue();
+	}
+
+	auto operand2SPtr = m_operand2WPtr.lock();
+	if (!operand2SPtr)
+	{
+		throw std::logic_error("Weak pointers to second operand expired");
+	}
+
+	auto fn = m_operatorToFunctionMapping.at(*m_operator);
+	double val1 = operand1SPtr->GetValue();
+	double val2 = operand2SPtr->GetValue();
+
+	return fn(val1, val2);
 }

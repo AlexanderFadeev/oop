@@ -17,18 +17,43 @@ void CIdentifier::Update() const
 	{
 		return;
 	}
+	m_value.emplace();
 
-	for (auto& idWPtr : m_usesIDs)
+	using SharedConstPtr = std::shared_ptr<const CIdentifier>;
+	using WeakConstPtr = std::weak_ptr<const CIdentifier>;
+	using WeakConstPtrVecIter = std::vector<WeakConstPtr>::const_iterator;
+
+	std::stack<std::pair<SharedConstPtr, WeakConstPtrVecIter>> st;
+
+	st.push(std::make_pair(shared_from_this(), m_usesIDs.begin()));
+
+	while (!st.empty())
 	{
-		if (auto idSPtr = idWPtr.lock())
+		auto& id = st.top().first;
+		auto& it = st.top().second;
+
+		if (!id)
 		{
-			idSPtr->Update();
+			st.pop();
+			continue;
 		}
+
+		if (it == id->m_usesIDs.end())
+		{
+			id->m_value = id->CalcValue();
+
+			st.pop();
+			continue;
+		}
+
+		auto idShPtr = it->lock();
+		if (idShPtr && !idShPtr->m_value)
+		{
+			st.push(std::make_pair(idShPtr, idShPtr->m_usesIDs.begin()));
+		}
+
+		it++;
 	}
-
-	m_value = CalcValue();
-
-	return;
 }
 
 void CIdentifier::Expire() const
@@ -37,15 +62,32 @@ void CIdentifier::Expire() const
 	{
 		return;
 	}
-	m_value = std::nullopt;
 
-	for (auto& idWPtr : m_usedInIDs)
+	std::queue<std::shared_ptr<const CIdentifier>> q;
+	q.push(shared_from_this());
+
+	while (!q.empty())
 	{
-		if (auto idSPtr = idWPtr.lock())
+		auto currPtr = q.front();
+		q.pop();
+
+		currPtr->m_value = std::nullopt;
+
+		for (auto& idWPtr : currPtr->m_usedInIDs)
 		{
-			idSPtr->Expire();
+			auto idSPtr = idWPtr.lock();
+			if (!idSPtr)
+			{
+				continue;
+			}
+
+			if (idSPtr->m_value)
+			{
+				q.push(idSPtr);
+			}
 		}
 	}
+
 }
 
 double CIdentifier::GetValue() const

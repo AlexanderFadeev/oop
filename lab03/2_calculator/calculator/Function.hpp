@@ -14,8 +14,8 @@ public:
 	template <typename... Args>
 	static std::shared_ptr<CFunction> New(Args&&... args);
 
-	CFunction(std::shared_ptr<CIdentifier> identifier);
-	CFunction(std::shared_ptr<CIdentifier> operand1, Operator op, std::shared_ptr<CIdentifier> operand2);
+	CFunction(std::weak_ptr<CIdentifier> identifier);
+	CFunction(std::weak_ptr<CIdentifier> operand1, Operator op, std::weak_ptr<CIdentifier> operand2);
 	void Init();
 
 private:
@@ -24,8 +24,8 @@ private:
 	static const std::map<Operator, std::function<double(double, double)>> m_operatorToFunctionMapping;
 
 	std::optional<Operator> m_operator;
-	std::shared_ptr<CIdentifier> m_operand1;
-	std::shared_ptr<CIdentifier> m_operand2;
+	std::weak_ptr<CIdentifier> m_operand1WPtr;
+	std::weak_ptr<CIdentifier> m_operand2WPtr;
 
 };
 

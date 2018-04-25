@@ -91,7 +91,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <PostBuildEvent>
-      <Command>$(TargetPath)</Command>
+      <Command>$(TargetPath) ~[benchmark]</Command>
     </PostBuildEvent>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,7 +107,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <PostBuildEvent>
-      <Command>$(TargetPath)</Command>
+      <Command>$(TargetPath) ~[benchmark]</Command>
     </PostBuildEvent>
     <Link>
       <SubSystem>Console</SubSystem>

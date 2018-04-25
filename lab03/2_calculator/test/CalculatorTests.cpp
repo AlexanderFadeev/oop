@@ -294,39 +294,29 @@ std::string GetFuncID(int id)
 	return buf.str();
 }
 
-#ifdef STACK_USAGE_OPTIMIZATIONS
-
 SCENARIO("Stack usage optimizatons", "[benchmark]")
 {
 	GIVEN("A calculator")
 	{
-		try
-		{
-			CCalculator calc;
+		CCalculator calc;
 
-			THEN("Calculations with huge depth can be performed")
+		THEN("Calculations with huge depth can be performed")
+		{
+			const int count = 1'000'000;
+
+			calc.Let("x1", 1);
+			for (int i = 2; i <= count; i++)
 			{
-				const int count = 1000000;
-
-				calc.Let("x1", 1);
-				for (int i = 2; i <= count; i++)
-				{
-					calc.Func(GetFuncID(i), GetFuncID(i - 1), Operator::Sum, "x1");
-				}
-
-				REQUIRE(*calc.GetValue(GetFuncID(count)) == count);
-
-				AND_THEN("Function can be calculated for another variable value")
-				{
-					calc.Let("x1", 2);
-					REQUIRE(*calc.GetValue(GetFuncID(count)) == count * 2);
-				}
+				calc.Func(GetFuncID(i), GetFuncID(i - 1), Operator::Sum, "x1");
 			}
-		}
-		catch (...)
-		{
-			std::cerr << "WTF\n";
+
+			REQUIRE(*calc.GetValue(GetFuncID(count)) == count);
+
+			AND_THEN("Function can be calculated for another variable value")
+			{
+				calc.Let("x1", 2);
+				REQUIRE(*calc.GetValue(GetFuncID(count)) == count * 2);
+			}
 		}
 	}
 }
-#endif // !STACK_USAGE_OPTIMIZATIONS

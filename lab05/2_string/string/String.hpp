@@ -61,6 +61,8 @@ public:
 #pragma region RangeBasedForSupport
 	Iterator begin();
 	Iterator end();
+	ConstIterator begin() const;
+	ConstIterator end() const;
 #pragma endregion
 
 private:

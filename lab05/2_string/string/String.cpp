@@ -278,6 +278,16 @@ CString::Iterator CString::end()
 {
 	return End();
 }
+
+CString::ConstIterator CString::begin() const
+{
+	return CBegin();
+}
+
+CString::ConstIterator CString::end() const
+{
+	return CEnd();
+}
 #pragma endregion
 
 void CString::Resize(size_t size)

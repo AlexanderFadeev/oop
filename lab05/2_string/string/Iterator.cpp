@@ -20,7 +20,6 @@ CIterator<T>::CIterator(T* ptr, T* begin, T* end)
 }
 #endif // !NDEBUG
 
-
 template <typename T>
 CIterator<T>::CIterator(const CIterator<T>& it)
 	: m_ptr(it.m_ptr)
@@ -48,14 +47,14 @@ CIterator<T>& CIterator<T>::operator=(const CIterator& rhs)
 #include <iostream>
 
 template <typename T>
-T& CIterator<T>::operator*()
+T& CIterator<T>::operator*() const
 {
 	assert(m_begin <= m_ptr && m_ptr < m_end);
 	return *m_ptr;
 }
 
-template<typename T>
-T& CIterator<T>::operator[](size_t index)
+template <typename T>
+T& CIterator<T>::operator[](size_t index) const
 {
 	assert(m_begin <= m_ptr + index && m_ptr + index < m_end);
 	return m_ptr[index];

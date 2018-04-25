@@ -22,8 +22,8 @@ public:
 
 	CIterator& operator=(const CIterator&);
 
-	ValueType& operator*();
-	ValueType& operator[](size_t);
+	ValueType& operator*() const;
+	ValueType& operator[](size_t) const;
 
 	CIterator& operator++();
 	CIterator& operator--();

@@ -2,12 +2,28 @@
 #include <exception>
 #include <limits>
 
-CFunction::CFunction(std::weak_ptr<CIdentifier> id)
+using IDWPtr = CFunction::IDWPtr;
+
+std::shared_ptr<CFunction> CFunction::New(const IDWPtr& id)
+{
+	std::shared_ptr<CFunction> ptr(new CFunction(id));
+	ptr->Init();
+	return ptr;
+}
+
+std::shared_ptr<CFunction> CFunction::New(const IDWPtr& operand1, Operator op, const IDWPtr& operand2)
+{
+	std::shared_ptr<CFunction> ptr(new CFunction(operand1, op, operand2));
+	ptr->Init();
+	return ptr;
+}
+
+CFunction::CFunction(const IDWPtr& id)
 	: m_operand1WPtr(id)
 {
 }
 
-CFunction::CFunction(std::weak_ptr<CIdentifier> operand1, Operator op, std::weak_ptr<CIdentifier> operand2)
+CFunction::CFunction(const IDWPtr& operand1, Operator op, const IDWPtr& operand2)
 	: m_operand1WPtr(operand1)
 	, m_operator(op)
 	, m_operand2WPtr(operand2)

@@ -9,23 +9,26 @@ class CFunction
 	: public CIdentifier
 {
 public:
+	using IDWPtr = CIdentifier::WeakPtr;
+
 	enum class Operator;
-
-	template <typename... Args>
-	static std::shared_ptr<CFunction> New(Args&&... args);
-
-	CFunction(std::weak_ptr<CIdentifier> identifier);
-	CFunction(std::weak_ptr<CIdentifier> operand1, Operator op, std::weak_ptr<CIdentifier> operand2);
-	void Init();
+	
+	static std::shared_ptr<CFunction> New(const IDWPtr& identifier);
+	static std::shared_ptr<CFunction> New(const IDWPtr& operand1, Operator op, const IDWPtr& operand2);
 
 private:
+	CFunction(const IDWPtr& identifier);
+	CFunction(const IDWPtr& operand1, Operator op, const IDWPtr& operand2);
+
+	void Init();
+
 	double CalcValue() const;
 
 	static const std::map<Operator, std::function<double(double, double)>> m_operatorToFunctionMapping;
 
 	std::optional<Operator> m_operator;
-	std::weak_ptr<CIdentifier> m_operand1WPtr;
-	std::weak_ptr<CIdentifier> m_operand2WPtr;
+	IDWPtr m_operand1WPtr;
+	IDWPtr m_operand2WPtr;
 
 };
 
@@ -36,11 +39,3 @@ enum class CFunction::Operator
 	Mul,
 	Div,
 };
-
-template <typename... Args>
-inline std::shared_ptr<CFunction> CFunction::New(Args&&... args)
-{
-	auto ptr = std::make_shared<CFunction>(std::forward<Args>(args)...);
-	ptr->Init();
-	return ptr;
-}

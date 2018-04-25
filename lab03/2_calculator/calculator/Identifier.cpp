@@ -2,7 +2,7 @@
 #include <queue>
 #include <stack>
 
-void CIdentifier::Uses(std::weak_ptr<CIdentifier> idWPtr)
+void CIdentifier::Uses(const WeakPtr& idWPtr)
 {
 	m_usesIDs.push_back(idWPtr);
 	if (auto idSPtr = idWPtr.lock())
@@ -20,8 +20,7 @@ void CIdentifier::Update() const
 	m_value.emplace();
 
 	using SharedConstPtr = std::shared_ptr<const CIdentifier>;
-	using WeakConstPtr = std::weak_ptr<const CIdentifier>;
-	using WeakConstPtrVecIter = std::vector<WeakConstPtr>::const_iterator;
+	using WeakConstPtrVecIter = WeakConstPtrVec::const_iterator;
 
 	std::stack<std::pair<SharedConstPtr, WeakConstPtrVecIter>> st;
 

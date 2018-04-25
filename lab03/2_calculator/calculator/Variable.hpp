@@ -6,23 +6,17 @@
 class CVariable : public CIdentifier
 {
 public:
-	template <typename... Args>
-	static std::shared_ptr<CVariable> New(Args&&... args);
-
-	CVariable();
-	CVariable(double value);
+	static std::shared_ptr<CVariable> New();
+	static std::shared_ptr<CVariable> New(double value);
 
 	void SetValue(double value);
 
 private:
+	CVariable();
+	CVariable(double value);
+
 	double CalcValue() const;
 
 	double m_value;
 
 };
-
-template <typename... Args>
-inline std::shared_ptr<CVariable> CVariable::New(Args&&... args)
-{
-	return std::make_shared<CVariable>(std::forward<Args>(args)...);
-}

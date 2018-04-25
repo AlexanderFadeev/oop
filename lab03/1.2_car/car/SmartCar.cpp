@@ -44,10 +44,10 @@ std::optional<T> ReadValue(std::istream& input)
 	T value;
 	if (!(input >> value))
 	{
-		return {};
+		return std::nullopt;
 	}
 
-	return { value };
+	return value;
 }
 
 void CSmartCar::HandleCommandLine(const std::string& commandLine)

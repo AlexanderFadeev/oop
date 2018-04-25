@@ -26,7 +26,7 @@ private:
 	void ShowUsage() const;
 	bool GetCommandLine(std::string& commandLine);
 	void HandleCommandLine(const std::string& commandLine);
-	void HandleCommand(Command command, std::optional<int> param = {});
+	void HandleCommand(Command command, std::optional<int> param = std::nullopt);
 	static Command ParseCommand(const std::string& command);
 	static bool CommandNeedsParameter(Command command);
 

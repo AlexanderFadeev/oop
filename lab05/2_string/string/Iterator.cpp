@@ -4,16 +4,6 @@
 template <typename T>
 using CIterator = CString::CIterator<T>;
 
-template <typename T>
-CIterator<T>::CIterator(const CIterator<T>& it)
-	: m_ptr(it.m_ptr)
-#ifndef NDEBUG
-	, m_begin(it.m_begin)
-	, m_end(it.m_end)
-#endif // !NDEBUG
-{
-}
-
 #ifndef NDEBUG
 template <typename T>
 CIterator<T>::CIterator(T* ptr, T* begin, T* end)
@@ -29,22 +19,6 @@ CIterator<T>::CIterator(T* ptr)
 {
 }
 #endif // !NDEBUG
-
-
-template <typename T>
-CIterator<T>& CIterator<T>::operator=(const CIterator& rhs)
-{
-	m_ptr = rhs.m_ptr;
-
-#ifndef NDEBUG
-	m_begin = rhs.m_begin;
-	m_end = rhs.m_end;
-#endif // !NDEBUG
-
-	return *this;
-}
-
-#include <iostream>
 
 template <typename T>
 T& CIterator<T>::operator*() const

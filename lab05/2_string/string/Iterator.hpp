@@ -14,10 +14,6 @@ public:
 	typedef ValueType&                      reference;
 #pragma endregion
 
-	CIterator(const CIterator&);
-
-	CIterator& operator=(const CIterator&);
-
 	ValueType& operator*() const;
 	ValueType& operator[](size_t) const;
 

@@ -147,6 +147,17 @@ SCENARIO("Operators <, >, <=, >=")
 		}
 	}
 
+	GIVEN("Rational numbers with different signs")
+	{
+		CRational a(-12, 15);
+		CRational b(8, 10);
+
+		THEN("Comparison operators are working properly")
+		{
+			CheckComparisonsLess(a, b);
+		}
+	}
+
 	GIVEN("Equal rational numbers")
 	{
 		CRational a(8, 10);

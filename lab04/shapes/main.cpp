@@ -3,6 +3,7 @@
 
 void ProcessShapes(std::istream& input, std::ostream& output);
 void PrintShapesInfo(std::ostream& output, ShapePtrs& shapes);
+void PrintShapesInfoImpl(std::ostream& output, ShapePtrs& shapes);
 void Visualize(ShapePtrs& shapes);
 void DrawAll(ICanvas& canvas, const ShapePtrs& ptrs);
 
@@ -33,18 +34,31 @@ void ProcessShapes(std::istream& input, std::ostream& output)
 
 void PrintShapesInfo(std::ostream& output, ShapePtrs& shapes)
 {
+	if (shapes.empty())
+	{
+		output << "There are no shapes\n";
+	}
+	else
+	{
+		PrintShapesInfoImpl(output, shapes);
+	}
+
+
+	if (!output.flush())
+	{
+		throw std::runtime_error("Failed to write to output");
+	}
+}
+
+void PrintShapesInfoImpl(std::ostream& output, ShapePtrs& shapes)
+{
 	auto shapeWithLargestArea = FindShapeWithLargestArea(shapes);
 	auto shapeWithSmallestPerimeter = FindShapeWithSmallestPerimeter(shapes);
 
 	output << "Shape with largest area:\n"
-		   << shapeWithLargestArea->ToString() << '\n'
-		   << "Shape with smallest perimeter:\n"
-		   << shapeWithSmallestPerimeter->ToString() << std::endl;
-
-	if (!output)
-	{
-		throw std::runtime_error("Failed to write to output");
-	}
+		<< shapeWithLargestArea->ToString() << '\n'
+		<< "Shape with smallest perimeter:\n"
+		<< shapeWithSmallestPerimeter->ToString() << '\n';
 }
 
 void Visualize(ShapePtrs& shapes)

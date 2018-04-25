@@ -28,7 +28,7 @@ T& CIterator<T>::operator*() const
 }
 
 template <typename T>
-T& CIterator<T>::operator[](size_t index) const
+T& CIterator<T>::operator[](ptrdiff_t index) const
 {
 	assert(m_begin <= m_ptr + index && m_ptr + index < m_end);
 	return m_ptr[index];
@@ -49,14 +49,14 @@ CIterator<T>& CIterator<T>::operator--()
 }
 
 template <typename T>
-CIterator<T>& CIterator<T>::operator+=(size_t rhs)
+CIterator<T>& CIterator<T>::operator+=(ptrdiff_t rhs)
 {
 	m_ptr += rhs;
 	return *this;
 }
 
 template <typename T>
-CIterator<T>& CIterator<T>::operator-=(size_t rhs)
+CIterator<T>& CIterator<T>::operator-=(ptrdiff_t rhs)
 {
 	m_ptr -= rhs;
 	return *this;
@@ -115,13 +115,13 @@ bool CIterator<T>::operator>=(const CIterator& rhs) const
 }
 
 template <typename T>
-const CIterator<T> operator+(size_t lhs, const CIterator<T>& rhs)
+const CIterator<T> operator+(ptrdiff_t lhs, const CIterator<T>& rhs)
 {
 	return rhs + lhs;
 }
 
 template <typename T>
-const CIterator<T> CIterator<T>::operator+(size_t rhs) const
+const CIterator<T> CIterator<T>::operator+(ptrdiff_t rhs) const
 {
 	auto copy = *this;
 	copy.m_ptr += rhs;
@@ -129,7 +129,7 @@ const CIterator<T> CIterator<T>::operator+(size_t rhs) const
 }
 
 template <typename T>
-const CIterator<T> CIterator<T>::operator-(size_t rhs) const
+const CIterator<T> CIterator<T>::operator-(ptrdiff_t rhs) const
 {
 	auto copy = *this;
 	copy.m_ptr -= rhs;
@@ -137,7 +137,7 @@ const CIterator<T> CIterator<T>::operator-(size_t rhs) const
 }
 
 template <typename T>
-size_t CIterator<T>::operator-(const CIterator& rhs) const
+ptrdiff_t CIterator<T>::operator-(const CIterator& rhs) const
 {
 	return m_ptr - rhs.m_ptr;
 }

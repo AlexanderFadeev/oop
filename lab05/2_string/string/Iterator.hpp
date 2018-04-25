@@ -9,18 +9,18 @@ public:
 #pragma region STLSupport
 	typedef std::random_access_iterator_tag iterator_category;
 	typedef ValueType                       value_type;
-	typedef size_t                          difference_type;
+	typedef ptrdiff_t                       difference_type;
 	typedef ValueType*                      pointer;
 	typedef ValueType&                      reference;
 #pragma endregion
 
 	ValueType& operator*() const;
-	ValueType& operator[](size_t) const;
+	ValueType& operator[](ptrdiff_t) const;
 
 	CIterator& operator++();
 	CIterator& operator--();
-	CIterator& operator+=(size_t);
-	CIterator& operator-=(size_t);
+	CIterator& operator+=(ptrdiff_t);
+	CIterator& operator-=(ptrdiff_t);
 	const CIterator operator++(int);
 	const CIterator operator--(int);
 
@@ -31,10 +31,10 @@ public:
 	bool operator<=(const CIterator&) const;
 	bool operator>=(const CIterator&) const;
 
-	friend const CIterator operator+(size_t, const CIterator&);
-	const CIterator operator+(size_t) const;
-	const CIterator operator-(size_t) const;
-	size_t operator-(const CIterator&) const;
+	friend const CIterator operator+(ptrdiff_t, const CIterator&);
+	const CIterator operator+(ptrdiff_t) const;
+	const CIterator operator-(ptrdiff_t) const;
+	ptrdiff_t operator-(const CIterator&) const;
 
 private:
 	friend class CString;

@@ -10,18 +10,18 @@
 |       |                 |       |
 | **2** | Vector          | Done  |
 |       | HTML Decode     | Done  |
-|       | Dictionary      | CR    |
+|       | Dictionary      | Done  |
 |       | Prime Generator | Done  |
 |       | URL Parser      | Done  |
 |       | Expand Template | WIP   |
 |       |                 |       |
 | **3** | Car             | Done  |
-|       | Calculator      | WIP   |
+|       | Calculator      | CR    |
 |       |                 |       |
 | **4** | Shape           | CR    |
 |       |                 |       |
-| **5** | Rational        | CR    |
-|       | String          | WIP   |
+| **5** | Rational        | Done  |
+|       | String          | CR    |
 |       |                 |       |
 | **6** |                 | TBA   |
 | **7** |                 | TBA   |

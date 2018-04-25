@@ -5,8 +5,12 @@ template <typename T>
 using CIterator = CString::CIterator<T>;
 
 template <typename T>
-CIterator<T>::CIterator(T* ptr)
-	: m_ptr(ptr)
+CIterator<T>::CIterator(const CIterator<T>& it)
+	: m_ptr(it.m_ptr)
+#ifndef NDEBUG
+	, m_begin(it.m_begin)
+	, m_end(it.m_end)
+#endif // !NDEBUG
 {
 }
 
@@ -18,18 +22,14 @@ CIterator<T>::CIterator(T* ptr, T* begin, T* end)
 	, m_end(end)
 {
 }
-#endif // !NDEBUG
-
+#else
 template <typename T>
-CIterator<T>::CIterator(const CIterator<T>& it)
-	: m_ptr(it.m_ptr)
-#ifndef NDEBUG
-	, m_begin(it.m_begin)
-	, m_end(it.m_end)
-#endif // !NDEBUG
-
+CIterator<T>::CIterator(T* ptr)
+	: m_ptr(ptr)
 {
 }
+#endif // !NDEBUG
+
 
 template <typename T>
 CIterator<T>& CIterator<T>::operator=(const CIterator& rhs)
@@ -149,13 +149,17 @@ const CIterator<T> operator+(size_t lhs, const CIterator<T>& rhs)
 template <typename T>
 const CIterator<T> CIterator<T>::operator+(size_t rhs) const
 {
-	return CIterator(m_ptr + rhs);
+	auto copy = *this;
+	copy.m_ptr += rhs;
+	return copy;
 }
 
 template <typename T>
 const CIterator<T> CIterator<T>::operator-(size_t rhs) const
 {
-	return CIterator(m_ptr - rhs);
+	auto copy = *this;
+	copy.m_ptr -= rhs;
+	return copy;
 }
 
 template <typename T>

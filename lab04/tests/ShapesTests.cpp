@@ -1,4 +1,4 @@
-#include "Canvas.hpp"
+#include "ICanvas.hpp"
 #include "Circle.hpp"
 #include "Color.hpp"
 #include "LineSegment.hpp"

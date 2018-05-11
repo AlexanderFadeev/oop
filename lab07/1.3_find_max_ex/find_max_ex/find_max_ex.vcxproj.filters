@@ -23,5 +23,8 @@
     <ClInclude Include="FindMax.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FindMax.ipp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

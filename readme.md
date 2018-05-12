@@ -16,12 +16,16 @@
 |       | Expand Template | WIP   |
 |       |                 |       |
 | **3** | Car             | Done  |
-|       | Calculator      | CR    |
+|       | Calculator      | Done  |
 |       |                 |       |
 | **4** | Shape           | CR    |
 |       |                 |       |
 | **5** | Rational        | Done  |
 |       | String          | CR    |
 |       |                 |       |
-| **6** |                 | TBA   |
-| **7** |                 | TBA   |
+| **6** | HTTP URL        | WIP   |
+|       | String List     | WIP   |
+|       |                 |       |
+| **7** | Find Max Ex     | Done  |
+|       | List            | WIP   |
+|       | Vehicles        | TODO  |

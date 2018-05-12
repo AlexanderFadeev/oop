@@ -55,19 +55,32 @@ void CSFMLCanvas::Display()
 	m_window.display();
 }
 
-void CSFMLCanvas::WaitForCloseEvent()
+void CSFMLCanvas::RunEventLoop()
 {
 	while (m_window.isOpen())
 	{
 		sf::Event event;
 		while (m_window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			switch (event.type)
 			{
+			case sf::Event::Closed:
 				m_window.close();
+				break;
+
+			case sf::Event::Resized:
+				Redraw();
+				break;
 			}
 		}
 	}
+}
+
+void CSFMLCanvas::Redraw()
+{
+	// switch buffer twice
+	m_window.display();
+	m_window.display();
 }
 
 sf::Color CSFMLCanvas::Color(const CColor& color)

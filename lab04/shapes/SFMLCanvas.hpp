@@ -18,8 +18,8 @@ public:
 	void FillCircle(const CPoint&, double, const CColor&) override;
 
 	void Display();
-	void WaitForCloseEvent();
-
+	void RunEventLoop();
+	void Redraw();
 private:
 	sf::RenderWindow m_window;
 

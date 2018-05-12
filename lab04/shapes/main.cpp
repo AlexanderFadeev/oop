@@ -66,7 +66,7 @@ void Visualize(ShapePtrs& shapes)
 	CSFMLCanvas canvas(800, 450, "Shapes");
 	DrawAll(canvas, shapes);
 	canvas.Display();
-	canvas.WaitForCloseEvent();
+	canvas.RunEventLoop();
 }
 
 void DrawAll(ICanvas& canvas, const ShapePtrs& shapePtrs)

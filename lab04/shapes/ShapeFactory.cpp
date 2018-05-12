@@ -5,24 +5,16 @@
 #include "Triangle.hpp"
 #include <sstream>
 
-CShapeFactory::CShapeFactory(std::istream& input)
-	: m_input(input)
+CShapeFactory::ShapePtr CShapeFactory::CreateShape(const std::string& line)
 {
-}
-
-CShapeFactory::ShapePtr CShapeFactory::GetShape() const
-{
-	std::string line;
-
-	if (!std::getline(m_input, line))
-	{
-		return {};
-	}
-
 	std::istringstream iss(line);
 	std::string type;
 
 	iss >> type;
+	if (type.empty())
+	{
+		throw std::invalid_argument("Expected shape type");
+	}
 
 	const auto& mapping = m_getShapeFunctionMapping;
 	auto fn = mapping.find(type);
@@ -36,26 +28,14 @@ CShapeFactory::ShapePtr CShapeFactory::GetShape() const
 	return fn->second.operator()(iss);
 }
 
-CShapeFactory::ShapePtrs CShapeFactory::GetAllShapes() const
-{
-	ShapePtrs result;
-
-	while (auto shape = GetShape())
-	{
-		result.push_back(shape);
-	}
-
-	return result;
-}
-
 const std::map<std::string, CShapeFactory::GetShapeFunction> CShapeFactory::m_getShapeFunctionMapping{
-	{ "line", &GetLine },
-	{ "triangle", &GetTriangle },
-	{ "rectangle", &GetRectangle },
-	{ "circle", &GetCircle },
+	{ "line", &CreateLine },
+	{ "triangle", &CreateTriangle },
+	{ "rectangle", &CreateRectangle },
+	{ "circle", &CreateCircle },
 };
 
-CShapeFactory::ShapePtr CShapeFactory::GetLine(std::istream& input)
+CShapeFactory::ShapePtr CShapeFactory::CreateLine(std::istream& input)
 {
 	CPoint a;
 	CPoint b;
@@ -66,7 +46,7 @@ CShapeFactory::ShapePtr CShapeFactory::GetLine(std::istream& input)
 	return std::make_shared<CLineSegment>(a, b, outlineColor);
 }
 
-CShapeFactory::ShapePtr CShapeFactory::GetTriangle(std::istream& input)
+CShapeFactory::ShapePtr CShapeFactory::CreateTriangle(std::istream& input)
 {
 	CPoint a;
 	CPoint b;
@@ -78,7 +58,7 @@ CShapeFactory::ShapePtr CShapeFactory::GetTriangle(std::istream& input)
 	return std::make_shared<CTriangle>(a, b, c, outlineColor, fillColor);
 }
 
-CShapeFactory::ShapePtr CShapeFactory::GetRectangle(std::istream& input)
+CShapeFactory::ShapePtr CShapeFactory::CreateRectangle(std::istream& input)
 {
 	CPoint a;
 	CPoint b;
@@ -89,7 +69,7 @@ CShapeFactory::ShapePtr CShapeFactory::GetRectangle(std::istream& input)
 	return std::make_shared<CRectangle>(a, b, outlineColor, fillColor);
 }
 
-CShapeFactory::ShapePtr CShapeFactory::GetCircle(std::istream& input)
+CShapeFactory::ShapePtr CShapeFactory::CreateCircle(std::istream& input)
 {
 	CPoint center;
 	double radius;

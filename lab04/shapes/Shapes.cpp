@@ -14,3 +14,17 @@ ShapePtr FindShapeWithSmallestPerimeter(ShapePtrs& shapes)
 		return a->GetPerimeter() < b->GetPerimeter();
 	});
 }
+
+ShapePtrs GetAllShapes(std::istream& input)
+{
+	std::vector<ShapePtr> vec;
+
+	std::string line;
+	while (std::getline(input, line))
+	{
+		auto shapePtr = CShapeFactory::CreateShape(line);
+		vec.push_back(shapePtr);
+	}
+
+	return vec;
+}

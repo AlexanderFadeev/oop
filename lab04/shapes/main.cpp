@@ -1,5 +1,6 @@
 #include "SFMLCanvas.hpp"
 #include "Shapes.hpp"
+#include <vector>
 
 void ProcessShapes(std::istream& input, std::ostream& output);
 void PrintShapesInfo(std::ostream& output, ShapePtrs& shapes);
@@ -25,8 +26,7 @@ catch (...)
 
 void ProcessShapes(std::istream& input, std::ostream& output)
 {
-	CShapeFactory factory(input);
-	auto shapes = factory.GetAllShapes();
+	auto shapes = GetAllShapes(input);
 
 	PrintShapesInfo(output, shapes);
 	Visualize(shapes);

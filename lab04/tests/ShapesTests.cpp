@@ -1,10 +1,11 @@
-#include "ICanvas.hpp"
 #include "Circle.hpp"
 #include "Color.hpp"
+#include "ICanvas.hpp"
 #include "LineSegment.hpp"
 #include "Point.hpp"
 #include "Rectangle.hpp"
 #include "ShapeFactory.hpp"
+#include "Shapes.hpp"
 #include "Triangle.hpp"
 #include "catch.hpp"
 #include <sstream>
@@ -299,7 +300,7 @@ SCENARIO("Circle")
 
 SCENARIO("Shape Factory")
 {
-	GIVEN("A Shape Factory with valid input data")
+	GIVEN("Valid factory input data")
 	{
 		const std::string validFactoryInputData =
 			R"(line 0.5 .5 3.5 4.5 #FFFFFF
@@ -316,12 +317,11 @@ SCENARIO("Shape Factory")
 		auto shapesCount = expectedShapesToString.size();
 
 		std::istringstream iss(validFactoryInputData);
-		CShapeFactory factory(iss);
 
-		THEN("It can create shapes")
+		THEN("Shapes can created via factory")
 		{
-			CShapeFactory::ShapePtrs shapes;
-			REQUIRE_NOTHROW(shapes = factory.GetAllShapes());
+			ShapePtrs shapes;
+			REQUIRE_NOTHROW(shapes = GetAllShapes(iss));
 
 			AND_THEN("It creates right amount of shapes")
 			{
@@ -390,10 +390,7 @@ SCENARIO("Shape Factory")
 		{
 			for (auto& wrongInputLine : wrongInputData)
 			{
-				std::istringstream iss(wrongInputLine);
-				CShapeFactory factory(iss);
-
-				CHECK_THROWS(factory.GetShape());
+				CHECK_THROWS(CShapeFactory::CreateShape(wrongInputLine));
 			}
 		}
 	}

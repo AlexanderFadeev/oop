@@ -3,7 +3,7 @@
 #include "FindMax.hpp"
 
 template <typename T, typename Less>
-bool FindMax(const std::vector<T>& vec, T& maxValue, const Less& less) try
+bool FindMax(const std::vector<T>& vec, T& maxValue, const Less& less)
 {
 	if (vec.empty())
 	{
@@ -24,7 +24,4 @@ bool FindMax(const std::vector<T>& vec, T& maxValue, const Less& less) try
 
 	maxValue = vec[maxIndex];
 	return true;
-} catch (...)
-{
-	return false;
 }

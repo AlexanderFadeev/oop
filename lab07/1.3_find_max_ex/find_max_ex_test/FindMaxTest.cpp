@@ -3,7 +3,7 @@
 
 
 template <typename T, typename Less = std::less<T>>
-void CheckFindMax(std::vector<T> vec, const T& expectedMax, const Less& less = std::less<T>())
+void CheckFindMax(std::vector<T> vec, const T& expectedMax, const Less& less = Less())
 {
 	auto max = T();
 	CHECK(FindMax(vec, max, less));

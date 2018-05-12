@@ -13,11 +13,6 @@ T CeilPowerOf2(T value)
 	return T(1) << std::lround(std::ceil(std::log2(value)));
 }
 
-bool IsSeparator(int ch)
-{
-	return std::isspace(ch) || ch == EOF;
-}
-
 } // namespace
 
 CString::CString()
@@ -186,12 +181,6 @@ std::istream& operator>>(std::istream& is, CString& str)
 	char ch;
 	while (is.get(ch))
 	{
-		if (IsSeparator(ch))
-		{
-			is.unget();
-			break;
-		}
-
 		str.PushBack(ch);
 	}
 
@@ -200,7 +189,7 @@ std::istream& operator>>(std::istream& is, CString& str)
 
 std::ostream& operator<<(std::ostream& os, const CString& str)
 {
-	for (size_t index = 0; index < str.m_size; index++)
+	for (size_t index = 0; index < str.m_size - 1; index++)
 	{
 		os << str.m_pData[index];
 	}

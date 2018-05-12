@@ -136,6 +136,12 @@ SCENARIO("Operator =")
 		CheckString(str, STL_STR);
 		CheckString(other, "");
 	}
+	SECTION("Self rvalue")
+	{
+		CString str(C_STR, LEN);
+		str = std::move(str);
+		CheckString(str, STL_STR);
+	}
 	SECTION("STL string")
 	{
 		CString str;
@@ -345,14 +351,15 @@ void CheckTestCase(const TestCase& testCase)
 
 	GIVEN("String with data and ostream")
 	{
-		std::string str(testCase.data);
+		CString str(testCase.data);
 		std::stringstream ss;
 
 		THEN("Data is properly written to stream")
 		{
-			std::string data;
 			ss << str;
-			ss >> data;
+
+			std::string data;
+			std::getline(ss, data);
 			CHECK(data == testCase.data);
 		}
 	}
@@ -477,6 +484,66 @@ SCENARIO("Iterators")
 			std::string reversed;
 			std::copy(str.CRBegin(), str.CREnd(), std::back_inserter(reversed));
 			CHECK(reversed == "rotareti");
+		}
+	}
+	GIVEN("A string iterator")
+	{
+		CString str = "iterator";
+		auto it = str.Begin();
+
+		THEN("It can be derefernced")
+		{
+			CHECK(*it == str[0]);
+		}
+		THEN("It can derefernced via []")
+		{
+			CHECK(it[3] == str[3]);
+		}
+		THEN("It can incremented and decremented")
+		{
+			CHECK(*(it++) == str[0]);
+			CHECK(*it == str[1]);
+			CHECK(*(it--) == str[1]);
+			CHECK(*it == str[0]);
+			CHECK(*(++it) == str[1]);
+			CHECK(*(--it) == str[0]);
+			CHECK(*(it += 5) == str[5]);
+			CHECK(*(it -= 4) == str[1]);
+		}
+		THEN("It can compared")
+		{
+			auto next = std::next(it);
+
+			CHECK(it == it);
+			CHECK(it <= it);
+			CHECK(it >= it);
+			CHECK_FALSE(it != it);
+			CHECK_FALSE(it < it);
+			CHECK_FALSE(it > it);
+
+			CHECK_FALSE(it == next);
+			CHECK(it <= next);
+			CHECK_FALSE(it >= next);
+			CHECK(it != next);
+			CHECK(it < next);
+			CHECK_FALSE(it > next);
+
+			CHECK_FALSE(next == it);
+			CHECK_FALSE(next <= it);
+			CHECK(next >= it);
+			CHECK(next != it);
+			CHECK_FALSE(next < it);
+			CHECK(next > it);
+		}
+		THEN("It can be used in arithmetic expressions")
+		{
+			auto len = str.GetLength();
+			ptrdiff_t delta = 3;
+
+			CHECK(*(it + delta) == str[delta]);
+			CHECK(*(delta + it) == str[delta]);
+			CHECK(str.End() - str.Begin() == static_cast<ptrdiff_t>(len));
+			CHECK(*(str.End() - 1) == str[len - 1]);
 		}
 	}
 }

@@ -31,7 +31,6 @@ public:
 	bool operator<=(const CIterator&) const;
 	bool operator>=(const CIterator&) const;
 
-	friend const CIterator operator+(ptrdiff_t, const CIterator&);
 	const CIterator operator+(ptrdiff_t) const;
 	const CIterator operator-(ptrdiff_t) const;
 	ptrdiff_t operator-(const CIterator&) const;
@@ -51,3 +50,8 @@ private:
 	ValueType* m_end;
 #endif // !NDEBUG
 };
+
+template <typename T>
+const CString::CIterator<T> operator+(ptrdiff_t, const CString::CIterator<T>&);
+
+#include "Iterator.ipp"

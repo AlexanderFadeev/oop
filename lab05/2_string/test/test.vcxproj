@@ -171,7 +171,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\string\Iterator.cpp" />
     <ClCompile Include="..\string\String.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StringTest.cpp" />

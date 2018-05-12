@@ -21,7 +21,7 @@
     <ClCompile Include="String.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Iterator.cpp">
+    <ClCompile Include="Iterator.ipp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

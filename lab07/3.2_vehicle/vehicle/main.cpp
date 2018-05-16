@@ -46,16 +46,14 @@ int main()
 	try
 	{
 		taxi.AddPassenger(pTaxiDriver);
-
 		return 1;
 	}
 	catch (const std::logic_error&)
 	{
+		return 0;
 	}
 	catch (...)
 	{
 		return 1;
 	}
-
-	return 0;
 }

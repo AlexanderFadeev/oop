@@ -1,5 +1,6 @@
-#include "Car.hpp"
 #pragma once
+
+#include "Car.hpp"
 
 template<typename V>
 inline CCar<V>::CCar(size_t seatsCount, Brand brand)

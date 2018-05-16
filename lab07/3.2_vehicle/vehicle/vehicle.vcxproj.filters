@@ -45,7 +45,9 @@
     <ClCompile Include="IPoliceMan.cpp">
       <Filter>People\Impl</Filter>
     </ClCompile>
-    <ClCompile Include="Racer.cpp" />
+    <ClCompile Include="Racer.cpp">
+      <Filter>People\Impl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Car.hpp">

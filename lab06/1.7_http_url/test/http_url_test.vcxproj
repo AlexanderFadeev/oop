@@ -139,6 +139,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\http_url\HttpUrl.cpp" />
+    <ClCompile Include="..\http_url\UrlParsingError.cpp" />
     <ClCompile Include="HttpUrlTest.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

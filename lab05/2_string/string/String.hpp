@@ -75,6 +75,8 @@ private:
 	template <typename T>
 	T GetIterator(size_t) const;
 
+	static const char* m_pEmptyCStr;
+
 	char* m_pData;
 	size_t m_size;
 	size_t m_capacity;

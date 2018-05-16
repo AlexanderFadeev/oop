@@ -15,6 +15,8 @@ T CeilPowerOf2(T value)
 
 } // namespace
 
+const char* CString::m_pEmptyCStr = "";
+
 CString::CString()
 	: CString(nullptr, 0)
 {
@@ -199,7 +201,10 @@ std::ostream& operator<<(std::ostream& os, const CString& str)
 
 void CString::Clear()
 {
-	Resize(1);
+	delete[] m_pData;
+	m_pData = nullptr;
+	m_size = 0;
+	m_capacity = 0;
 }
 
 void CString::PushBack(char ch)
@@ -212,12 +217,12 @@ void CString::PushBack(char ch)
 
 size_t CString::GetLength() const
 {
-	return m_size - 1;
+	return m_pData ? (m_size - 1) : 0;
 }
 
 const char* CString::GetData() const
 {
-	return m_pData;
+	return m_pData ? m_pData : m_pEmptyCStr;
 }
 
 CString CString::SubString(size_t start, size_t length) const

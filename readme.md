@@ -13,19 +13,19 @@
 |       | Dictionary      | Done  |
 |       | Prime Generator | Done  |
 |       | URL Parser      | Done  |
-|       | Expand Template | WIP   |
+|       | Expand Template | CR/WIP|
 |       |                 |       |
 | **3** | Car             | Done  |
 |       | Calculator      | Done  |
 |       |                 |       |
-| **4** | Shape           | CR    |
+| **4** | Shape           | Done  |
 |       |                 |       |
 | **5** | Rational        | Done  |
-|       | String          | CR    |
+|       | String          | Done  |
 |       |                 |       |
-| **6** | HTTP URL        | WIP   |
-|       | String List     | WIP   |
+| **6** | HTTP URL        | CR    |
+|       | String List     | CR    |
 |       |                 |       |
 | **7** | Find Max Ex     | Done  |
-|       | List            | WIP   |
+|       | List            | CR    |
 |       | Vehicles        | CR    |

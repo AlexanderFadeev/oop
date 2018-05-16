@@ -135,6 +135,7 @@
     <ClCompile Include="IPoliceMan.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PoliceMan.cpp" />
+    <ClCompile Include="Racer.cpp" />
     <ClCompile Include="VehicleBase.cpp" />
   </ItemGroup>
   <ItemGroup>

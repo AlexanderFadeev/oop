@@ -12,7 +12,5 @@ public:
 	virtual std::string GetDepartamentName() const override;
 
 private:
-	using Parent = CPersonImpl<IPoliceMan>;
-
 	std::string m_departamentName;
 };

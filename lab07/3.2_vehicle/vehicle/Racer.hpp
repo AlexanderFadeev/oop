@@ -6,5 +6,11 @@
 class CRacer
 	: public CPersonImpl<IRacer>
 {
-	using CPersonImpl::CPersonImpl;
+public:
+	CRacer(const std::string& name, size_t awardsCount);
+
+	virtual size_t GetAwardsCount() const override;
+
+private:
+	size_t m_awardsCount;
 };

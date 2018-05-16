@@ -1,7 +1,7 @@
 #include "PoliceMan.hpp"
 
 CPoliceMan::CPoliceMan(const std::string& name, const std::string& departamentName)
-	: Parent(name)
+	: CPersonImpl(name)
 	, m_departamentName(departamentName)
 {
 }

@@ -34,7 +34,7 @@ int main()
 
 	CTaxi taxi(2, CarBrand::Toyota);
 	auto pTaxiDriver = std::make_shared<CPerson>("Raja Gandhi"); 
-	auto pRacer = std::make_shared<CRacer>("Michael Schumacher");
+	auto pRacer = std::make_shared<CRacer>("Michael Schumacher", 155);
 	taxi.AddPassenger(pTaxiDriver);
 	taxi.AddPassenger(pRacer);
 

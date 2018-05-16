@@ -41,18 +41,20 @@ double CRectangle::GetHeigth() const
 	return m_rightBot.y - m_leftTop.y;
 }
 
-std::string CRectangle::ToString(int precision) const
+std::string CRectangle::GetName() const
+{
+	return "Rectangle";
+}
+
+std::string CRectangle::SolidFieldsToString(int precision) const
 {
 	std::ostringstream buf;
 	buf << std::setprecision(precision) << std::fixed;
 
-	buf << "Rectangle {\n"
-		<< FieldsToString(precision)
-		<< "\tleft top vertex: " << m_leftTop.ToString(precision) << ",\n"
+	buf	<< "\tleft top vertex: " << m_leftTop.ToString(precision) << ",\n"
 		<< "\tright bottom vertex: " << m_rightBot.ToString(precision) << ",\n"
 		<< "\twidth: " << GetWidth() << ",\n"
-		<< "\theight: " << GetHeigth() << ",\n"
-		<< "}";
+		<< "\theight: " << GetHeigth() << ",\n";
 
 	return buf.str();
 }

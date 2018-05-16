@@ -6,7 +6,7 @@ void ProcessShapes(std::istream& input, std::ostream& output);
 void PrintShapesInfo(std::ostream& output, ShapePtrs& shapes);
 void PrintShapesInfoImpl(std::ostream& output, ShapePtrs& shapes);
 void Visualize(ShapePtrs& shapes);
-void DrawAll(ICanvas& canvas, const ShapePtrs& ptrs);
+void AddDrawables(CSFMLCanvas& canvas, const ShapePtrs& ptrs);
 
 int main() try
 {
@@ -64,15 +64,15 @@ void PrintShapesInfoImpl(std::ostream& output, ShapePtrs& shapes)
 void Visualize(ShapePtrs& shapes)
 {
 	CSFMLCanvas canvas(800, 450, "Shapes");
-	DrawAll(canvas, shapes);
-	canvas.Display();
+	AddDrawables(canvas, shapes);
+	canvas.Redraw();
 	canvas.RunEventLoop();
 }
 
-void DrawAll(ICanvas& canvas, const ShapePtrs& shapePtrs)
+void AddDrawables(CSFMLCanvas& canvas, const ShapePtrs& shapePtrs)
 {
 	for (auto ptr : shapePtrs)
 	{
-		ptr->Draw(canvas);
+		canvas.AddDrawable(ptr);
 	}
 }

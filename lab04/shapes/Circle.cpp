@@ -33,16 +33,18 @@ double CCircle::GetRadius() const
 	return m_radius;
 }
 
-std::string CCircle::ToString(int precision) const
+std::string CCircle::GetName() const
+{
+	return "Circle";
+}
+
+std::string CCircle::SolidFieldsToString(int precision) const
 {
 	std::ostringstream buf;
 	buf << std::setprecision(precision) << std::fixed;
 
-	buf << "Circle {\n"
-		<< FieldsToString(precision)
-		<< "\tcenter point: " << m_center.ToString(precision) << ",\n"
-		<< "\tradius: " << m_radius << ",\n"
-		<< "}";
+	buf << "\tcenter point: " << m_center.ToString(precision) << ",\n"
+		<< "\tradius: " << m_radius << ",\n";
 
 	return buf.str();
 }

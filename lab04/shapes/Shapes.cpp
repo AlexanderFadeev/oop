@@ -5,7 +5,6 @@ ShapePtr FindShapeWithLargestArea(ShapePtrs& shapes)
 	return *std::max_element(shapes.begin(), shapes.end(), [](auto a, auto b) {
 		return a->GetArea() < b->GetArea();
 	});
-	;
 }
 
 ShapePtr FindShapeWithSmallestPerimeter(ShapePtrs& shapes)
@@ -15,14 +14,24 @@ ShapePtr FindShapeWithSmallestPerimeter(ShapePtrs& shapes)
 	});
 }
 
+ShapePtr GetShape(std::istream& input)
+{
+
+	std::string line;
+	if (!std::getline(input, line))
+	{
+		return nullptr;
+	}
+
+	return CShapeFactory::CreateShape(line);
+}
+
 ShapePtrs GetAllShapes(std::istream& input)
 {
 	std::vector<ShapePtr> vec;
 
-	std::string line;
-	while (std::getline(input, line))
+	while (auto shapePtr = GetShape(input))
 	{
-		auto shapePtr = CShapeFactory::CreateShape(line);
 		vec.push_back(shapePtr);
 	}
 

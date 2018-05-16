@@ -14,9 +14,11 @@ public:
 	CPoint GetVertexB() const;
 	CPoint GetVertexC() const;
 
-	std::string ToString(int precision = 2) const override;
-
 	void Draw(ICanvas&) override;
+
+protected:
+	std::string GetName() const override;
+	std::string SolidFieldsToString(int precision = 2) const override;
 
 private:
 	std::tuple<double, double, double> GetSides() const;

@@ -12,6 +12,11 @@ CColor CSolidShape::GetOutlineColor() const
 	return CShape::GetOutlineColor(); 
 }
 
+std::string CSolidShape::ToString(int precision) const
+{
+	return CShape::ToString(precision);
+}
+
 CSolidShape::CSolidShape(const CColor& outlineColor, const CColor& fillColor)
 	: CShape(outlineColor)
 	, m_fillColor(fillColor)
@@ -22,8 +27,8 @@ std::string CSolidShape::FieldsToString(int precision) const
 {
 	std::ostringstream buf;
 
-	buf << CShape::FieldsToString(precision);
-	buf << "\tfill color: " << m_fillColor.ToString() << ",\n";
+	buf << "\tfill color: " << m_fillColor.ToString() << ",\n"
+		<< SolidFieldsToString(precision);
 
 	return buf.str();
 }

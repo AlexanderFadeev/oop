@@ -12,14 +12,17 @@ CShape::CShape(const CColor& outlineColor)
 {
 }
 
-std::string CShape::FieldsToString(int precision) const
+std::string CShape::ToString(int precision) const
 {
 	std::ostringstream buf;
 	buf << std::setprecision(precision) << std::fixed;
 
-	buf << "\tarea: " << GetArea() << ",\n"
+	buf << GetName() << " {\n"
+		<< "\tarea: " << GetArea() << ",\n"
 		<< "\tperimeter: " << GetPerimeter() << ",\n"
-		<< "\toutline color: " << m_outlineColor.ToString() << ",\n";
+		<< "\toutline color: " << m_outlineColor.ToString() << ",\n"
+		<< FieldsToString()
+		<< "}";
 
 	return buf.str();
 }

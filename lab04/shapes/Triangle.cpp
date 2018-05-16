@@ -40,17 +40,19 @@ CPoint CTriangle::GetVertexC() const
 	return m_c;
 }
 
-std::string CTriangle::ToString(int precision) const
+std::string CTriangle::GetName() const
+{
+	return "Triangle";
+}
+
+std::string CTriangle::SolidFieldsToString(int precision) const
 {
 	std::ostringstream buf;
 	buf << std::setprecision(precision) << std::fixed;
 
-	buf << "Triangle {\n"
-		<< FieldsToString(precision)
-		<< "\tvertex A: " << m_a.ToString(precision) << ",\n"
+	buf	<< "\tvertex A: " << m_a.ToString(precision) << ",\n"
 		<< "\tvertex B: " << m_b.ToString(precision) << ",\n"
-		<< "\tvertex C: " << m_c.ToString(precision) << ",\n"
-		<< "}";
+		<< "\tvertex C: " << m_c.ToString(precision) << ",\n";
 
 	return buf.str();
 }

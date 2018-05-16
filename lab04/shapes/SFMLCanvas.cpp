@@ -50,9 +50,9 @@ void CSFMLCanvas::FillCircle(const CPoint& center, double radius, const CColor& 
 	m_window.draw(circle);
 }
 
-void CSFMLCanvas::Display()
+void CSFMLCanvas::AddDrawable(CSFMLCanvas::DrawablePtr pDrawable)
 {
-	m_window.display();
+	m_drawables.push_back(pDrawable);
 }
 
 void CSFMLCanvas::RunEventLoop()
@@ -78,8 +78,11 @@ void CSFMLCanvas::RunEventLoop()
 
 void CSFMLCanvas::Redraw()
 {
-	// switch buffer twice
-	m_window.display();
+	for (auto& ptr : m_drawables)
+	{
+		ptr->Draw(*this);
+	}
+
 	m_window.display();
 }
 

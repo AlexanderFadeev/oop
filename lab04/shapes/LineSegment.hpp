@@ -15,9 +15,11 @@ public:
 	CPoint GetPointA() const;
 	CPoint GetPointB() const;
 
-	std::string ToString(int precision = 2) const override;
-
 	void Draw(ICanvas&) override;
+
+protected:
+	std::string GetName() const override;
+	std::string FieldsToString(int precision = 2) const override;
 
 private:
 	CPoint m_a;

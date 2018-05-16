@@ -15,9 +15,11 @@ public:
 	double GetWidth() const;
 	double GetHeigth() const;
 
-	std::string ToString(int precision = 2) const override;
-
 	virtual void Draw(ICanvas&) override;
+
+protected:
+	std::string GetName() const override;
+	std::string SolidFieldsToString(int precision = 2) const override;
 
 private:
 	template <typename T>

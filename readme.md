@@ -28,4 +28,4 @@
 |       |                 |       |
 | **7** | Find Max Ex     | Done  |
 |       | List            | WIP   |
-|       | Vehicles        | TODO  |
+|       | Vehicles        | CR    |

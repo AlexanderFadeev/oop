@@ -18,11 +18,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "list_test", "2.3_list\list_test\list_test.vcxproj", "{9525CFF1-BFBC-4406-8441-C066A8FFA4A0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vehicle", "3.2_vehicle\vehicle\vehicle.vcxproj", "{B2F13F65-220C-41A3-88FD-8F3B5B439E7F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{EFB19F7F-F123-4FCF-ABB3-92768940448C} = {EFB19F7F-F123-4FCF-ABB3-92768940448C}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vehicle_test", "3.2_vehicle\vehicle_test\vehicle_test.vcxproj", "{EFB19F7F-F123-4FCF-ABB3-92768940448C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,14 +67,6 @@ Global
 		{B2F13F65-220C-41A3-88FD-8F3B5B439E7F}.Release|x64.Build.0 = Release|x64
 		{B2F13F65-220C-41A3-88FD-8F3B5B439E7F}.Release|x86.ActiveCfg = Release|Win32
 		{B2F13F65-220C-41A3-88FD-8F3B5B439E7F}.Release|x86.Build.0 = Release|Win32
-		{EFB19F7F-F123-4FCF-ABB3-92768940448C}.Debug|x64.ActiveCfg = Debug|x64
-		{EFB19F7F-F123-4FCF-ABB3-92768940448C}.Debug|x64.Build.0 = Debug|x64
-		{EFB19F7F-F123-4FCF-ABB3-92768940448C}.Debug|x86.ActiveCfg = Debug|Win32
-		{EFB19F7F-F123-4FCF-ABB3-92768940448C}.Debug|x86.Build.0 = Debug|Win32
-		{EFB19F7F-F123-4FCF-ABB3-92768940448C}.Release|x64.ActiveCfg = Release|x64
-		{EFB19F7F-F123-4FCF-ABB3-92768940448C}.Release|x64.Build.0 = Release|x64
-		{EFB19F7F-F123-4FCF-ABB3-92768940448C}.Release|x86.ActiveCfg = Release|Win32
-		{EFB19F7F-F123-4FCF-ABB3-92768940448C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -131,7 +131,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="IPerson.cpp" />
+    <ClCompile Include="IPoliceMan.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PoliceMan.cpp" />
+    <ClCompile Include="VehicleBase.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Bus.hpp" />
+    <ClInclude Include="Car.hpp" />
+    <ClInclude Include="Car.ipp" />
+    <ClInclude Include="IBus.hpp" />
+    <ClInclude Include="IPerson.hpp" />
+    <ClInclude Include="IPoliceCar.hpp" />
+    <ClInclude Include="IPoliceMan.hpp" />
+    <ClInclude Include="IRacer.hpp" />
+    <ClInclude Include="IRacingCar.h" />
+    <ClInclude Include="ITaxi.hpp" />
+    <ClInclude Include="Person.hpp" />
+    <ClInclude Include="PersonImpl.hpp" />
+    <ClInclude Include="PersonImpl.ipp" />
+    <ClInclude Include="PoliceCar.hpp" />
+    <ClInclude Include="PoliceMan.hpp" />
+    <ClInclude Include="Racer.hpp" />
+    <ClInclude Include="RacingCar.hpp" />
+    <ClInclude Include="Taxi.hpp" />
+    <ClInclude Include="Vehicle.hpp" />
+    <ClInclude Include="ICar.hpp" />
+    <ClInclude Include="CarBrand.h" />
+    <ClInclude Include="IVehicle.hpp" />
+    <ClInclude Include="IVehicleBase.hpp" />
+    <ClInclude Include="Vehicle.ipp" />
+    <ClInclude Include="VehicleBase.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

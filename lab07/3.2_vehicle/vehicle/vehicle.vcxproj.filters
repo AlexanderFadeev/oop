@@ -1,22 +1,126 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="People">
+      <UniqueIdentifier>{03417e87-3fd1-4859-ae45-a4aa450990e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="People\Interfaces">
+      <UniqueIdentifier>{b66c6505-6721-4ce9-b81f-58225ca34054}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vehicles">
+      <UniqueIdentifier>{f9652a2a-fdc9-4fcd-bbe6-1e44463ebd09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vehicles\Interfaces">
+      <UniqueIdentifier>{515eeafc-73fb-4701-b679-bced0b405b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vehicles\Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Vehicles\Impl">
+      <UniqueIdentifier>{b72fac89-76d8-4999-b2c3-a5430cf99ac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="People\Impl">
+      <UniqueIdentifier>{281431a2-5894-43aa-b520-57d2719d6ec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="People\Headers">
+      <UniqueIdentifier>{42ff8c01-0cb0-4f67-ab2f-a65fc8350add}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="VehicleBase.cpp">
+      <Filter>Vehicles\Impl</Filter>
     </ClCompile>
+    <ClCompile Include="PoliceMan.cpp">
+      <Filter>People\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="IPerson.cpp">
+      <Filter>People\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="IPoliceMan.cpp">
+      <Filter>People\Impl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Car.hpp">
+      <Filter>Vehicles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicle.hpp">
+      <Filter>Vehicles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Taxi.hpp">
+      <Filter>Vehicles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleBase.hpp">
+      <Filter>Vehicles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RacingCar.hpp">
+      <Filter>Vehicles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="IRacer.hpp">
+      <Filter>People\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IPerson.hpp">
+      <Filter>People\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Racer.hpp">
+      <Filter>People\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ICar.hpp">
+      <Filter>Vehicles\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ITaxi.hpp">
+      <Filter>Vehicles\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IRacingCar.h">
+      <Filter>Vehicles\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IVehicleBase.hpp">
+      <Filter>Vehicles\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IVehicle.hpp">
+      <Filter>Vehicles\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicle.ipp">
+      <Filter>Vehicles\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="Car.ipp">
+      <Filter>Vehicles\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="IPoliceCar.hpp">
+      <Filter>Vehicles\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="PoliceCar.hpp">
+      <Filter>Vehicles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CarBrand.h">
+      <Filter>Vehicles\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="IPoliceMan.hpp">
+      <Filter>People\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="PoliceMan.hpp">
+      <Filter>People\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PersonImpl.hpp">
+      <Filter>People\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PersonImpl.ipp">
+      <Filter>People\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="Person.hpp">
+      <Filter>People\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="IBus.hpp">
+      <Filter>Vehicles\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Bus.hpp">
+      <Filter>Vehicles\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -24,7 +24,7 @@ struct SCustomType {};
 
 
 
-SCENARIO("Instantation for various types=====CList<T> can be constructed for various types T and values can be pushed to it")
+SCENARIO("Instantation for various types")
 {
 	CheckInstantation(42);
 	CheckInstantation('Z');

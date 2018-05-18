@@ -28,7 +28,7 @@ inline void CVehicle<V, P>::AddPassenger(std::shared_ptr<P> pPassenger)
 		throw std::logic_error("trying to add passenger in full vehicle");
 	}
 
-	m_passengers.push_back(pPassenger);
+	m_passengers.push_back(std::move(pPassenger));
 	m_passengersCount++;
 }
 

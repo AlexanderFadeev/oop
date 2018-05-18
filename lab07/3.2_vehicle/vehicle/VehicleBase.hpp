@@ -8,10 +8,10 @@ class CVehicleBase
 public:
 	CVehicleBase(size_t seatsCount);
 
-	virtual bool IsEmpty() const override;
-	virtual bool IsFull() const override;
-	virtual size_t GetSeatsCount() const override;
-	virtual size_t GetPassengersCount() const override;
+	bool IsEmpty() const override;
+	bool IsFull() const override;
+	size_t GetSeatsCount() const override;
+	size_t GetPassengersCount() const override;
 
 protected:
 	size_t m_passengersCount;

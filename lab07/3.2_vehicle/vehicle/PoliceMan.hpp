@@ -9,7 +9,7 @@ class CPoliceMan
 public:
 	CPoliceMan(const std::string& name, const std::string& departamentName);
 
-	virtual std::string GetDepartamentName() const override;
+	std::string GetDepartamentName() const override;
 
 private:
 	std::string m_departamentName;

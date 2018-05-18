@@ -10,7 +10,7 @@ class CPersonImpl
 public:
 	CPersonImpl(const std::string& name);
 
-	virtual std::string GetName() const override;
+	std::string GetName() const override;
 	
 private:
 	std::string m_name;

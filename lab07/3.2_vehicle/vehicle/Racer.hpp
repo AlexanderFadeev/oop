@@ -9,7 +9,7 @@ class CRacer
 public:
 	CRacer(const std::string& name, size_t awardsCount);
 
-	virtual size_t GetAwardsCount() const override;
+	size_t GetAwardsCount() const override;
 
 private:
 	size_t m_awardsCount;

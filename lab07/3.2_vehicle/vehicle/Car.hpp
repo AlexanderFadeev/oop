@@ -11,7 +11,7 @@ public:
 
 	CCar(size_t seatsCount, Brand brand);
 
-	virtual Brand GetBrand() const override;
+	Brand GetBrand() const override;
 
 private:
 	Brand m_brand;

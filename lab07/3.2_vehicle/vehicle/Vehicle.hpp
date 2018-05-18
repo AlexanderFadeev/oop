@@ -14,17 +14,17 @@ public:
 
 	CVehicle(size_t seatsCount);
 	
-	virtual const IPassenger& GetPassenger(size_t index) const override;
+	const IPassenger& GetPassenger(size_t index) const override;
 
-	virtual void AddPassenger(std::shared_ptr<IPassenger> pPassenger) override;
-	virtual void RemovePassenger(size_t index) override;
-	virtual void RemoveAllPassengers() override;
+	void AddPassenger(std::shared_ptr<IPassenger> pPassenger) override;
+	void RemovePassenger(size_t index) override;
+	void RemoveAllPassengers() override;
 
 #pragma region Fix For Warning 4250: inherits via dominance
-	virtual bool IsEmpty() const override;
-	virtual bool IsFull() const override;
-	virtual size_t GetSeatsCount() const override;
-	virtual size_t GetPassengersCount() const override;
+	bool IsEmpty() const override;
+	bool IsFull() const override;
+	size_t GetSeatsCount() const override;
+	size_t GetPassengersCount() const override;
 #pragma endregion
 
 private:

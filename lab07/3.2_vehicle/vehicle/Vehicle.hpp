@@ -14,6 +14,7 @@ public:
 
 	CVehicle(size_t seatsCount);
 	
+	size_t GetPassengersCount() const override;
 	const IPassenger& GetPassenger(size_t index) const override;
 
 	void AddPassenger(std::shared_ptr<IPassenger> pPassenger) override;
@@ -24,7 +25,6 @@ public:
 	bool IsEmpty() const override;
 	bool IsFull() const override;
 	size_t GetSeatsCount() const override;
-	size_t GetPassengersCount() const override;
 #pragma endregion
 
 private:

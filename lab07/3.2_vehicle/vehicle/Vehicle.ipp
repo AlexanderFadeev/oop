@@ -10,6 +10,12 @@ inline CVehicle<V, P>::CVehicle(size_t seatsCount)
 }
 
 template<typename V, typename P>
+inline size_t CVehicle<V, P>::GetPassengersCount() const
+{
+	return m_passengers.size();
+}
+
+template<typename V, typename P>
 inline const P& CVehicle<V, P>::GetPassenger(size_t index) const
 {
 	if (index >= m_passengers.size())
@@ -29,7 +35,6 @@ inline void CVehicle<V, P>::AddPassenger(std::shared_ptr<P> pPassenger)
 	}
 
 	m_passengers.push_back(std::move(pPassenger));
-	m_passengersCount++;
 }
 
 template<typename V, typename P>
@@ -42,14 +47,12 @@ inline void CVehicle<V, P>::RemovePassenger(size_t index)
 
 	auto it = m_passengers.begin() + index;
 	m_passengers.erase(it);
-	m_passengersCount--;
 }
 
 template<typename V, typename P>
 inline void CVehicle<V, P>::RemoveAllPassengers()
 {
 	m_passengers.clear();
-	m_passengersCount = 0;
 }
 
 #pragma region Fix For Warning 4250: inherits via dominance
@@ -69,11 +72,5 @@ template<typename V, typename P>
 inline size_t CVehicle<V, P>::GetSeatsCount() const
 {
 	return CVehicleBase::GetSeatsCount();
-}
-
-template<typename V, typename P>
-inline size_t CVehicle<V, P>::GetPassengersCount() const
-{
-	return CVehicleBase::GetPassengersCount();
 }
 #pragma endregion

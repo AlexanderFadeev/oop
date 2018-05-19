@@ -16,12 +16,12 @@ std::regex DOMAIN_REGEX(R"(^([^\s:\/]+)$)");
 const int PORT_LOWER_BOUND = 1;
 const int PORT_UPPER_BOUND = 65535;
 
-const std::map<Protocol, uint16_t> PROTOCOL_DEFAULT_PORT = {
+const std::map<Protocol, uint16_t> PROTOCOL_DEFAULT_PORTS = {
 	{ Protocol::HTTP, 80ui16 },
 	{ Protocol::HTTPS, 443ui16 },
 };
 
-const std::map<Protocol, std::string> PROTOCOL_TO_STRING = {
+const std::map<Protocol, std::string> PROTOCOL_STRING_REPRESENTATIONS = {
 	{ Protocol::HTTP, "http" },
 	{ Protocol::HTTPS, "https" },
 };
@@ -31,6 +31,14 @@ void ValidateDomain(const std::string& domain)
 	if (!std::regex_match(domain, DOMAIN_REGEX))
 	{
 		throw CUrlParsingError::InvalidDomain(domain);
+	}
+}
+
+void ValidatePort(uint16_t port)
+{
+	if (port < PORT_LOWER_BOUND || PORT_UPPER_BOUND < port)
+	{
+		throw CUrlParsingError::InvalidPort(port);
 	}
 }
 
@@ -57,7 +65,7 @@ CHttpUrl::Protocol ParseProtocol(const std::string& protocol)
 	throw CUrlParsingError::InvalidProtocol(protocol);
 }
 
-std::optional<uint16_t> ParsePort(const std::string& str, Protocol protocol)
+std::optional<uint16_t> ParsePort(const std::string& str)
 {
 	if (str.empty())
 	{
@@ -81,11 +89,6 @@ std::optional<uint16_t> ParsePort(const std::string& str, Protocol protocol)
 	if (port < PORT_LOWER_BOUND || PORT_UPPER_BOUND < port)
 	{
 		throw CUrlParsingError::PortOutOfRange();
-	}
-
-	if (port == PROTOCOL_DEFAULT_PORT.at(protocol))
-	{
-		return std::nullopt;
 	}
 
 	return static_cast<uint16_t>(port);
@@ -120,7 +123,7 @@ CHttpUrl::CHttpUrl(const std::string& url)
 
 	m_protocol = ParseProtocol(urlMatch[1]);
 	m_domain = urlMatch[2];
-	m_optPort = ParsePort(urlMatch[3], m_protocol);
+	m_optPort = ParsePort(urlMatch[3]);
 	m_document = ParseDocument(urlMatch[4]);
 
 }
@@ -136,14 +139,15 @@ CHttpUrl::CHttpUrl(const std::string& domain, const std::string& document, Proto
 CHttpUrl::CHttpUrl(const std::string& domain, const std::string& document, Protocol protocol, uint16_t port)
 	: CHttpUrl(domain, document, protocol)
 {
+	ValidatePort(port);
 	m_optPort = port;
 }
 
 std::string CHttpUrl::GetUrl() const
 {
 	std::ostringstream buf;
-	buf << PROTOCOL_TO_STRING.at(m_protocol) << "://" << m_domain;
-	if (m_optPort)
+	buf << PROTOCOL_STRING_REPRESENTATIONS.at(m_protocol) << "://" << m_domain;
+	if (m_optPort && !PortIsDefault())
 	{
 		buf << ":" << *m_optPort;
 	}
@@ -169,10 +173,25 @@ uint16_t CHttpUrl::GetPort() const
 		return *m_optPort;
 	}
 
-	return PROTOCOL_DEFAULT_PORT.at(m_protocol);
+	return PROTOCOL_DEFAULT_PORTS.at(m_protocol);
 }
 
 std::string CHttpUrl::GetDocument() const
 {
 	return m_document;
+}
+
+bool CHttpUrl::PortIsDefault() const
+{
+	if (!m_optPort)
+	{
+		return true;
+	}
+
+	if (*m_optPort == PROTOCOL_DEFAULT_PORTS.at(m_protocol))
+	{
+		return true;
+	}
+
+	return false;
 }

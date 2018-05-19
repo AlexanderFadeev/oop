@@ -23,6 +23,8 @@ public:
 	std::string GetDocument() const;
 
 private:
+	bool PortIsDefault() const;
+
 	Protocol m_protocol;
 	std::string m_domain;
 	std::optional<uint16_t> m_optPort;

@@ -13,11 +13,11 @@ const std::map<Protocol, int> PORT = {
 };
 
 void CheckHttpUrl(const CHttpUrl& url,
-							const std::string& expectedUrl,
-							Protocol protocolExpected,
-							int portExpected,
-							const std::string& domainExpected,
-							const std::string& documentExpected)
+				  const std::string& expectedUrl,
+				  Protocol protocolExpected,
+				  int portExpected,
+				  const std::string& domainExpected,
+				  const std::string& documentExpected)
 {
 	CHECK(url.GetUrl() == expectedUrl);
 	CHECK(url.GetProtocol() == protocolExpected);
@@ -27,10 +27,10 @@ void CheckHttpUrl(const CHttpUrl& url,
 }
 
 void CheckHttpUrl(const CHttpUrl& url,
-							const std::string& expectedUrl,
-							Protocol protocolExpected,
-							const std::string& domainExpected,
-							const std::string& documentExpected)
+				  const std::string& expectedUrl,
+				  Protocol protocolExpected,
+				  const std::string& domainExpected,
+				  const std::string& documentExpected)
 {
 	const int portExpected = PORT.at(protocolExpected);
 	return CheckHttpUrl(url, expectedUrl, protocolExpected, portExpected, domainExpected, documentExpected);

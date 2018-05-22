@@ -3,3 +3,4 @@
 /**/*.vcxproj.user
 /**/v15/
 /**/packages/
+/**/*.log

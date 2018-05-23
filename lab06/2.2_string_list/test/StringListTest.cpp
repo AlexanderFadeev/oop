@@ -148,11 +148,11 @@ SCENARIO("Iteration")
 		list.PushBack("baz");
 		auto it = list.begin();
 
-		THEN("It can be derefernced")
+		THEN("It can be dereferenced")
 		{
 			CHECK(*it == "foo");
 		}
-		THEN("It can be derefernced via ->")
+		THEN("It can be dereferenced via ->")
 		{
 			CHECK(it->size() == 3);
 		}

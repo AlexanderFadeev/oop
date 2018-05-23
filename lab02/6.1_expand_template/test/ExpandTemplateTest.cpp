@@ -8,10 +8,32 @@ void CheckExpandTemplate(const std::string& tpl, const std::string& expectedResu
 
 SCENARIO("Templates with 1 parameter")
 {
+	GIVEN("Empty template")
+	{
+		std::string tpl;
+
+		THEN("It is not modified for any parameters")
+		{
+			CheckExpandTemplate(tpl, tpl, {
+				{ "foo", "bar" },
+			});
+		}
+	}
+
 	GIVEN("Simple template")
 	{
 		std::string tpl = "foobar";
 
+		THEN("Template is not modified if parameter is not present in string")
+		{
+			CheckExpandTemplate(tpl, tpl, {
+				{ "abc", "xyz" },
+			});
+		}
+		THEN("Template is not modified if there are no parameters")
+		{
+			CheckExpandTemplate(tpl, tpl, {});
+		}
 		THEN("Parameter can be properly raplaced with a value")
 		{
 			CheckExpandTemplate(tpl, "barbar", {
@@ -26,7 +48,7 @@ SCENARIO("Templates with 1 parameter")
 		}
 		THEN("Empty parameter name is ignored")
 		{
-			CheckExpandTemplate(tpl, "foobar", {
+			CheckExpandTemplate(tpl, tpl, {
 				{ "", "what?" },
 			});
 		}

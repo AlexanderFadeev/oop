@@ -1,6 +1,41 @@
 #include "ExpandTemplate.hpp"
 #include <exception>
+#include <fstream>
 #include <iostream>
+
+namespace
+{
+
+void ExpandTemplate(std::istream& input, std::ostream& output, const Mapping& params)
+{
+	std::string line;
+	while (std::getline(input, line))
+	{
+		output << ::ExpandTemplate(line, params) << '\n';
+	}
+
+	if (!output.flush())
+	{
+		throw std::runtime_error("Failed to write to output");
+	}
+}
+
+void ExpandTemplate(const std::string& inputFilename, const std::string& outputFilename, const Mapping& params)
+{
+	std::ifstream inputFile(inputFilename);
+	if (!inputFile)
+	{
+		throw std::runtime_error("Failed to open input file");
+	}
+
+	std::ofstream outputFile(outputFilename);
+	if (!outputFile)
+	{
+		throw std::runtime_error("Failed to open output file");
+	}
+
+	ExpandTemplate(inputFile, outputFile, params);
+}
 
 Mapping GetMapping(char* params[], size_t paramsCount)
 {
@@ -25,6 +60,8 @@ void ShowUsage()
 }
 
 const int MIN_ARGS_COUNT = 2;
+
+}
 
 int main(int argc, char* argv[])
 {

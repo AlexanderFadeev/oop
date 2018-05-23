@@ -1,6 +1,5 @@
 #include "ExpandTemplate.hpp"
 #include <algorithm>
-#include <fstream>
 
 namespace
 {
@@ -38,6 +37,11 @@ SFindResult Find(const std::string& tpl, size_t startPos, const Mapping& params)
 
 std::string ExpandTemplate(const std::string& tpl, const Mapping& params)
 {
+	if (params.empty())
+	{
+		return tpl;
+	}
+
 	std::string result;
 	size_t prevPos = 0;
 	size_t pos = 0;
@@ -59,35 +63,4 @@ std::string ExpandTemplate(const std::string& tpl, const Mapping& params)
 	}
 
 	return result;
-}
-
-void ExpandTemplate(std::istream& input, std::ostream& output, const Mapping& params)
-{
-	std::string line;
-	while (std::getline(input, line))
-	{
-		output << ExpandTemplate(line, params) << '\n';
-	}
-
-	if (!output.flush())
-	{
-		throw std::runtime_error("Failed to write to output");
-	}
-}
-
-void ExpandTemplate(const std::string& inputFilename, const std::string& outputFilename, const Mapping& params)
-{
-	std::ifstream inputFile(inputFilename);
-	if (!inputFile)
-	{
-		throw std::runtime_error("Failed to open input file");
-	}
-
-	std::ofstream outputFile(outputFilename);
-	if (!outputFile)
-	{
-		throw std::runtime_error("Failed to open output file");
-	}
-
-	ExpandTemplate(inputFile, outputFile, params);
 }

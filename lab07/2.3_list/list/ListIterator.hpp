@@ -3,9 +3,9 @@
 #include "List.hpp"
 #include <iterator>
 
-template <typename T>
+template <typename ListValueType>
 template <typename ValueType>
-class CList<T>::CIterator
+class CList<ListValueType>::CIterator
 {
 public:
 #pragma region STLSupport
@@ -15,6 +15,10 @@ public:
 	typedef ValueType*                      pointer;
 	typedef ValueType&                      reference;
 #pragma endregion
+
+	using SNodeSPtr = CList<ListValueType>::SNodeSPtr;
+
+	CIterator(const CList<ListValueType>::CIterator<ListValueType>& it);
 
 	bool operator==(const CIterator& other) const;
 	bool operator!=(const CIterator& other) const;
@@ -27,15 +31,12 @@ public:
 	const CIterator operator--(int);
 
 private:
-	friend class CList<T>;
+	friend class CList<ListValueType>;
 
-	using SNodeSPtr = CList<T>::SNodeSPtr;
+	CIterator(const CList<ListValueType>* pList, SNodeSPtr pNode);
 
-	CIterator(SNodeSPtr);
-
-	SNodeSPtr m_ptr;
-	SNodeSPtr m_prev;
-	SNodeSPtr m_next;
+	SNodeSPtr m_pNode;
+	const CList* m_pList;
 };
 
 #include "ListIterator.ipp"

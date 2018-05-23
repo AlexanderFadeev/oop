@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <vector>
 
+using StringVector = std::vector<std::string>;
+
 void CheckListIsEmpty(const StringList& list)
 {
 	CHECK(list.IsEmpty());
@@ -17,7 +19,7 @@ void CheckListSize(const StringList& list, size_t size)
 	CHECK(std::distance(list.CBegin(), list.CEnd()) == static_cast<ptrdiff_t>(size));
 }
 
-void CheckListData(const StringList& list, const::std::vector<std::string> vec)
+void CheckListData(const StringList& list, const StringVector& vec)
 {
 	CHECK(std::equal(list.CBegin(), list.CEnd(), vec.cbegin(), vec.cend()));
 }
@@ -66,7 +68,7 @@ SCENARIO("Pushing/popping values")
 				}
 			}
 		}
-		THEN("Item can be pushed into its back")
+		THEN("Items can be pushed into its back")
 		{
 			list.PushBack("foo");
 			list.PushBack("bar");
@@ -91,12 +93,91 @@ SCENARIO("Pushing/popping values")
 	}
 }
 
-SCENARIO("Iteration")
+SCENARIO("Copy/Move Construction/Assignment")
 {
 	GIVEN("A list with data")
 	{
 		StringList list;
-		std::vector<std::string> vec{ "foo", "bar", "baz" };
+		StringVector vec{ "foo", "bar", "baz" };
+		std::copy(vec.begin(), vec.end(), std::back_inserter(list));
+
+		THEN("Other list can be copy-constructed from it")
+		{
+			StringList other(list);
+			CheckListData(other, vec);
+		}
+		THEN("It can be copied to another list")
+		{
+			StringList other;
+			other = list;
+			CheckListData(other, vec);
+		}
+		THEN("Other list can be move-constructed from it")
+		{
+			StringList other(std::move(list));
+			CheckListData(other, vec);
+			CheckListData(list, {});
+		}
+		THEN("It can be copied to another list")
+		{
+			StringList other;
+			other = std::move(list);
+			CheckListData(other, vec);
+			CheckListData(list, {});
+		}
+		THEN("It can be safely self-copied")
+		{
+			list = list;
+			CheckListData(list, vec);
+		}
+		THEN("It can be safely self-moved")
+		{
+			list = std::move(list);
+			CheckListData(list, vec);
+		}
+	}
+}
+
+SCENARIO("Iteration")
+{
+	GIVEN("A string list iterator")
+	{
+		StringList list;
+		list.PushBack("foo");
+		list.PushBack("bar");
+		list.PushBack("baz");
+		auto it = list.Begin();
+
+		THEN("It can be derefernced")
+		{
+			CHECK(*it == "foo");
+		}
+		THEN("It can incremented and decremented")
+		{
+			CHECK(*(it++) == "foo");
+			CHECK(*it == "bar");
+			CHECK(*(it--) == "bar");
+			CHECK(*it == "foo");
+			CHECK(*(++it) == "bar");
+			CHECK(*(--it) == "foo");
+		}
+		THEN("It can compared")
+		{
+			auto next = std::next(it);
+
+			CHECK(it == it);
+			CHECK_FALSE(it != it);
+
+			CHECK_FALSE(it == next);
+			CHECK_FALSE(next == it);
+			CHECK(it != next);
+			CHECK(next != it);
+		}
+	}
+	GIVEN("A list with data")
+	{
+		StringList list;
+		StringVector vec{ "foo", "bar", "baz" };
 
 		THEN("It can be iterated")
 		{
@@ -180,7 +261,7 @@ SCENARIO("Erasure")
 	GIVEN("A list with data")
 	{
 		StringList list;
-		std::vector<std::string> vec{ "foo", "bar", "baz", "qux" };
+		StringVector vec{ "foo", "bar", "baz", "qux" };
 		std::copy(vec.begin(), vec.end(), std::back_inserter(list));
 
 		THEN("Items can be erased from list's middle")

@@ -7,8 +7,8 @@
 template <typename T>
 inline CList<T>::CList()
 	: m_size(0)
-	, m_begin(nullptr)
-	, m_end(nullptr)
+	, m_pBegin(nullptr)
+	, m_pEnd(nullptr)
 {
 }
 
@@ -29,6 +29,11 @@ inline CList<T>::CList(CList&& other)
 template <typename T>
 inline CList<T>& CList<T>::operator=(const CList& rhs)
 {
+	if (this == &rhs)
+	{
+		return *this;
+	}
+
 	Clear();
 
 	for (auto& val : rhs)
@@ -42,10 +47,17 @@ inline CList<T>& CList<T>::operator=(const CList& rhs)
 template <typename T>
 inline CList<T>& CList<T>::operator=(CList&& rhs)
 {
-	std::swap(m_begin, rhs.m_begin);
-	std::swap(m_end, rhs.m_end);
+	if (this == &rhs)
+	{
+		return *this;
+	}
+
+	std::swap(m_pBegin, rhs.m_pBegin);
+	std::swap(m_pEnd, rhs.m_pEnd);
 	std::swap(m_size, rhs.m_size);
+
 	rhs.Clear();
+
 	return *this;
 }
 
@@ -82,49 +94,53 @@ inline void CList<T>::PopBack()
 template <typename T>
 inline typename CList<T>::Iterator CList<T>::Insert(const ConstIterator& it, const T& value)
 {
-	assert(!IsBeforeBegin(it));
+	assert(this == it.m_pList);
 
 	auto pNew = std::make_shared<SNode>(value);
+
+	auto& pPrev = it.m_pNode ? it.m_pNode->prev : m_pEnd;
+	if (pPrev)
+	{
+		pNew->prev = pPrev;
+		pPrev->next = pNew;
+	}
+	auto& pNext = it.m_pNode;
+	if (pNext)
+	{
+		pNew->next = pNext;
+		pNext->prev = pNew;
+	}
+
 	if (it == CBegin())
 	{
-		m_begin = pNew;
+		m_pBegin = pNew;
 	}
 	if (it == CEnd())
 	{
-		m_end = pNew;
-	}
-
-	if (it.m_prev)
-	{
-		pNew->prev = it.m_prev;
-		pNew->prev->next = pNew;
-		
-	}
-	if (it.m_ptr)
-	{
-		pNew->next = it.m_ptr;
-		pNew->next->prev = pNew;
+		m_pEnd = pNew;
 	}
 
 	m_size++;
-	return { pNew };
+	return Iterator(this, pNew);
 }
 
 template <typename T>
 inline typename CList<T>::Iterator CList<T>::Erase(const ConstIterator& it)
 {
-	assert(it.m_ptr && !IsEmpty());
+	assert(this == it.m_pList);
+	assert(it.m_pNode);
+	assert(!IsEmpty());
 
 	if (it == CBegin())
 	{
-		m_begin = m_begin->next;
+		m_pBegin = m_pBegin->next;
 	}
 	if (it == --CEnd())
 	{
-		m_end = m_end->prev;
+		m_pEnd = m_pEnd->prev;
 	}
 
-	auto pCurr = it.m_ptr;
+	auto pCurr = it.m_pNode;
 	if (auto pPrev = pCurr->prev)
 	{
 		pPrev->next = pCurr->next;
@@ -135,7 +151,7 @@ inline typename CList<T>::Iterator CList<T>::Erase(const ConstIterator& it)
 	}
 
 	m_size--;
-	return { it.m_next };
+	return Iterator(this, pCurr->next);
 }
 
 template <typename T>
@@ -163,27 +179,25 @@ inline bool CList<T>::IsEmpty() const
 template <typename T>
 typename CList<T>::Iterator CList<T>::Begin()
 {
-	return Iterator(m_begin);
+	return Iterator(this, m_pBegin);
 }
 
 template <typename T>
 typename CList<T>::Iterator CList<T>::End()
 {
-	Iterator it(m_end);
-	return m_end ? ++it : it;
+	return Iterator(this, nullptr);
 }
 
 template <typename T>
 typename CList<T>::ConstIterator CList<T>::CBegin() const
 {
-	return ConstIterator(m_begin);
+	return ConstIterator(this, m_pBegin);
 }
 
 template <typename T>
 typename CList<T>::ConstIterator CList<T>::CEnd() const
 {
-	ConstIterator it(m_end);
-	return m_end ? ++it : it;
+	return ConstIterator(this, nullptr);
 }
 
 template <typename T>
@@ -250,12 +264,6 @@ inline void CList<T>::push_back(const T& value)
 	PushBack(value);
 }
 #pragma endregion
-
-template <typename T>
-inline bool CList<T>::IsBeforeBegin(const ConstIterator& it)
-{
-	return (m_begin) && (it == --CBegin());  
-}
 
 template <typename T>
 inline CList<T>::SNode::SNode(const T& value)

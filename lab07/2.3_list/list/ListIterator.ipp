@@ -4,16 +4,15 @@
 
 template <typename T>
 template <typename U>
-bool CList<T>::CIterator<U>::operator==(const CIterator& other) const
+inline bool CList<T>::CIterator<U>::operator==(const CIterator& other) const
 {
-	return m_ptr == other.m_ptr
-		&& m_prev == other.m_prev
-		&& m_next == other.m_next;
+	assert(m_pList == other.m_pList);
+	return m_pNode == other.m_pNode;
 }
 
 template <typename T>
 template <typename U>
-bool CList<T>::CIterator<U>::operator!=(const CIterator& other) const
+inline bool CList<T>::CIterator<U>::operator!=(const CIterator& other) const
 {
 	return !(*this == other);
 }
@@ -22,21 +21,16 @@ template <typename T>
 template <typename U>
 inline U& CList<T>::CIterator<U>::operator*() const
 {
-	assert(m_ptr);
-	return m_ptr->data;
+	assert(m_pNode);
+	return m_pNode->data;
 }
 
 template <typename T>
 template <typename U>
 inline CList<T>::CIterator<U>& CList<T>::CIterator<U>::operator++()
 {
-	assert(m_ptr || m_next);
-	m_prev = m_ptr;
-	m_ptr = m_next;
-	if (m_ptr)
-	{
-		m_next = m_ptr->next;
-	}
+	assert(m_pNode);
+	m_pNode = m_pNode->next;
 	return *this;
 }
 
@@ -44,13 +38,15 @@ template <typename T>
 template <typename U>
 inline CList<T>::CIterator<U>& CList<T>::CIterator<U>::operator--()
 {
-	assert(m_ptr || m_prev);
-	m_next = m_ptr;
-	m_ptr = m_prev;
-	if (m_ptr)
+	if (!m_pNode)
 	{
-		m_prev = m_ptr->prev;
+		assert(m_pList->m_pEnd);
+		m_pNode = m_pList->m_pEnd;
+		return *this;
 	}
+
+	assert(m_pNode->prev);
+	m_pNode = m_pNode->prev;
 	return *this;
 }
 
@@ -74,9 +70,16 @@ inline const CList<T>::CIterator<U> CList<T>::CIterator<U>::operator--(int)
 
 template <typename T>
 template <typename U>
-inline CList<T>::CIterator<U>::CIterator(CList<T>::SNodeSPtr ptr)
-	: m_ptr(ptr)
-	, m_prev(ptr ? ptr->prev : nullptr)
-	, m_next(ptr ? ptr->next : nullptr)
+inline CList<T>::CIterator<U>::CIterator(const CIterator<T>& it)
+	: m_pNode(it.m_pNode)
+	, m_pList(it.m_pList)
+{
+}
+
+template <typename T>
+template <typename U>
+inline CList<T>::CIterator<U>::CIterator(const CList<T>* pList, CIterator::SNodeSPtr pNode)
+	: m_pNode(std::move(pNode))
+	, m_pList(pList)
 {
 }

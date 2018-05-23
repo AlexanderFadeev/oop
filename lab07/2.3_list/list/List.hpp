@@ -8,7 +8,7 @@ template <typename ValueType>
 class CList
 {
 public:
-	template <typename>
+	template <typename ValueType>
 	class CIterator;
 
 	using Iterator = CIterator<ValueType>;
@@ -63,17 +63,17 @@ public:
 #pragma endregion
 
 private:
+	template <typename T>
+	friend class CIterator;
+
 	struct SNode;
 	using SNodeSPtr = std::shared_ptr<SNode>;
 
-	bool IsBeforeBegin(const ConstIterator&);
-
-	SNodeSPtr m_begin;
-	SNodeSPtr m_end;
+	SNodeSPtr m_pBegin;
+	SNodeSPtr m_pEnd;
 
 	size_t m_size;
 };
-
 
 template <typename ValueType>
 struct CList<ValueType>::SNode

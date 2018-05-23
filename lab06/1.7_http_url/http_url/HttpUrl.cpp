@@ -30,7 +30,7 @@ void ValidateDomain(const std::string& domain)
 {
 	if (!std::regex_match(domain, DOMAIN_REGEX))
 	{
-		throw CUrlParsingError("Invalid domain: " + domain);
+		throw CUrlParsingError(FormatErrorMessage(ErrorType::InvalidDomain, domain));
 	}
 }
 
@@ -38,7 +38,7 @@ void ValidatePort(uint16_t port)
 {
 	if (port < PORT_LOWER_BOUND || PORT_UPPER_BOUND < port)
 	{
-		throw CUrlParsingError("Invalid port: " + std::to_string(port));
+		throw CUrlParsingError(FormatErrorMessage(ErrorType::PortIsOutOfRange, std::to_string(port)));
 	}
 }
 
@@ -62,7 +62,7 @@ CHttpUrl::Protocol ParseProtocol(const std::string& protocol)
 	{
 		return Protocol::HTTPS;
 	}
-	throw CUrlParsingError("Invalid protocol: " + protocol);
+	throw CUrlParsingError(FormatErrorMessage(ErrorType::InvalidProtocol, protocol));
 }
 
 std::optional<uint16_t> ParsePort(const std::string& str)
@@ -79,16 +79,16 @@ std::optional<uint16_t> ParsePort(const std::string& str)
 	}
 	catch (const std::out_of_range&)
 	{
-		throw CUrlParsingError("Port is out of range");
+		throw CUrlParsingError(FormatErrorMessage(ErrorType::PortIsOutOfRange, str));
 	}
 	catch (const std::invalid_argument&)
 	{
-		throw CUrlParsingError("Invalid port: " + str);
+		throw CUrlParsingError(FormatErrorMessage(ErrorType::InvalidPort, str));
 	}
 
 	if (port < PORT_LOWER_BOUND || PORT_UPPER_BOUND < port)
 	{
-		throw CUrlParsingError("Port is out of range");
+		throw CUrlParsingError(FormatErrorMessage(ErrorType::PortIsOutOfRange, str));
 	}
 
 	return static_cast<uint16_t>(port);
@@ -116,7 +116,7 @@ CHttpUrl::CHttpUrl(const std::string& url)
 	std::smatch urlMatch;
 	if (!std::regex_match(url, urlMatch, URL_REGEX))
 	{
-		throw CUrlParsingError("Invalid URL: " + url);
+		throw CUrlParsingError(FormatErrorMessage(ErrorType::InvalidURL, url));
 	}
 
 	ValidateDomain(urlMatch[2]);

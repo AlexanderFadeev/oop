@@ -8,3 +8,14 @@ class CUrlParsingError
 public:
 	CUrlParsingError(const std::string& message);
 };
+
+enum class ErrorType
+{
+	InvalidURL,
+	InvalidProtocol,
+	InvalidDomain,
+	InvalidPort,
+	PortIsOutOfRange,
+};
+
+std::string FormatErrorMessage(ErrorType type, const std::string& value);

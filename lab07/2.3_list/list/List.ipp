@@ -34,12 +34,24 @@ inline CList<T>& CList<T>::operator=(const CList& rhs)
 		return *this;
 	}
 
-	Clear();
-
-	for (auto& val : rhs)
+	auto oldSize = m_size;
+	size_t copiedCount = 0;
+	
+	try
 	{
-		PushBack(val);
+		for (auto& val : rhs)
+		{
+			PushBack(val);
+			copiedCount++;
+		}
 	}
+	catch (...)
+	{
+		PopBack(copiedCount);
+		throw;
+	}
+
+	PopFront(oldSize);
 
 	return *this;
 }
@@ -80,15 +92,21 @@ inline void CList<T>::PushBack(const T& value)
 }
 
 template <typename T>
-inline void CList<T>::PopFront()
+inline void CList<T>::PopFront(size_t count)
 {
-	Erase(CBegin());
+	while (count--)
+	{
+		Erase(CBegin());
+	}
 }
 
 template <typename T>
-inline void CList<T>::PopBack()
+inline void CList<T>::PopBack(size_t count)
 {
-	Erase(--CEnd());
+	while (count--)
+	{
+		Erase(--CEnd());
+	}
 }
 
 template <typename T>

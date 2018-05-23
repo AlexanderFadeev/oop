@@ -26,8 +26,8 @@ public:
 
 	void PushFront(const ValueType&);
 	void PushBack(const ValueType&);
-	void PopFront();
-	void PopBack();
+	void PopFront(size_t count = 1);
+	void PopBack(size_t count = 1);
 
 	Iterator Insert(const ConstIterator&, const ValueType&);
 	Iterator Erase(const ConstIterator&);

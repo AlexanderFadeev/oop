@@ -77,7 +77,7 @@ SCENARIO("Exception safety")
 			{
 				CHECK(other.IsEmpty());
 				CHECK(other.GetSize() == 0);
-				CHECK(other.CBegin() == other.CEnd());
+				CHECK(other.cbegin() == other.cend());
 			}
 		}
 	}

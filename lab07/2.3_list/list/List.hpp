@@ -38,21 +38,16 @@ public:
 	bool IsEmpty() const;
 
 #pragma region Iterators
-	Iterator Begin();
-	Iterator End();
-	ConstIterator CBegin() const;
-	ConstIterator CEnd() const;
-	ReverseIterator RBegin();
-	ReverseIterator REnd();
-	ConstReverseIterator CRBegin() const;
-	ConstReverseIterator CREnd() const;
-#pragma endregion
-
-#pragma region RangeBasedForSupport
 	Iterator begin();
 	Iterator end();
 	ConstIterator begin() const;
 	ConstIterator end() const;
+	ConstIterator cbegin() const;
+	ConstIterator cend() const;
+	ReverseIterator rbegin();
+	ReverseIterator rend();
+	ConstReverseIterator crbegin() const;
+	ConstReverseIterator crend() const;
 #pragma endregion
 
 #pragma region STLSupport

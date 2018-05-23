@@ -9,19 +9,19 @@ void CheckListIsEmpty(const StringList& list)
 {
 	CHECK(list.IsEmpty());
 	CHECK(list.GetSize() == 0);
-	CHECK(list.CBegin() == list.CEnd());
+	CHECK(list.cbegin() == list.cend());
 }
 
 void CheckListSize(const StringList& list, size_t size)
 {
 	CHECK_FALSE(list.IsEmpty());
 	CHECK(list.GetSize() == size);
-	CHECK(std::distance(list.CBegin(), list.CEnd()) == static_cast<ptrdiff_t>(size));
+	CHECK(std::distance(list.cbegin(), list.cend()) == static_cast<ptrdiff_t>(size));
 }
 
 void CheckListData(const StringList& list, const StringVector& vec)
 {
-	CHECK(std::equal(list.CBegin(), list.CEnd(), vec.cbegin(), vec.cend()));
+	CHECK(std::equal(list.cbegin(), list.cend(), vec.cbegin(), vec.cend()));
 }
 
 SCENARIO("Construction")
@@ -146,7 +146,7 @@ SCENARIO("Iteration")
 		list.PushBack("foo");
 		list.PushBack("bar");
 		list.PushBack("baz");
-		auto it = list.Begin();
+		auto it = list.begin();
 
 		THEN("It can be derefernced")
 		{
@@ -185,19 +185,19 @@ SCENARIO("Iteration")
 
 			AND_THEN("It can be const-iterated")
 			{
-				CHECK(std::equal(list.CBegin(), list.CEnd(), vec.cbegin(), vec.cend()));
+				CHECK(std::equal(list.cbegin(), list.cend(), vec.cbegin(), vec.cend()));
 			}
 			AND_THEN("It can be const-reverse-iterated")
 			{
-				CHECK(std::equal(list.CRBegin(), list.CREnd(), vec.crbegin(), vec.crend()));
+				CHECK(std::equal(list.crbegin(), list.crend(), vec.crbegin(), vec.crend()));
 			}
 			AND_THEN("It can be reverse-iterated")
 			{
 				size_t index = 0;
-				std::for_each(list.RBegin(), list.REnd(), [&index](auto& value) {
+				std::for_each(list.rbegin(), list.rend(), [&index](auto& value) {
 					value = std::to_string(index++);
 				});
-				std::for_each(list.Begin(), list.End(), [&index](auto& value) {
+				std::for_each(list.begin(), list.end(), [&index](auto& value) {
 					CHECK(value == std::to_string(--index));
 				});
 			}
@@ -233,23 +233,23 @@ SCENARIO("Insertion")
 
 		THEN("Items can be inserted into empty list")
 		{
-			list.Insert(list.CBegin(), "bar");
+			list.Insert(list.cbegin(), "bar");
 			CheckListData(list, {"bar"});
 
 			AND_THEN("Items can be inserted into list's beginning")
 			{
-				list.Insert(list.CBegin(), "foo");
+				list.Insert(list.cbegin(), "foo");
 				CheckListData(list, { "foo", "bar" });
 
 				AND_THEN("Items can be inserted into list's middle")
 				{
-					list.Insert(++list.CBegin(), "baz");
+					list.Insert(++list.cbegin(), "baz");
 					CheckListData(list, { "foo", "baz", "bar" });
 				}
 			}
 			AND_THEN("Items can be inserted into list's ending")
 			{
-				list.Insert(list.CEnd(), "foo");
+				list.Insert(list.cend(), "foo");
 				CheckListData(list, { "bar", "foo" });
 			}
 		}
@@ -266,22 +266,22 @@ SCENARIO("Erasure")
 
 		THEN("Items can be erased from list's middle")
 		{
-			list.Erase(++list.CBegin());
+			list.Erase(++list.cbegin());
 			CheckListData(list, { "foo", "baz", "qux" });
 
 			AND_THEN("Items can be erased from list's beginning")
 			{
-				list.Erase(list.CBegin());
+				list.Erase(list.cbegin());
 				CheckListData(list, { "baz", "qux" });
 
 				AND_THEN("Items can be erased from list's ending")
 				{
-					list.Erase(--list.CEnd());
+					list.Erase(--list.cend());
 					CheckListData(list, { "baz" });
 
 					AND_THEN("Items can be erased from list with single element")
 					{
-						list.Erase(list.CBegin());
+						list.Erase(list.cbegin());
 						CheckListData(list, {});
 					}
 				}

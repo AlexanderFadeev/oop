@@ -82,13 +82,13 @@ inline CList<T>::~CList()
 template <typename T>
 inline void CList<T>::PushFront(const T& value)
 {
-	Insert(CBegin(), value);
+	Insert(cbegin(), value);
 }
 
 template <typename T>
 inline void CList<T>::PushBack(const T& value)
 {
-	Insert(CEnd(), value);
+	Insert(cend(), value);
 }
 
 template <typename T>
@@ -96,7 +96,7 @@ inline void CList<T>::PopFront(size_t count)
 {
 	while (count--)
 	{
-		Erase(CBegin());
+		Erase(cbegin());
 	}
 }
 
@@ -105,7 +105,7 @@ inline void CList<T>::PopBack(size_t count)
 {
 	while (count--)
 	{
-		Erase(--CEnd());
+		Erase(--cend());
 	}
 }
 
@@ -129,11 +129,11 @@ inline typename CList<T>::Iterator CList<T>::Insert(const ConstIterator& it, con
 		pNext->prev = pNew;
 	}
 
-	if (it == CBegin())
+	if (it == cbegin())
 	{
 		m_pBegin = pNew;
 	}
-	if (it == CEnd())
+	if (it == cend())
 	{
 		m_pEnd = pNew;
 	}
@@ -149,11 +149,11 @@ inline typename CList<T>::Iterator CList<T>::Erase(const ConstIterator& it)
 	assert(it.m_pNode);
 	assert(!IsEmpty());
 
-	if (it == CBegin())
+	if (it == cbegin())
 	{
 		m_pBegin = m_pBegin->next;
 	}
-	if (it == --CEnd())
+	if (it == --cend())
 	{
 		m_pEnd = m_pEnd->prev;
 	}
@@ -195,77 +195,63 @@ inline bool CList<T>::IsEmpty() const
 
 #pragma region Iterators
 template <typename T>
-typename CList<T>::Iterator CList<T>::Begin()
+typename CList<T>::Iterator CList<T>::begin()
 {
 	return Iterator(this, m_pBegin);
 }
 
 template <typename T>
-typename CList<T>::Iterator CList<T>::End()
+typename CList<T>::Iterator CList<T>::end()
 {
 	return Iterator(this, nullptr);
 }
 
 template <typename T>
-typename CList<T>::ConstIterator CList<T>::CBegin() const
-{
-	return ConstIterator(this, m_pBegin);
-}
-
-template <typename T>
-typename CList<T>::ConstIterator CList<T>::CEnd() const
-{
-	return ConstIterator(this, nullptr);
-}
-
-template <typename T>
-typename CList<T>::ReverseIterator CList<T>::RBegin()
-{
-	return ReverseIterator(End());
-}
-
-template <typename T>
-typename CList<T>::ReverseIterator CList<T>::REnd()
-{
-	return ReverseIterator(Begin());
-}
-
-template <typename T>
-typename CList<T>::ConstReverseIterator CList<T>::CRBegin() const
-{
-	return ConstReverseIterator(CEnd());
-}
-
-template <typename T>
-typename CList<T>::ConstReverseIterator CList<T>::CREnd() const
-{
-	return ConstReverseIterator(CBegin());
-}
-#pragma endregion
-
-#pragma region RangeBasedForSupport
-template <typename T>
-typename CList<T>::Iterator CList<T>::begin()
-{
-	return Begin();
-}
-
-template <typename T>
-typename CList<T>::Iterator CList<T>::end()
-{
-	return End();
-}
-
-template <typename T>
 typename CList<T>::ConstIterator CList<T>::begin() const
 {
-	return CBegin();
+	return cbegin();
 }
 
 template <typename T>
 typename CList<T>::ConstIterator CList<T>::end() const
 {
-	return CEnd();
+	return cend();
+}
+
+template <typename T>
+typename CList<T>::ConstIterator CList<T>::cbegin() const
+{
+	return ConstIterator(this, m_pBegin);
+}
+
+template <typename T>
+typename CList<T>::ConstIterator CList<T>::cend() const
+{
+	return ConstIterator(this, nullptr);
+}
+
+template <typename T>
+typename CList<T>::ReverseIterator CList<T>::rbegin()
+{
+	return ReverseIterator(end());
+}
+
+template <typename T>
+typename CList<T>::ReverseIterator CList<T>::rend()
+{
+	return ReverseIterator(begin());
+}
+
+template <typename T>
+typename CList<T>::ConstReverseIterator CList<T>::crbegin() const
+{
+	return ConstReverseIterator(cend());
+}
+
+template <typename T>
+typename CList<T>::ConstReverseIterator CList<T>::crend() const
+{
+	return ConstReverseIterator(cbegin());
 }
 #pragma endregion
 

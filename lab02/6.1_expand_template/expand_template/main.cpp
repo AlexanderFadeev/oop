@@ -48,7 +48,8 @@ Mapping GetMapping(char* params[], size_t paramsCount)
 	return result;
 }
 
-void ExpandTemplate(std::string inputFilename, std::string outputFilename, char* params[], size_t paramsCount)
+void ExpandTemplate(const std::string& inputFilename,
+	const std::string& outputFilename, char* params[], size_t paramsCount)
 {
 	auto mapping = GetMapping(params, paramsCount);
 	ExpandTemplate(inputFilename, outputFilename, mapping);

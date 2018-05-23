@@ -24,6 +24,7 @@ public:
 	bool operator!=(const CIterator& other) const;
 
 	ValueType& operator*() const;
+	ValueType* operator->() const;
 
 	CIterator& operator++();
 	CIterator& operator--();

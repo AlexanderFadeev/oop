@@ -27,6 +27,14 @@ inline U& CList<T>::CIterator<U>::operator*() const
 
 template <typename T>
 template <typename U>
+inline U* CList<T>::CIterator<U>::operator->() const
+{
+	assert(m_pNode);
+	return &(m_pNode->data);
+}
+
+template <typename T>
+template <typename U>
 inline CList<T>::CIterator<U>& CList<T>::CIterator<U>::operator++()
 {
 	assert(m_pNode);

@@ -152,6 +152,10 @@ SCENARIO("Iteration")
 		{
 			CHECK(*it == "foo");
 		}
+		THEN("It can be derefernced via ->")
+		{
+			CHECK(it->size() == 3);
+		}
 		THEN("It can incremented and decremented")
 		{
 			CHECK(*(it++) == "foo");
